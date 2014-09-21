@@ -13,3 +13,5 @@ plugins\oUF_Experience.lua
 plugins\oUF_Reputation.lua
 plugins\oUF_TotemBar.lua
 plugins\oUF_Smooth.lua
+plugins\burningembers.lua
+plugins\demonicfury.lua

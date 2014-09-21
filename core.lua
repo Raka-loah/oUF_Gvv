@@ -337,7 +337,7 @@ local function Gvv_Style(self, unit)
 			for index = 1, MAX_TOTEMS do
 				local Totem = CreateFrame('StatusBar', nil, self.ap)
 				Totem:EnableMouse(true)
-				Totem:SetSize(40, 15)
+				Totem:SetSize(40, 20)
 				Totem:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 45, 0)
 				Totem.destroy = true
 				Totem:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
@@ -355,26 +355,48 @@ local function Gvv_Style(self, unit)
 			local ClassIcons = {}
 			for index = 1, 5 do
 				local Icon = self:CreateTexture(nil, 'BACKGROUND')
-				Icon:SetSize(16, 16)
-				Icon:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 21, 0)
+				Icon:SetSize(20, 20)
+				Icon:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 0)
 				ClassIcons[index] = Icon
 			end
-			self.ClassIcons = ClassIcons		
+			self.ClassIcons = ClassIcons
+			
+			if playerclass == 'WARLOCK' then
+				-- Just WARLOCK things --
+				local DemonicFuryBar = CreateFrame('StatusBar', nil, self)
+				DemonicFuryBar:SetPoint('LEFT', self.ap, 'LEFT', 0, 0)
+				DemonicFuryBar:SetSize(180, 20)
+				DemonicFuryBar:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
+				DemonicFuryBar:SetStatusBarColor(148/255, 130/255, 201/255)
+				
+				self.DemonicFury = DemonicFuryBar
+				
+				local BurningEmbers = {}
+				for i = 1, 4 do
+					local ember = CreateFrame('StatusBar', nil, self)
+					ember:SetSize(40, 20)
+					ember:SetPoint('LEFT', self.ap, 'LEFT', (i - 1) * 45, 0)
+					ember:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
+					BurningEmbers[i] = ember
+				end
+				
+				self.BurningEmbers = BurningEmbers
+			end
 		elseif playerclass == 'DRUID' then --hate this class particularly
 			-- BIG FAT CHICKEN BAR --
 			local EclipseBar = CreateFrame('Frame', nil, self)
 			EclipseBar:SetPoint('LEFT', self.ap, 'LEFT', 0, 0)
-			EclipseBar:SetSize(160, 20)
+			EclipseBar:SetSize(180, 20)
 
 			local LunarBar = CreateFrame('StatusBar', nil, EclipseBar)
 			LunarBar:SetPoint('LEFT')
 			LunarBar:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
 			LunarBar:SetStatusBarColor(0.1,0.2,0.8)
-			LunarBar:SetSize(160, 20)
+			LunarBar:SetSize(180, 20)
 
 			local SolarBar = CreateFrame('StatusBar', nil, EclipseBar)
 			SolarBar:SetPoint('LEFT', LunarBar:GetStatusBarTexture(), 'RIGHT')
-			SolarBar:SetSize(160, 20)
+			SolarBar:SetSize(180, 20)
 			SolarBar:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
 			SolarBar:SetStatusBarColor(0.8,0.6,0.1)
 			
@@ -384,7 +406,7 @@ local function Gvv_Style(self, unit)
 			
 			-- USELESS MANA BAR --
 			local DruidMana = CreateFrame("StatusBar", nil, self.ap)
-			DruidMana:SetSize(160, 20)
+			DruidMana:SetSize(180, 20)
 			DruidMana:SetPoint('LEFT')
 			DruidMana:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
 			DruidMana:SetStatusBarColor(0.1,0.3,0.9)
@@ -398,8 +420,8 @@ local function Gvv_Style(self, unit)
 			local Mushrooms = {}
 			for index = 1, MAX_TOTEMS do
 				local Mushroom = CreateFrame('Button', nil, self.ap)
-				Mushroom:SetSize(40, 40)
-				Mushroom:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 45, 0)
+				Mushroom:SetSize(20, 20)
+				Mushroom:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 12)
 
 				local Icon = Mushroom:CreateTexture(nil, "OVERLAY")
 				Icon:SetAllPoints()
