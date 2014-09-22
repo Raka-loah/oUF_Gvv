@@ -1,6 +1,8 @@
 local _, ns = ...
 
 function ns.PostUpdateHealth(Health, unit, cur, max)
+	local self = Health:GetParent()
+
 	if Health.lowHP then
 		local perc = floor(cur / max * 100)
 		if perc <= 35 and cur > 1 then
@@ -21,7 +23,7 @@ function ns.PostUpdateHealth(Health, unit, cur, max)
 		return
 	end
 	
-	if (unit == 'target' or unit == 'focus' or unit == 'targettarget' or unit == 'focustarget') then
+	if ( unit == 'target' or unit == 'focus' or unit == 'targettarget' or unit == 'focustarget') then
 		local reaction = UnitReaction('player', unit)
 		if(reaction) then
 			if(reaction == 3) then
@@ -42,10 +44,12 @@ function ns.PostUpdateHealth(Health, unit, cur, max)
 		else
 			Health.Value:SetText(nil)
 		end
-	elseif (unit == 'pet') then
+	elseif unit == 'pet' then
 		Health.Value:SetText(format('%s', ns.FormatValue(cur)))
-	else
+	elseif unit == 'player' then
 		Health.Value:SetText(format('%s', BreakUpLargeNumbers(cur)))
+	else
+		Health.Value:SetText(nil)
 	end
 end
 
@@ -115,18 +119,36 @@ end
 
 function ns.CreateAura(self, unit)
 	local frame = CreateFrame("Frame", nil, self)
-	frame:SetPoint("TOPLEFT", self, "TOPLEFT", 0, -100)
-	frame:SetWidth(20 * 14 + 4 * 13)
-	frame:SetHeight(20 * 3 + 4 * 2)
-
-	frame["growth-x"] = "RIGHT"
-	frame["growth-y"] = "DOWN"
-	frame["initialAnchor"] = "TOPLEFT"
+	if unit == 'target' then
+		frame:SetPoint("TOPLEFT", self, "TOPLEFT", 0, -100)
+		frame:SetWidth(20 * 14 + 4 * 13)
+		frame:SetHeight(20 * 3 + 4 * 2)
+		frame["growth-x"] = "RIGHT"
+		frame["growth-y"] = "DOWN"
+		frame["initialAnchor"] = "TOPLEFT"
+		frame["size"] = 20
+	elseif unit == 'player' then
+		frame:SetPoint("LEFT", self, "RIGHT", 15, 75)
+		frame:SetWidth(20 * 9 + 4 * 8)
+		frame:SetHeight(20 * 3 + 4 * 2)
+		frame["growth-x"] = "RIGHT"
+		frame["growth-y"] = "UP"
+		frame["initialAnchor"] = "BOTTOMLEFT"
+		frame["size"] = 20
+	elseif unit == 'party' then
+		frame:SetPoint("TOPLEFT", self.Portrait, "TOPRIGHT", 5, 0)
+		frame:SetWidth(20 * 8 + 4 * 7)
+		frame:SetHeight(20 * 4 + 4 * 2)
+		frame["growth-x"] = "RIGHT"
+		frame["growth-y"] = "DOWN"
+		frame["initialAnchor"] = "TOPLEFT"
+		frame["size"] = 15
+	end
 	frame["num"] = 32
-	frame["size"] = 20
 	frame["spacing-x"] = 4
 	frame["spacing-y"] = 4
 	frame.showStealableBuffs = true
+	frame.disableCooldown = true 
 
 	frame.PreUpdate = ns.AuraPreUpdate
 	frame.PostCreateIcon = ns.CreateAuraIcon
@@ -136,10 +158,6 @@ function ns.CreateAura(self, unit)
 end
 
 function ns.CreateAuraIcon (self, button)
-	button.cd:SetReverse()
-	button.cd:SetPoint("TOPLEFT", 2, -2)
-	button.cd:SetPoint("BOTTOMRIGHT", -2, 2)
-
 	button.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	button.icon:SetDrawLayer("BACKGROUND", -8)
 
@@ -293,10 +311,12 @@ oUF.Tags.Methods['Gvv:namecolor'] = function(u)
 				return '|cFFFFF000'
 			elseif(reaction >= 5) then
 				return '|cFF14D900'
+			else
+				return '|cFFCC4D4D'
 			end
 		end
 	end
-	return '|cFFCC4D4D'
+	return '|cFFBABABA'
 end
 oUF.Tags.Events['Gvv:namecolor'] = 'UNIT_HEALTH UNIT_CONNECTION'
 

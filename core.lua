@@ -75,16 +75,21 @@ local function Gvv_Style(self, unit)
 		self.pethc:SetAllPoints(self.Health)
 	elseif (unit == 'target') then
 		self.Health:SetSize(256, 16)
-		self.Health:SetStatusBarColor(0.95, 0.15, 0)
 		self.Health:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
 		self.Health:SetOrientation('HORIZONTAL')
 		self.Health:SetPoint('TOPLEFT', self, 'TOPLEFT', 0, -30)
 	elseif (unit == 'focus' or unit == 'targettarget' or unit == 'focustarget') then
 		self.Health:SetSize(128, 16)
-		self.Health:SetStatusBarColor(0.95, 0.15, 0)
 		self.Health:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
 		self.Health:SetOrientation('HORIZONTAL')
 		self.Health:SetPoint('CENTER',self.tcover)
+	elseif (unit == 'party') then
+		self.Health:SetSize(70, 10)
+		self.Health:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
+		self.Health:SetOrientation('HORIZONTAL')
+		self.Health:SetStatusBarColor(20/255, 217/255, 0)
+		self.Health:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 26, -2)
+		self.Health.colorClass = true
 	end
 
 	if (unit == 'player') then
@@ -101,9 +106,15 @@ local function Gvv_Style(self, unit)
 		self.Health.Value:SetTextColor(1.0, 1.0, 1.0)
 		self.Health.Value:SetJustifyH('LEFT')
 		self.Health.Value:SetPoint('LEFT', self.Health, 'RIGHT', 5, 1)
+	elseif (unit == 'party') then
+		self.Health.Value = self:CreateFontString()
+		self.Health.Value:SetFont('Interface\\Addons\\oUF_Gvv\\fonts\\menomonia.ttf', 12)
+		self.Health.Value:SetTextColor(20/255, 217/255, 0)
+		self.Health.Value:SetPoint('LEFT', self.Health, 'RIGHT', 2, 0)
 	else
-		self.Health.Value = ns.CreateFontString(self, 14, 'CENTER')
-		self.Health.Value:SetPoint('RIGHT', self.tcover, 'RIGHT', -5, 0)
+		self.Health.Value = ns.CreateFontString(self, 12, 'RIGHT')
+		self.Health.Value:SetTextColor(1.0, 1.0, 1.0)
+		self.Health.Value:SetPoint('RIGHT', self.tcover, 'RIGHT', -2, 1)
 	end
 	
 	if (unit == 'player') then
@@ -186,6 +197,14 @@ local function Gvv_Style(self, unit)
 		self.Name:SetTextColor(0.8, 0.3, 0.3)
 		self.Name:SetPoint('BOTTOMLEFT',self.tcover,'TOPLEFT',0,2)
 		self:Tag(self.Name, '[Gvv:namecolor][Gvv:classification][name]|r')
+	elseif unit == 'party' then
+		self.Name = self:CreateFontString()
+		self.Name:SetFont('Fonts\\ARHei.ttf', 14, 'THINOUTLINE')
+		self.Name:SetJustifyH('LEFT')
+		self.Name:SetShadowOffset(0, 0)
+		self.Name:SetTextColor(0.8, 0.8, 0.8)
+		self.Name:SetPoint('BOTTOMLEFT',self,'BOTTOMLEFT',25,0)
+		self:Tag(self.Name, '[Gvv:namecolor][name]|r')
 	end
 	
 	-- Level Text --
@@ -211,7 +230,16 @@ local function Gvv_Style(self, unit)
 		self.Level:SetFont('Fonts\\ARHei.ttf', 14, 'THINOUTLINE')
 		self.Level:SetJustifyH('CENTER')
 		self.Level:SetPoint('BOTTOM', 'UIParent', 'BOTTOMRIGHT', -15, 2)
-		self:Tag(self.Level, '[Gvv:nextlevel]')			
+		self:Tag(self.Level, '[Gvv:nextlevel]')	
+	elseif unit == 'party' then
+		self.Level = self:CreateFontString()
+		self.Level:SetFont('Fonts\\ARHei.ttf', 14, 'THINOUTLINE')
+		self.Level:SetJustifyH('CENTER')
+		self.Level:SetPoint('LEFT', self, 'LEFT', 18, 0)
+		local t = self:CreateTexture(nil, 'BACKGROUND',nil,2)
+		t:SetTexture('Interface\\AddOns\\oUF_Gvv\\textures\\party_level_back')
+		t:SetPoint('BOTTOM', self.Level, 'BOTTOM', -2, -2)
+		self:Tag(self.Level, '[level]')
 	end
 		
 	-- Portrait --
@@ -225,10 +253,18 @@ local function Gvv_Style(self, unit)
 		self.Portrait = self:CreateTexture(nil, 'BACKGROUND',nil,0)
 		self.Portrait:SetSize(36, 36)
 		self.Portrait:SetPoint('CENTER', self.pback)	
+	elseif unit == 'party' then
+		self.Portrait = self:CreateTexture(nil, 'BACKGROUND',nil,0)
+		self.Portrait:SetSize(64, 64)
+		self.Portrait:SetPoint('LEFT', self, 'LEFT', 25, 0)	
+		self.pback = self:CreateTexture(nil, 'BACKGROUND', nil, 1)
+		self.pback:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\party_back')
+		self.pback:SetSize(128,128)
+		self.pback:SetPoint('TOPLEFT', self, 'TOPLEFT', 25, 0)
 	end
 	
-	-- Target Auras --
-	if (unit == 'target') then
+	-- Auras --
+	if (unit == 'target' or unit == 'player' or unit == 'party') then
 		self.Auras = ns.CreateAura(self, unit)
 	end
 	
@@ -325,17 +361,17 @@ local function Gvv_Style(self, unit)
 	if unit == 'player' then
 		local Leader = self:CreateTexture(nil, 'OVERLAY')
 		Leader:SetSize(16, 16)
-		Leader:SetPoint('BOTTOM', self.Power, 'TOP' , 0, 3)
+		Leader:SetPoint('TOP', self.Power, 'TOP' , 0, 0)
 		self.Leader = Leader
 	
 		local MasterLooter = self:CreateTexture(nil, 'OVERLAY')
 		MasterLooter:SetSize(16, 16)
-		MasterLooter:SetPoint('BOTTOM', self.Power, 'TOP' , 18, 3)
+		MasterLooter:SetPoint('TOP', self.Power, 'TOP' , 18, 0)
 		self.MasterLooter = MasterLooter
 		
 		local LFDRole = self:CreateTexture(nil, 'OVERLAY')
 		LFDRole:SetSize(16, 16)
-		LFDRole:SetPoint('BOTTOM', self.Power, 'TOP' , -18, 3)
+		LFDRole:SetPoint('TOP', self.Power, 'TOP' , -18, 0)
 		self.LFDRole = LFDRole
 	elseif unit == 'target' then
 		local PhaseIcon = self:CreateTexture(nil, 'OVERLAY')
@@ -343,6 +379,17 @@ local function Gvv_Style(self, unit)
 		PhaseIcon:SetPoint('BOTTOMRIGHT', self.Level, 'TOPRIGHT', 0, 0)
 		self.PhaseIcon = PhaseIcon
 	end
+
+	local RaidIcon = self:CreateTexture(nil, 'OVERLAY')
+	RaidIcon:SetSize(16, 16)
+	if unit == 'target' then
+		RaidIcon:SetPoint('TOPRIGHT', self.Portrait, 'TOPRIGHT', 2, 2)
+	elseif unit == 'focus' or unit == 'focustarget' or unit == 'targettarget' then
+		RaidIcon:SetPoint('TOPLEFT', self.Portrait, 'TOPLEFT', -2, 2)
+	else
+		RaidIcon:SetPoint('TOPLEFT', self, 'TOPLEFT', 20, -2)
+	end
+	self.RaidIcon = RaidIcon
 	
 	-- Alt Powers (definitely pain in the arse) --
 	if unit == 'player' then
@@ -535,6 +582,13 @@ local function Gvv_Style(self, unit)
 		self.Castbar.SafeZone = SafeZone
 	end
 	
+	if (unit == 'pet' or unit == 'party') then
+		self.Range = {
+			insideAlpha = 1,
+			outsideAlpha = 0.5,
+		}
+	end
+	
 	return self
 end
 
@@ -560,4 +614,25 @@ oUF:Factory(function(self)
 	local focustarget = self:Spawn('focustarget', 'oUF_Gvv_FocusTarget')
 	focustarget:SetPoint('TOP', focus, 'BOTTOM', 20, -10)
 	
+	local party = oUF:SpawnHeader('oUF_Gvv_Party', nil, 'party',
+		'oUF-initialConfigFunction', [[
+			self:SetWidth(100)
+			self:SetHeight(65)
+		]],
+		'showParty', true,
+		'yOffset', -10)
+	party:SetPoint('TOPLEFT', 'UIParent','TOPLEFT', 0, -115)
+	
+	-- Hide blizz boss and aura frames --
+	for i = 1, 4 do
+		local frame = _G["Boss"..i.."TargetFrame"]
+		frame:UnregisterAllEvents()
+		frame:Hide()
+		frame.Show = function () end
+	end
+	local bbuff = _G['BuffFrame']
+	local btef = _G['TemporaryEnchantFrame']
+	bbuff:UnregisterAllEvents()
+	bbuff:Hide()
+	btef:Hide()
 end)
