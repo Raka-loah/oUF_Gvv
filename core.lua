@@ -6,9 +6,9 @@ Require oUF 1.6.x.
 local _, ns = ...
 
 local function Gvv_Style(self, unit)
-	self:RegisterForClicks("AnyUp")
-	self:SetScript("OnEnter", UnitFrame_OnEnter)
-	self:SetScript("OnLeave", UnitFrame_OnLeave)
+	self:RegisterForClicks('AnyUp')
+	self:SetScript('OnEnter', UnitFrame_OnEnter)
+	self:SetScript('OnLeave', UnitFrame_OnLeave)
 	
 	-- Frame layouts--
 	if unit == 'player' then
@@ -44,7 +44,7 @@ local function Gvv_Style(self, unit)
 	
 	-- Health bar --
 	self.Health = CreateFrame('StatusBar', 'healthbar', self)
-	self.Health:SetFrameStrata("LOW")
+	self.Health:SetFrameStrata('LOW')
 	self.Health:SetFrameLevel(2)
 	
 	self.Health:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_filling')
@@ -58,7 +58,7 @@ local function Gvv_Style(self, unit)
 		self.Health:SetSize(128, 128)
 		self.Health:SetOrientation('VERTICAL')
 		self.Health:SetStatusBarColor(0.95, 0.15, 0)
-		self.Health:SetPoint("CENTER")
+		self.Health:SetPoint('CENTER')
 	elseif (unit == 'pet') then
 		self.Health:SetSize(80, 6)
 		self.Health:SetPoint('LEFT', self, 'LEFT', 12, 8)
@@ -107,10 +107,10 @@ local function Gvv_Style(self, unit)
 	end
 	
 	if (unit == 'player') then
-		self.Health.lowHP = self.Health:CreateTexture(nil, "BACKGROUND", nil, -7)
-		self.Health.lowHP:SetTexture("Interface\\AddOns\\oUF_Gvv\\textures\\health_filling")
+		self.Health.lowHP = self.Health:CreateTexture(nil, 'BACKGROUND', nil, -7)
+		self.Health.lowHP:SetTexture('Interface\\AddOns\\oUF_Gvv\\textures\\health_filling')
 		self.Health.lowHP:SetSize(128, 128)
-		self.Health.lowHP:SetPoint("CENTER")
+		self.Health.lowHP:SetPoint('CENTER')
 		self.Health.lowHP:SetVertexColor(1.0, 1.0, 1.0)
 		self.Health.lowHP:SetAlpha(0)
 		ns.CreateAlphaAnimation(self.Health.lowHP, 1)
@@ -124,23 +124,23 @@ local function Gvv_Style(self, unit)
 	self.Power:SetStatusBarColor(0.95, 0.85, 0)
 	self.Power:SetOrientation('HORIZONTAL')
 	self.Power.colorDisconnected = true
-	if unit == "player" then		
+	if unit == 'player' then		
 		self.cbar = self:CreateTexture(nil, 'ARTWORK', nil, 0)
 		self.cbar:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\power_cover')
 		self.cbar:SetSize(128,64)
 		self.cbar:SetPoint('BOTTOM',self,'BOTTOM',0,91)
 		self.Power:SetSize(125, 64)
-		self.Power:SetPoint("CENTER",self.cbar)
-	elseif unit == "pet" then
+		self.Power:SetPoint('CENTER',self.cbar)
+	elseif unit == 'pet' then
 		self.Power:SetSize(80, 6)
 		self.Power:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
-		self.Power:SetPoint("TOP", self.Health, "BOTTOM", 0, -3)
+		self.Power:SetPoint('TOP', self.Health, 'BOTTOM', 0, -3)
 		self.petpc = self:CreateTexture(nil, 'BACKGROUND', nil, 0)
 		self.petpc:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_cover')
 		self.petpc:SetSize(80, 6)
 		self.petpc:SetAllPoints(self.Power)
 		--self.Power.colorPower = true
-	elseif unit == "target" then
+	elseif unit == 'target' then
 		self.Power:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
 		self.Power:SetStatusBarColor(0.95, 0.85, 0)
 		self.Power:SetSize(252, 4)
@@ -157,17 +157,17 @@ local function Gvv_Style(self, unit)
 	self.Power.colorDisconnected = true
 	self.Power.frequentUpdates = true
 	
-	if unit == "player" then
+	if unit == 'player' then
 		self.Power.value = ns.CreateFontString(self, 12, 'CENTER')
-		self.Power.value:SetPoint("CENTER",self.cbar,'CENTER', 0, -10)
+		self.Power.value:SetPoint('CENTER',self.cbar,'CENTER', 0, -10)
 		self.Power.value:SetTextColor(1.0, 1.0, 1.0)
 	elseif unit == 'target' then
 		self.Power.value = ns.CreateFontString(self, 10, 'RIGHT')
-		self.Power.value:SetPoint("RIGHT",self.Power,'RIGHT', -2, 0)
+		self.Power.value:SetPoint('RIGHT',self.Power,'RIGHT', -2, 0)
 		self.Power.value:SetTextColor(1.0, 1.0, 1.0)
-	elseif unit == "pet" then
+	elseif unit == 'pet' then
 		self.Power.value = ns.CreateFontString(self, 10, 'LEFT')
-		self.Power.value:SetPoint("LEFT", self.Power, "RIGHT", 2, 0)
+		self.Power.value:SetPoint('LEFT', self.Power, 'RIGHT', 2, 0)
 	end
 	
 	-- Name Text --
@@ -242,7 +242,7 @@ local function Gvv_Style(self, unit)
 	end
 	
 	-- Experience bar --
-	local rw, rh = string.match((({GetScreenResolutions()})[GetCurrentResolution()] or ""), "(%d+).-(%d+)")
+	local rw, rh = string.match((({GetScreenResolutions()})[GetCurrentResolution()] or ''), '(%d+).-(%d+)')
 	if unit == 'player' then
 		-- Position and size
 		local Experience = CreateFrame('StatusBar', nil, self)
@@ -252,56 +252,78 @@ local function Gvv_Style(self, unit)
 		Experience:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 15, 0)
 		Experience:SetHeight(14)
 		Experience:SetWidth(rw - 90)
+		Experience:SetFrameLevel(1)
 		
 		Experience:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
 		Experience:SetStatusBarColor(211/255, 151/255, 0)
 		
-		Experience.tborder = Experience:CreateTexture(nil,'OVERLAY', nil, 0)
-		Experience.tborder:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_border')
-		Experience.tborder:SetSize(rw - 90,16)
-		Experience.tborder:SetPoint('TOP', Experience, 'TOP', 0, 0)
-		Experience.tborder:SetHorizTile(true)
-		
-		Experience.bborder = Experience:CreateTexture(nil,'OVERLAY',nil, 0)
-		Experience.bborder:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_border')
-		Experience.bborder:SetSize(rw - 90,16)
-		Experience.bborder:SetPoint('BOTTOM', Experience, 'BOTTOM', 0, 0)
-		Experience.bborder:SetTexCoord(0,1,1,0)
-		Experience.bborder:SetHorizTile(true)
+		-- Always show borders
+		local tborder = self:CreateTexture(nil,'OVERLAY', nil, 0)
+		tborder:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_border')
+		tborder:SetSize(rw - 90,16)
+		tborder:SetPoint('TOP', Experience, 'TOP', 0, 0)
+		tborder:SetHorizTile(true)	
+		tborder = self:CreateTexture(nil,'OVERLAY',nil, 0)
+		tborder:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_border')
+		tborder:SetSize(rw - 90,16)
+		tborder:SetPoint('BOTTOM', Experience, 'BOTTOM', 0, 0)
+		tborder:SetTexCoord(0,1,1,0)
+		tborder:SetHorizTile(true)
 		
 		for i= 1, 11 do
-		local t = Experience:CreateTexture(nil, 'OVERLAY', nil, -1)
+		local t = self:CreateTexture(nil, 'OVERLAY', nil, -1)
 		t:SetSize(3, 13)
 		t:SetPoint('CENTER', Experience, 'LEFT', (rw - 90) * ( i - 1 ) / 10, 0)
 		t:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_dark')
 		end
-		
-		-- Position and size the Rested background-bar
+
 		local Rested = CreateFrame('StatusBar', nil, Experience)
 		Rested:SetAllPoints(Experience)
 		Rested:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
 		Rested:SetStatusBarColor(228/255, 192/255, 102/255)
 		
-		-- Text display
 		local Value = Experience:CreateFontString(nil, 'HIGHLIGHT')
 		Value:SetPoint('CENTER', Experience, 'CENTER' , -15, 0)
 		Value:SetFontObject(GameFontHighlight)
 		self:Tag(Value, '[curxp] / [maxxp] [Gvv:currested]')
-
-		-- Add a background
-		local bg = Rested:CreateTexture(nil, 'BACKGROUND')
+		
+		local backgroundframe = CreateFrame('Frame')
+		local bg = backgroundframe:CreateTexture(nil, 'BACKGROUND')
 		bg:SetAllPoints(Experience)
 		bg:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_back')
 		bg:SetHorizTile(true)
 		
-		-- Register it with oUF
 		self.Experience = Experience
 		self.Experience.Rested = Rested
 	end
 	
+	-- Reputation bar --
+	if unit == 'player' then
+		local Reputation = CreateFrame('StatusBar', nil, self)
+		Reputation:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 15, 14)
+		Reputation:SetFrameLevel(2)
+		Reputation:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')		
+		
+		local maxLevel
+		if IsTrialAccount() then
+			maxLevel = select(1, GetRestrictedAccountData())
+		else
+			maxLevel = GetMaxPlayerLevel()
+		end
+		if UnitLevel(unit) < maxLevel then
+			Reputation:SetHeight(5)
+		else
+			Reputation:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 15, 0)
+			Reputation:SetHeight(14)
+		end
+		Reputation:SetWidth(rw - 90)
+		Reputation.colorStanding = true
+		self.Reputation = Reputation
+	end
+	
 	-- Icons --
 	if unit == 'player' then
-		local Leader = self:CreateTexture(nil, "OVERLAY")
+		local Leader = self:CreateTexture(nil, 'OVERLAY')
 		Leader:SetSize(16, 16)
 		Leader:SetPoint('BOTTOM', self.Power, 'TOP' , 0, 3)
 		self.Leader = Leader
@@ -311,14 +333,14 @@ local function Gvv_Style(self, unit)
 		MasterLooter:SetPoint('BOTTOM', self.Power, 'TOP' , 18, 3)
 		self.MasterLooter = MasterLooter
 		
-		local LFDRole = self:CreateTexture(nil, "OVERLAY")
+		local LFDRole = self:CreateTexture(nil, 'OVERLAY')
 		LFDRole:SetSize(16, 16)
 		LFDRole:SetPoint('BOTTOM', self.Power, 'TOP' , -18, 3)
 		self.LFDRole = LFDRole
 	elseif unit == 'target' then
 		local PhaseIcon = self:CreateTexture(nil, 'OVERLAY')
 		PhaseIcon:SetSize(16, 16)
-		PhaseIcon:SetPoint('BOTTOMLEFT', self.Name, 'TOPLEFT', 0, 3)
+		PhaseIcon:SetPoint('BOTTOMRIGHT', self.Level, 'TOPRIGHT', 0, 0)
 		self.PhaseIcon = PhaseIcon
 	end
 	
@@ -405,7 +427,7 @@ local function Gvv_Style(self, unit)
 			self.EclipseBar = EclipseBar
 			
 			-- USELESS MANA BAR --
-			local DruidMana = CreateFrame("StatusBar", nil, self.ap)
+			local DruidMana = CreateFrame('StatusBar', nil, self.ap)
 			DruidMana:SetSize(180, 20)
 			DruidMana:SetPoint('LEFT')
 			DruidMana:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
@@ -423,10 +445,10 @@ local function Gvv_Style(self, unit)
 				Mushroom:SetSize(20, 20)
 				Mushroom:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 12)
 
-				local Icon = Mushroom:CreateTexture(nil, "OVERLAY")
+				local Icon = Mushroom:CreateTexture(nil, 'OVERLAY')
 				Icon:SetAllPoints()
 
-				local Cooldown = CreateFrame("Cooldown", nil, Mushroom)
+				local Cooldown = CreateFrame('Cooldown', nil, Mushroom)
 				Cooldown:SetAllPoints()
 
 				Mushroom.Icon = Icon
@@ -451,7 +473,66 @@ local function Gvv_Style(self, unit)
 	
 	-- C-C-COMBO BAR! May be changed in WoD?--
 	if unit == 'target' then
+		local CPoints = {}
+		for index = 1, MAX_COMBO_POINTS do
+			local CPoint = self:CreateTexture(nil, 'BACKGROUND')
+
+			CPoint:SetSize(12, 16)
+			CPoint:SetPoint('BOTTOMLEFT', self.Name, 'TOPLEFT', (index - 1) * 17, 0)
+
+			CPoints[index] = CPoint
+		end
+		self.CPoints = CPoints
+	end
+	
+	-- Castbar. Maybe Quartz is better?--
+	if unit == 'player' or unit == 'target' then
+		local Castbar = CreateFrame('StatusBar', nil, self)
 		
+		if unit == 'player' then
+			Castbar:SetSize(220, 20)
+			Castbar:SetPoint('BOTTOM', self, 'TOP', 0, 100)
+		elseif unit == 'target' then
+			Castbar:SetSize(256, 10)
+			Castbar:SetPoint('TOP', self.tcover, 'BOTTOM', 0, -35)
+		end
+
+		local Background = Castbar:CreateTexture(nil, 'BACKGROUND')
+		Background:SetAllPoints(Castbar)
+		Background:SetTexture(1, 1, 1, .5)
+
+		local Spark = Castbar:CreateTexture(nil, 'OVERLAY')
+		Spark:SetSize(20, 20)
+		Spark:SetBlendMode('ADD')
+
+		local Time = Castbar:CreateFontString(nil, 'OVERLAY', 'GameFontNormalSmall')
+		Time:SetPoint('RIGHT', Castbar)
+
+		local Icon = Castbar:CreateTexture(nil, 'OVERLAY')
+		if unit == 'player' then
+			Icon:SetSize(20, 20)
+		elseif unit == 'target' then
+			Icon:SetSize(10, 10)
+		end
+		Icon:SetPoint('TOPLEFT', Castbar, 'TOPLEFT')
+		
+		local Text = Castbar:CreateFontString(nil, 'OVERLAY', 'GameFontNormalSmall')
+		Text:SetPoint('LEFT', Icon, 'RIGHT')
+
+		local Shield = Castbar:CreateTexture(nil, 'OVERLAY')
+		Shield:SetSize(10, 10)
+		
+		Shield:SetPoint('CENTER', Castbar)
+
+		local SafeZone = Castbar:CreateTexture(nil, 'OVERLAY')
+
+		self.Castbar = Castbar
+		self.Castbar.bg = Background
+		self.Castbar.Spark = Spark
+		self.Castbar.Time = Time
+		self.Castbar.Text = Text
+		self.Castbar.Icon = Icon
+		self.Castbar.SafeZone = SafeZone
 	end
 	
 	return self

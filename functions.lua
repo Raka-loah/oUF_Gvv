@@ -115,7 +115,7 @@ end
 
 function ns.CreateAura(self, unit)
 	local frame = CreateFrame("Frame", nil, self)
-	frame:SetPoint("TOPLEFT", self, "TOPLEFT", 0, -85)
+	frame:SetPoint("TOPLEFT", self, "TOPLEFT", 0, -100)
 	frame:SetWidth(20 * 14 + 4 * 13)
 	frame:SetHeight(20 * 3 + 4 * 2)
 
@@ -279,20 +279,24 @@ oUF.Tags.Events['Gvv:classification'] = 'UNIT_CLASSIFICATION_CHANGED'
 
 oUF.Tags.Methods['Gvv:namecolor'] = function(u)
 	local reaction = UnitReaction('player', u)
-	if(reaction) then
-		if(UnitIsDead(u) or UnitIsGhost(u)) then
-			return '|cFFDCDCDC'
-		elseif(not UnitIsConnected(u)) then
-			return '|cFFBABABA'
-		elseif(reaction == 3) then
-			return '|cFFFFB155'
-		elseif(reaction == 4) then
-			return '|cFFFFF000'
-		elseif(reaction >= 5) then
-			return '|cFF14D900'
+	if (UnitIsTapped(u) and (not UnitIsTappedByPlayer(u))) then
+		return '|cFFDCDCDC'
+	else
+		if(reaction) then
+			if(UnitIsDead(u) or UnitIsGhost(u)) then
+				return '|cFFDCDCDC'
+			elseif(not UnitIsConnected(u)) then
+				return '|cFFBABABA'
+			elseif(reaction == 3) then
+				return '|cFFFFB155'
+			elseif(reaction == 4) then
+				return '|cFFFFF000'
+			elseif(reaction >= 5) then
+				return '|cFF14D900'
+			end
 		end
 	end
-		return '|cFFCC4D4D'
+	return '|cFFCC4D4D'
 end
 oUF.Tags.Events['Gvv:namecolor'] = 'UNIT_HEALTH UNIT_CONNECTION'
 
@@ -305,10 +309,9 @@ oUF.Tags.Events['Gvv:leader'] = 'PARTY_LEADER_CHANGED'
 
 oUF.Tags.Methods['Gvv:raidrole'] = function(unit)
 	if(UnitInRaid(unit)) then
-		local inVehicle = UnitHasVehicleUI(unit)
-		if(GetPartyAssignment('MAINTANK', unit) and not inVehicle) then
+		if(GetPartyAssignment('MAINTANK', unit)) then
 			return '·主坦克'
-		elseif(GetPartyAssignment('MAINASSIST', unit) and not inVehicle) then
+		elseif(GetPartyAssignment('MAINASSIST', unit)) then
 			return '·MA'
 		end
 	end
@@ -351,7 +354,7 @@ oUF.Tags.Events['Gvv:theone'] = 'UNIT_NAME_UPDATE'
 
 oUF.Tags.Methods['Gvv:currested'] = function()
 	local currested = GetXPExhaustion()
-	if currested > 0 then
+	if (currested) then
 		return '(+' .. currested .. ')'
 	end
 end
