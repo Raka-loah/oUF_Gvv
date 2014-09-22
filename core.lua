@@ -540,16 +540,23 @@ local function Gvv_Style(self, unit)
 			Castbar:SetSize(220, 20)
 			Castbar:SetPoint('BOTTOM', self, 'TOP', 0, 100)
 		elseif unit == 'target' then
-			Castbar:SetSize(256, 10)
-			Castbar:SetPoint('TOP', self.tcover, 'BOTTOM', 0, -35)
+			Castbar:SetSize(235, 15)
+			Castbar:SetPoint('TOP', self.tcover, 'BOTTOM', 10, -35)
 		end
+		Castbar:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\castbar_filling')
 
 		local Background = Castbar:CreateTexture(nil, 'BACKGROUND')
+		Background:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\castbar_back')
 		Background:SetAllPoints(Castbar)
-		Background:SetTexture(1, 1, 1, .5)
 
 		local Spark = Castbar:CreateTexture(nil, 'OVERLAY')
-		Spark:SetSize(20, 20)
+		Spark:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\castbar_spark')
+		if unit == 'player' then
+			Spark:SetSize(20, 20)
+		elseif unit == 'target' then
+			Spark:SetSize(15, 15)
+		end
+		
 		Spark:SetBlendMode('ADD')
 
 		local Time = Castbar:CreateFontString(nil, 'OVERLAY', 'GameFontNormalSmall')
@@ -559,19 +566,20 @@ local function Gvv_Style(self, unit)
 		if unit == 'player' then
 			Icon:SetSize(20, 20)
 		elseif unit == 'target' then
-			Icon:SetSize(10, 10)
+			Icon:SetSize(15, 15)
 		end
-		Icon:SetPoint('TOPLEFT', Castbar, 'TOPLEFT')
+		Icon:SetPoint('TOPRIGHT', Castbar, 'TOPLEFT')
+		Icon:SetAlpha(0.75)
 		
 		local Text = Castbar:CreateFontString(nil, 'OVERLAY', 'GameFontNormalSmall')
 		Text:SetPoint('LEFT', Icon, 'RIGHT')
 
 		local Shield = Castbar:CreateTexture(nil, 'OVERLAY')
 		Shield:SetSize(10, 10)
-		
 		Shield:SetPoint('CENTER', Castbar)
 
 		local SafeZone = Castbar:CreateTexture(nil, 'OVERLAY')
+		SafeZone:SetTexture(0.8,0.2,0.2,0.5)
 
 		self.Castbar = Castbar
 		self.Castbar.bg = Background

@@ -120,7 +120,7 @@ end
 function ns.CreateAura(self, unit)
 	local frame = CreateFrame("Frame", nil, self)
 	if unit == 'target' then
-		frame:SetPoint("TOPLEFT", self, "TOPLEFT", 0, -100)
+		frame:SetPoint("TOPLEFT", self, "TOPLEFT", 0, -103)
 		frame:SetWidth(20 * 14 + 4 * 13)
 		frame:SetHeight(20 * 3 + 4 * 2)
 		frame["growth-x"] = "RIGHT"
@@ -194,11 +194,11 @@ function ns.UpdateAuraIcon(self, unit, icon, index, offset)
 	if not self.onlyShowPlayer then
 		if (icon.owner == "player" or icon.owner == "vehicle" or icon.owner == "pet") and icon.isDebuff
 			or (not icon.isDebuff and (stealable or icon.owner == "player" or icon.owner == "vehicle" or icon.owner == "pet")) then
-			texture:SetDesaturated(false)
+			--texture:SetDesaturated(false)
 			icon:SetAlpha(1)
 		else
-			texture:SetDesaturated(true)
-			icon:SetAlpha(0.75)
+			--texture:SetDesaturated(true)
+			icon:SetAlpha(0.5)
 		end
 	end
 
