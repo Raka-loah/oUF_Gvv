@@ -1,13 +1,15 @@
 ## Interface: 50400
-## Title: oUF: Gvv
+## Title: oUF:Gvv
 ## Author: Raka
-## Version: 0.1a
+## Version: 0.1
 ## X-eMail: i@lotc.cc
 ## Dependencies: oUF
 ## Notes: oUF layout for GvvUI
 
 core.lua
 functions.lua
+config.lua
+background.lua
 
 plugins\oUF_Experience.lua
 plugins\oUF_Reputation.lua

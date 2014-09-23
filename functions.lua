@@ -2,6 +2,10 @@ local _, ns = ...
 
 function ns.PostUpdateHealth(Health, unit, cur, max)
 	local self = Health:GetParent()
+	
+	if self.Portrait then
+		UpdatePortraitColor(self, unit)
+	end
 
 	if Health.lowHP then
 		local perc = floor(cur / max * 100)
@@ -262,6 +266,18 @@ function ns.TimeFormat(s)
 	return format("%.1f", s)
 end
 
+function UpdatePortraitColor(self, unit)
+	if (not UnitIsConnected(unit)) then
+		self.Portrait:SetVertexColor(0.5, 0.5, 0.5, 0.7)
+	elseif (UnitIsDead(unit)) then
+		self.Portrait:SetVertexColor(0.35, 0.35, 0.35, 0.7)
+	elseif (UnitIsGhost(unit)) then
+		self.Portrait:SetVertexColor(0.3, 0.3, 0.9, 0.7)
+	else
+		self.Portrait:SetVertexColor(1, 1, 1, 1)
+	end
+end
+
 -- TAGS. Mostly copied from official oUF tags.--
 oUF.Tags.Methods['Gvv:nextlevel'] = function(unit)
 	local l = UnitLevel(unit)
@@ -320,13 +336,6 @@ oUF.Tags.Methods['Gvv:namecolor'] = function(u)
 end
 oUF.Tags.Events['Gvv:namecolor'] = 'UNIT_HEALTH UNIT_CONNECTION'
 
-oUF.Tags.Methods['Gvv:leader'] = function(u)
-	if(UnitIsGroupLeader(u)) then
-		return '·统领'
-	end
-end
-oUF.Tags.Events['Gvv:leader'] = 'PARTY_LEADER_CHANGED'
-
 oUF.Tags.Methods['Gvv:raidrole'] = function(unit)
 	if(UnitInRaid(unit)) then
 		if(GetPartyAssignment('MAINTANK', unit)) then
@@ -371,6 +380,13 @@ oUF.Tags.Methods['Gvv:theone'] = function(u)
 	end
 end
 oUF.Tags.Events['Gvv:theone'] = 'UNIT_NAME_UPDATE'
+
+oUF.Tags.Methods['Gvv:masterlooter'] = function(u)
+	if (IsMasterLooter(u)) then
+		return '·拾取'
+	end
+end
+oUF.Tags.Events['Gvv:masterlooter'] = 'PARTY_LOOT_METHOD_CHANGED GROUP_ROSTER_UPDATE'
 
 oUF.Tags.Methods['Gvv:currested'] = function()
 	local currested = GetXPExhaustion()

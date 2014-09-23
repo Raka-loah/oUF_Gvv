@@ -184,14 +184,14 @@ local function Gvv_Style(self, unit)
 	-- Name Text --
 	if (unit == 'target') then
 		self.Name = self:CreateFontString()
-		self.Name:SetFont('Fonts\\ARHei.ttf', 16, 'THINOUTLINE')
+		self.Name:SetFont(ns.C.normalFont, 16, 'THINOUTLINE')
 		self.Name:SetShadowOffset(0, 0)
 		self.Name:SetTextColor(0.8, 0.3, 0.3)
 		self.Name:SetPoint('TOPLEFT',self,'TOPLEFT',0,-12)
 		self:Tag(self.Name, '[Gvv:namecolor][Gvv:classification][name]|r')
 	elseif unit == 'focus' or unit == 'targettarget' or unit == 'focustarget' then
 		self.Name = self:CreateFontString()
-		self.Name:SetFont('Fonts\\ARHei.ttf', 12, 'THINOUTLINE')
+		self.Name:SetFont(ns.C.normalFont, 12, 'THINOUTLINE')
 		self.Name:SetJustifyH('LEFT')
 		self.Name:SetShadowOffset(0, 0)
 		self.Name:SetTextColor(0.8, 0.3, 0.3)
@@ -199,7 +199,7 @@ local function Gvv_Style(self, unit)
 		self:Tag(self.Name, '[Gvv:namecolor][Gvv:classification][name]|r')
 	elseif unit == 'party' then
 		self.Name = self:CreateFontString()
-		self.Name:SetFont('Fonts\\ARHei.ttf', 14, 'THINOUTLINE')
+		self.Name:SetFont(ns.C.normalFont, 14, 'THINOUTLINE')
 		self.Name:SetJustifyH('LEFT')
 		self.Name:SetShadowOffset(0, 0)
 		self.Name:SetTextColor(0.8, 0.8, 0.8)
@@ -210,35 +210,35 @@ local function Gvv_Style(self, unit)
 	-- Level Text --
 	if (unit == 'target') then
 		self.Level = self:CreateFontString()
-		self.Level:SetFont('Fonts\\ARHei.ttf', 16, 'THINOUTLINE')
+		self.Level:SetFont(ns.C.normalFont, 16, 'THINOUTLINE')
 		self.Level:SetJustifyH('RIGHT')
 		self.Level:SetPoint('BOTTOMRIGHT', self.tcover, 'TOPRIGHT', 0, 2)
 		self:Tag(self.Level, '[level]')
 	elseif unit == 'focus' or unit == 'targettarget' or unit == 'focustarget' then
 		self.Level = self:CreateFontString()
-		self.Level:SetFont('Fonts\\ARHei.ttf', 14, 'THINOUTLINE')
+		self.Level:SetFont(ns.C.normalFont, 14, 'THINOUTLINE')
 		self.Level:SetJustifyH('RIGHT')
 		self.Level:SetPoint('BOTTOMRIGHT', self.tcover, 'TOPRIGHT', 0, 1)
 		self:Tag(self.Level, '[level]')		
 	elseif unit == 'player' then
 		self.Level = self:CreateFontString()
-		self.Level:SetFont('Fonts\\ARHei.ttf', 16, 'THINOUTLINE')
+		self.Level:SetFont(ns.C.normalFont, 16, 'THINOUTLINE')
 		self.Level:SetJustifyH('CENTER')
 		self.Level:SetPoint('BOTTOM', 'UIParent', 'BOTTOMLEFT', 30, 2)
 		self:Tag(self.Level, '[level]')	
 		self.Level = self:CreateFontString()
-		self.Level:SetFont('Fonts\\ARHei.ttf', 14, 'THINOUTLINE')
+		self.Level:SetFont(ns.C.normalFont, 14, 'THINOUTLINE')
 		self.Level:SetJustifyH('CENTER')
 		self.Level:SetPoint('BOTTOM', 'UIParent', 'BOTTOMRIGHT', -15, 2)
 		self:Tag(self.Level, '[Gvv:nextlevel]')	
 	elseif unit == 'party' then
 		self.Level = self:CreateFontString()
-		self.Level:SetFont('Fonts\\ARHei.ttf', 14, 'THINOUTLINE')
+		self.Level:SetFont(ns.C.normalFont, 14, 'THINOUTLINE')
 		self.Level:SetJustifyH('CENTER')
-		self.Level:SetPoint('LEFT', self, 'LEFT', 18, 0)
+		self.Level:SetPoint('CENTER', self, 'LEFT', 25, 0)
 		local t = self:CreateTexture(nil, 'BACKGROUND',nil,2)
 		t:SetTexture('Interface\\AddOns\\oUF_Gvv\\textures\\party_level_back')
-		t:SetPoint('BOTTOM', self.Level, 'BOTTOM', -2, -2)
+		t:SetPoint('BOTTOM', self.Level, 'BOTTOM', 0, -2)
 		self:Tag(self.Level, '[level]')
 	end
 		
@@ -271,10 +271,10 @@ local function Gvv_Style(self, unit)
 	-- Classification Texts --
 	if (unit == 'target') then
 		self.class = self:CreateFontString()
-		self.class:SetFont('Fonts\\ARHei.ttf', 14, 'THINOUTLINE')
+		self.class:SetFont(ns.C.normalFont, 14, 'THINOUTLINE')
 		self.class:SetPoint('TOP', self.Health, 'BOTTOM', 0, -15)
 		self.class:SetTextColor(0.6,0.6,0.6)
-		self:Tag(self.class,'[Gvv:theone][smartclass][Gvv:leader][Gvv:raidrole][Gvv:a][Gvv:lfdrole]')
+		self:Tag(self.class,'[Gvv:theone][smartclass][Gvv:raidrole][Gvv:masterlooter][Gvv:a][Gvv:lfdrole]')
 	end
 	
 	-- Experience bar --
@@ -357,35 +357,47 @@ local function Gvv_Style(self, unit)
 		self.Reputation = Reputation
 	end
 	
-	-- Icons --
+	-- Status Icons --
+	local Leader = self:CreateTexture(nil, 'OVERLAY')
+	Leader:SetSize(16, 16)
 	if unit == 'player' then
-		local Leader = self:CreateTexture(nil, 'OVERLAY')
-		Leader:SetSize(16, 16)
 		Leader:SetPoint('TOP', self.Power, 'TOP' , 0, 0)
-		self.Leader = Leader
+	elseif unit == 'target' then
+		Leader:SetPoint('BOTTOMLEFT', self.Name, 'TOPLEFT' , 2, 3)
+	elseif unit == 'focus' or unit == 'focustarget' or unit == 'targettarget' then
+		Leader:SetPoint('BOTTOMLEFT', self.Name, 'TOPLEFT' , 0, 1)
+	else
+		Leader:SetPoint('TOPLEFT', self, 'TOPLEFT', 20, 10)
+	end
+	self.Leader = Leader
 	
-		local MasterLooter = self:CreateTexture(nil, 'OVERLAY')
+	if unit == 'player' then
+	local MasterLooter = self:CreateTexture(nil, 'OVERLAY')
 		MasterLooter:SetSize(16, 16)
 		MasterLooter:SetPoint('TOP', self.Power, 'TOP' , 18, 0)
 		self.MasterLooter = MasterLooter
-		
-		local LFDRole = self:CreateTexture(nil, 'OVERLAY')
+	
+	local LFDRole = self:CreateTexture(nil, 'OVERLAY')
 		LFDRole:SetSize(16, 16)
 		LFDRole:SetPoint('TOP', self.Power, 'TOP' , -18, 0)
 		self.LFDRole = LFDRole
-	elseif unit == 'target' then
+	end
+	
+	if unit == 'target' then
 		local PhaseIcon = self:CreateTexture(nil, 'OVERLAY')
 		PhaseIcon:SetSize(16, 16)
 		PhaseIcon:SetPoint('BOTTOMRIGHT', self.Level, 'TOPRIGHT', 0, 0)
 		self.PhaseIcon = PhaseIcon
 	end
-
+	
 	local RaidIcon = self:CreateTexture(nil, 'OVERLAY')
 	RaidIcon:SetSize(16, 16)
 	if unit == 'target' then
 		RaidIcon:SetPoint('TOPRIGHT', self.Portrait, 'TOPRIGHT', 2, 2)
 	elseif unit == 'focus' or unit == 'focustarget' or unit == 'targettarget' then
 		RaidIcon:SetPoint('TOPLEFT', self.Portrait, 'TOPLEFT', -2, 2)
+	elseif unit == 'player' then
+		RaidIcon:SetPoint('BOTTOM', self, 'BOTTOM', 0, 10)
 	else
 		RaidIcon:SetPoint('TOPLEFT', self, 'TOPLEFT', 20, -2)
 	end
@@ -407,13 +419,14 @@ local function Gvv_Style(self, unit)
 				local Totem = CreateFrame('StatusBar', nil, self.ap)
 				Totem:EnableMouse(true)
 				Totem:SetSize(40, 20)
-				Totem:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 45, 0)
+				Totem:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 45, 2)
 				Totem.destroy = true
-				Totem:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
+				Totem:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
 				Totem:SetMinMaxValues(0, 1)
 				
 				Totem.bg = Totem:CreateTexture(nil, 'BACKGROUND')
-				Totem.bg:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
+				Totem.bg:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
+				Totem.bg:SetTexCoord((10+(40*index))/256,(50+(40*index))/256,0/32,30/32)
 				Totem.bg:SetAllPoints()
 				Totem.bg.multiplier = 0.3
 				
@@ -424,6 +437,7 @@ local function Gvv_Style(self, unit)
 			local ClassIcons = {}
 			for index = 1, 5 do
 				local Icon = self:CreateTexture(nil, 'BACKGROUND')
+				Icon:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\classicon')
 				Icon:SetSize(20, 20)
 				Icon:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 0)
 				ClassIcons[index] = Icon
@@ -435,7 +449,7 @@ local function Gvv_Style(self, unit)
 				local DemonicFuryBar = CreateFrame('StatusBar', nil, self)
 				DemonicFuryBar:SetPoint('LEFT', self.ap, 'LEFT', 0, 0)
 				DemonicFuryBar:SetSize(180, 20)
-				DemonicFuryBar:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
+				DemonicFuryBar:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
 				DemonicFuryBar:SetStatusBarColor(148/255, 130/255, 201/255)
 				
 				self.DemonicFury = DemonicFuryBar
@@ -445,7 +459,8 @@ local function Gvv_Style(self, unit)
 					local ember = CreateFrame('StatusBar', nil, self)
 					ember:SetSize(40, 20)
 					ember:SetPoint('LEFT', self.ap, 'LEFT', (i - 1) * 45, 0)
-					ember:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
+					ember:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
+					ember:SetStatusBarColor(1, 138/255, 0)
 					BurningEmbers[i] = ember
 				end
 				
@@ -455,19 +470,27 @@ local function Gvv_Style(self, unit)
 			-- BIG FAT CHICKEN BAR --
 			local EclipseBar = CreateFrame('Frame', nil, self)
 			EclipseBar:SetPoint('LEFT', self.ap, 'LEFT', 0, 0)
-			EclipseBar:SetSize(180, 20)
+			EclipseBar:SetSize(160, 20)
 
 			local LunarBar = CreateFrame('StatusBar', nil, EclipseBar)
 			LunarBar:SetPoint('LEFT')
-			LunarBar:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
-			LunarBar:SetStatusBarColor(0.1,0.2,0.8)
-			LunarBar:SetSize(180, 20)
+			LunarBar:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
+			LunarBar:SetStatusBarColor(0.3,0.3,0.6)
+			LunarBar:SetSize(160, 20)
+			LunarBar.moon = LunarBar:CreateTexture(nil, 'BACKGROUND')
+			LunarBar.moon:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\moonmoon')
+			LunarBar.moon:SetSize(20, 20)
+			LunarBar.moon:SetPoint('BOTTOMRIGHT', LunarBar, 'BOTTOMLEFT', 0, -2)
 
 			local SolarBar = CreateFrame('StatusBar', nil, EclipseBar)
 			SolarBar:SetPoint('LEFT', LunarBar:GetStatusBarTexture(), 'RIGHT')
-			SolarBar:SetSize(180, 20)
-			SolarBar:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
+			SolarBar:SetSize(160, 20)
+			SolarBar:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
 			SolarBar:SetStatusBarColor(0.8,0.6,0.1)
+			SolarBar.sun = SolarBar:CreateTexture(nil, 'BACKGROUND')
+			SolarBar.sun:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\sun')
+			SolarBar.sun:SetSize(20, 20)
+			SolarBar.sun:SetPoint('BOTTOMLEFT', LunarBar, 'BOTTOMRIGHT', 0, -2)
 			
 			EclipseBar.LunarBar = LunarBar
 			EclipseBar.SolarBar = SolarBar
@@ -475,13 +498,13 @@ local function Gvv_Style(self, unit)
 			
 			-- USELESS MANA BAR --
 			local DruidMana = CreateFrame('StatusBar', nil, self.ap)
-			DruidMana:SetSize(180, 20)
+			DruidMana:SetSize(160, 20)
 			DruidMana:SetPoint('LEFT')
-			DruidMana:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
-			DruidMana:SetStatusBarColor(0.1,0.3,0.9)
+			DruidMana:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
+			DruidMana:SetStatusBarColor(0.4,0.4,0.9)
 			local Background = DruidMana:CreateTexture(nil, 'BACKGROUND')
 			Background:SetAllPoints(DruidMana)
-			Background:SetTexture(1, 1, 1, .5)
+			Background:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\castbar_back')
 			self.DruidMana = DruidMana
 			self.DruidMana.bg = Background
 			
@@ -490,9 +513,11 @@ local function Gvv_Style(self, unit)
 			for index = 1, MAX_TOTEMS do
 				local Mushroom = CreateFrame('Button', nil, self.ap)
 				Mushroom:SetSize(20, 20)
-				Mushroom:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 12)
+				Mushroom:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 22)
 
 				local Icon = Mushroom:CreateTexture(nil, 'OVERLAY')
+				Icon:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\classicon')
+				Icon:SetVertexColor(1.0,1.0,0.5)
 				Icon:SetAllPoints()
 
 				local Cooldown = CreateFrame('Cooldown', nil, Mushroom)
@@ -510,7 +535,7 @@ local function Gvv_Style(self, unit)
 				local Rune = CreateFrame('StatusBar', nil, self.ap)
 				Rune:SetSize(20, 20)
 				Rune:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 0)
-
+				Rune:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\classicon')
 				Runes[index] = Rune
 			end
 			self.Runes = Runes
@@ -524,9 +549,11 @@ local function Gvv_Style(self, unit)
 		for index = 1, MAX_COMBO_POINTS do
 			local CPoint = self:CreateTexture(nil, 'BACKGROUND')
 
-			CPoint:SetSize(12, 16)
-			CPoint:SetPoint('BOTTOMLEFT', self.Name, 'TOPLEFT', (index - 1) * 17, 0)
-
+			CPoint:SetSize(16, 16)
+			CPoint:SetPoint('RIGHT', self.tcover, 'LEFT', (index - 1) * -17 -3, 0)
+			CPoint:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\combopoint')
+			CPoint:SetVertexColor(1,0.75,0.75)
+			
 			CPoints[index] = CPoint
 		end
 		self.CPoints = CPoints
@@ -590,13 +617,6 @@ local function Gvv_Style(self, unit)
 		self.Castbar.SafeZone = SafeZone
 	end
 	
-	if (unit == 'pet' or unit == 'party') then
-		self.Range = {
-			insideAlpha = 1,
-			outsideAlpha = 0.5,
-		}
-	end
-	
 	return self
 end
 
@@ -607,29 +627,35 @@ oUF:Factory(function(self)
 	local player = self:Spawn('player', 'oUF_Gvv_Player')
 	player:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 0, 20)
 	
-	local target = self:Spawn('target', 'oUF_Gvv_Target')
-	target:SetPoint('TOP', 'UIParent', 'TOP', 0, -70)
+	if ns.C.showTarget then
+		local target = self:Spawn('target', 'oUF_Gvv_Target')
+		target:SetPoint('TOP', 'UIParent', 'TOP', 0, -70)
+		
+		local targettarget = self:Spawn('targettarget', 'oUF_Gvv_TargetTarget')
+		targettarget:SetPoint('TOP', 'UIParent', 'TOP', 250, -80)
+	end
 	
 	local pet = self:Spawn('pet', 'oUF_Gvv_Pet')
 	pet:SetPoint('RIGHT', player, 'LEFT', 0, 25)
 	
-	local focus = self:Spawn('focus', 'oUF_Gvv_Focus')
-	focus:SetPoint('TOP', 'UIParent', 'TOP', 250, -140)
+	if ns.C.showFocus then
+		local focus = self:Spawn('focus', 'oUF_Gvv_Focus')
+		focus:SetPoint('TOP', 'UIParent', 'TOP', 250, -140)
+		
+		local focustarget = self:Spawn('focustarget', 'oUF_Gvv_FocusTarget')
+		focustarget:SetPoint('TOP', focus, 'BOTTOM', 20, -10)
+	end
 	
-	local targettarget = self:Spawn('targettarget', 'oUF_Gvv_TargetTarget')
-	targettarget:SetPoint('TOP', 'UIParent', 'TOP', 250, -80)
-	
-	local focustarget = self:Spawn('focustarget', 'oUF_Gvv_FocusTarget')
-	focustarget:SetPoint('TOP', focus, 'BOTTOM', 20, -10)
-	
-	local party = oUF:SpawnHeader('oUF_Gvv_Party', nil, 'party',
-		'oUF-initialConfigFunction', [[
-			self:SetWidth(100)
-			self:SetHeight(65)
-		]],
-		'showParty', true,
-		'yOffset', -10)
-	party:SetPoint('TOPLEFT', 'UIParent','TOPLEFT', 0, -115)
+	if ns.C.showParty then
+		local party = oUF:SpawnHeader('oUF_Gvv_Party', nil, 'party',
+			'oUF-initialConfigFunction', [[
+				self:SetWidth(100)
+				self:SetHeight(65)
+			]],
+			'showParty', true,
+			'yOffset', -30)
+		party:SetPoint('TOPLEFT', 'UIParent','TOPLEFT', 0, -115)
+	end
 	
 	-- Hide blizz boss and aura frames --
 	for i = 1, 4 do
