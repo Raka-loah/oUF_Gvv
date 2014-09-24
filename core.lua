@@ -278,7 +278,7 @@ local function Gvv_Style(self, unit)
 	end
 	
 	-- Experience bar --
-	local rw, rh = string.match((({GetScreenResolutions()})[GetCurrentResolution()] or ''), '(%d+).-(%d+)')
+	local rw = GetScreenWidth()
 	if unit == 'player' then
 		-- Position and size
 		local Experience = CreateFrame('StatusBar', nil, self)

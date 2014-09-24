@@ -6,7 +6,8 @@ By Raka from LotC.cc
 local _, ns = ...
 
 --Resolution detect
-local rw, rh = string.match((({GetScreenResolutions()})[GetCurrentResolution()] or ""), "(%d+).-(%d+)")
+local rw = GetScreenWidth()
+local rh = GetScreenHeight()
 
 --Borders--
 if ns.C.drawBorders then
@@ -71,4 +72,3 @@ function eventHandler(self, event)
 	end
 end
 gvvci:SetScript("OnEvent", eventHandler);
-
