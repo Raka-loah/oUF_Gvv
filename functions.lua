@@ -2,14 +2,23 @@ local _, ns = ...
 
 function ns.PostUpdateHealth(Health, unit, cur, max)
 	local self = Health:GetParent()
+	local perc = floor(cur / max * 100)
 	
 	if self.Portrait then
 		UpdatePortraitColor(self, unit)
 	end
-
+	
+	-- TODO: use the new alpha animation in wod--
+	if self.bse then
+		if perc <= 50 and cur > 1 then
+			self.bse:SetAlpha(1 - perc / 100)
+		else
+			self.bse:SetAlpha(0)
+		end
+	end
+	
 	if Health.lowHP then
-		local perc = floor(cur / max * 100)
-		if perc <= 35 and cur > 1 then
+		if perc <= 50 and cur > 1 then
 			Health.lowHP.animation:Play()
 		else
 			Health.lowHP.animation:Stop()
@@ -50,7 +59,7 @@ function ns.PostUpdateHealth(Health, unit, cur, max)
 		end
 	elseif unit == 'pet' then
 		Health.Value:SetText(format('%s', ns.FormatValue(cur)))
-	elseif unit == 'player' then
+	elseif unit == 'player' or unit == 'vehicle' then
 		Health.Value:SetText(format('%s', BreakUpLargeNumbers(cur)))
 	else
 		Health.Value:SetText(nil)
@@ -131,18 +140,19 @@ function ns.CreateAura(self, unit)
 		frame["growth-y"] = "DOWN"
 		frame["initialAnchor"] = "TOPLEFT"
 		frame["size"] = 20
-	elseif unit == 'player' then
+		--well, not using this for now
+	--[[elseif unit == 'player' then
 		frame:SetPoint("LEFT", self, "RIGHT", 15, 75)
 		frame:SetWidth(20 * 9 + 4 * 8)
 		frame:SetHeight(20 * 3 + 4 * 2)
 		frame["growth-x"] = "RIGHT"
 		frame["growth-y"] = "UP"
 		frame["initialAnchor"] = "BOTTOMLEFT"
-		frame["size"] = 20
+		frame["size"] = 20]]
 	elseif unit == 'party' then
 		frame:SetPoint("TOPLEFT", self.Portrait, "TOPRIGHT", 5, 0)
-		frame:SetWidth(20 * 8 + 4 * 7)
-		frame:SetHeight(20 * 4 + 4 * 2)
+		frame:SetWidth(20 * 5 + 4 * 4)
+		frame:SetHeight(20 * 4 + 4 * 3)
 		frame["growth-x"] = "RIGHT"
 		frame["growth-y"] = "DOWN"
 		frame["initialAnchor"] = "TOPLEFT"

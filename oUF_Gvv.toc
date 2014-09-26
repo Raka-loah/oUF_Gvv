@@ -1,7 +1,7 @@
 ## Interface: 50400
 ## Title: oUF:Gvv
 ## Author: Raka
-## Version: 0.1
+## Version: 0.2
 ## X-eMail: i@lotc.cc
 ## Dependencies: oUF
 ## Notes: oUF layout for GvvUI
@@ -10,6 +10,7 @@ core.lua
 functions.lua
 config.lua
 background.lua
+playerbuff.lua
 
 plugins\oUF_Experience.lua
 plugins\oUF_Reputation.lua

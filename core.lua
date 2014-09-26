@@ -220,7 +220,7 @@ local function Gvv_Style(self, unit)
 		self.Level:SetJustifyH('RIGHT')
 		self.Level:SetPoint('BOTTOMRIGHT', self.tcover, 'TOPRIGHT', 0, 1)
 		self:Tag(self.Level, '[level]')		
-	elseif unit == 'player' then
+	elseif unit == 'player' and ns.C.showExperience then
 		self.Level = self:CreateFontString()
 		self.Level:SetFont(ns.C.normalFont, 16, 'THINOUTLINE')
 		self.Level:SetJustifyH('CENTER')
@@ -264,7 +264,7 @@ local function Gvv_Style(self, unit)
 	end
 	
 	-- Auras --
-	if (unit == 'target' or unit == 'player' or unit == 'party') then
+	if (unit == 'target' or unit == 'party') then
 		self.Auras = ns.CreateAura(self, unit)
 	end
 	
@@ -279,82 +279,84 @@ local function Gvv_Style(self, unit)
 	
 	-- Experience bar --
 	local rw = GetScreenWidth()
-	if unit == 'player' then
-		-- Position and size
-		local Experience = CreateFrame('StatusBar', nil, self)
-		
-		Experience:EnableMouse(true)
-		
-		Experience:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 15, 0)
-		Experience:SetHeight(14)
-		Experience:SetWidth(rw - 90)
-		Experience:SetFrameLevel(1)
-		
-		Experience:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
-		Experience:SetStatusBarColor(211/255, 151/255, 0)
-		
-		-- Always show borders
-		local tborder = self:CreateTexture(nil,'OVERLAY', nil, 0)
-		tborder:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_border')
-		tborder:SetSize(rw - 90,16)
-		tborder:SetPoint('TOP', Experience, 'TOP', 0, 0)
-		tborder:SetHorizTile(true)	
-		tborder = self:CreateTexture(nil,'OVERLAY',nil, 0)
-		tborder:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_border')
-		tborder:SetSize(rw - 90,16)
-		tborder:SetPoint('BOTTOM', Experience, 'BOTTOM', 0, 0)
-		tborder:SetTexCoord(0,1,1,0)
-		tborder:SetHorizTile(true)
-		
-		for i= 1, 11 do
-		local t = self:CreateTexture(nil, 'OVERLAY', nil, -1)
-		t:SetSize(3, 13)
-		t:SetPoint('CENTER', Experience, 'LEFT', (rw - 90) * ( i - 1 ) / 10, 0)
-		t:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_dark')
-		end
+	if ns.C.showExperience then
+		if unit == 'player' then
+			-- Position and size
+			local Experience = CreateFrame('StatusBar', nil, self)
+			
+			Experience:EnableMouse(true)
+			
+			Experience:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 15, 0)
+			Experience:SetHeight(14)
+			Experience:SetWidth(rw - 90)
+			Experience:SetFrameLevel(1)
+			
+			Experience:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
+			Experience:SetStatusBarColor(211/255, 151/255, 0)
+			
+			-- Always show borders
+			local tborder = self:CreateTexture(nil,'OVERLAY', nil, 0)
+			tborder:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_border')
+			tborder:SetSize(rw - 90,16)
+			tborder:SetPoint('TOP', Experience, 'TOP', 0, 0)
+			tborder:SetHorizTile(true)	
+			tborder = self:CreateTexture(nil,'OVERLAY',nil, 0)
+			tborder:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_border')
+			tborder:SetSize(rw - 90,16)
+			tborder:SetPoint('BOTTOM', Experience, 'BOTTOM', 0, 0)
+			tborder:SetTexCoord(0,1,1,0)
+			tborder:SetHorizTile(true)
+			
+			for i= 1, 11 do
+			local t = self:CreateTexture(nil, 'OVERLAY', nil, -1)
+			t:SetSize(3, 13)
+			t:SetPoint('CENTER', Experience, 'LEFT', (rw - 90) * ( i - 1 ) / 10, 0)
+			t:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_dark')
+			end
 
-		local Rested = CreateFrame('StatusBar', nil, Experience)
-		Rested:SetAllPoints(Experience)
-		Rested:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
-		Rested:SetStatusBarColor(228/255, 192/255, 102/255)
-		
-		local Value = Experience:CreateFontString(nil, 'HIGHLIGHT')
-		Value:SetPoint('CENTER', Experience, 'CENTER' , -15, 0)
-		Value:SetFontObject(GameFontHighlight)
-		self:Tag(Value, '[curxp] / [maxxp] [Gvv:currested]')
-		
-		local backgroundframe = CreateFrame('Frame')
-		local bg = backgroundframe:CreateTexture(nil, 'BACKGROUND')
-		bg:SetAllPoints(Experience)
-		bg:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_back')
-		bg:SetHorizTile(true)
-		
-		self.Experience = Experience
-		self.Experience.Rested = Rested
-	end
-	
-	-- Reputation bar --
-	if unit == 'player' then
-		local Reputation = CreateFrame('StatusBar', nil, self)
-		Reputation:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 15, 14)
-		Reputation:SetFrameLevel(2)
-		Reputation:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')		
-		
-		local maxLevel
-		if IsTrialAccount() then
-			maxLevel = select(1, GetRestrictedAccountData())
-		else
-			maxLevel = GetMaxPlayerLevel()
+			local Rested = CreateFrame('StatusBar', nil, Experience)
+			Rested:SetAllPoints(Experience)
+			Rested:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
+			Rested:SetStatusBarColor(228/255, 192/255, 102/255)
+			
+			local Value = Experience:CreateFontString(nil, 'HIGHLIGHT')
+			Value:SetPoint('CENTER', Experience, 'CENTER' , -15, 0)
+			Value:SetFontObject(GameFontHighlight)
+			self:Tag(Value, '[curxp] / [maxxp] [Gvv:currested]')
+			
+			local backgroundframe = CreateFrame('Frame')
+			local bg = backgroundframe:CreateTexture(nil, 'BACKGROUND')
+			bg:SetAllPoints(Experience)
+			bg:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_back')
+			bg:SetHorizTile(true)
+			
+			self.Experience = Experience
+			self.Experience.Rested = Rested
 		end
-		if UnitLevel(unit) < maxLevel then
-			Reputation:SetHeight(5)
-		else
-			Reputation:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 15, 0)
-			Reputation:SetHeight(14)
+		
+		-- Reputation bar --
+		if unit == 'player' then
+			local Reputation = CreateFrame('StatusBar', nil, self)
+			Reputation:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 15, 14)
+			Reputation:SetFrameLevel(2)
+			Reputation:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')		
+			
+			local maxLevel
+			if IsTrialAccount() then
+				maxLevel = select(1, GetRestrictedAccountData())
+			else
+				maxLevel = GetMaxPlayerLevel()
+			end
+			if UnitLevel(unit) < maxLevel then
+				Reputation:SetHeight(5)
+			else
+				Reputation:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 15, 0)
+				Reputation:SetHeight(14)
+			end
+			Reputation:SetWidth(rw - 90)
+			Reputation.colorStanding = true
+			self.Reputation = Reputation
 		end
-		Reputation:SetWidth(rw - 90)
-		Reputation.colorStanding = true
-		self.Reputation = Reputation
 	end
 	
 	-- Status Icons --
@@ -408,7 +410,7 @@ local function Gvv_Style(self, unit)
 		-- APs will be drawn on this frame(in this area) --
 		self.ap = CreateFrame('Frame', 'APframe', self)
 		self.ap:SetSize(10, 30)
-		self.ap:SetPoint('RIGHT', self, 'LEFT', -310, 19)
+		self.ap:SetPoint('RIGHT', self, 'LEFT', ns.C.cpXoffset or -310, ns.C.cpYoffset or 19)
 		
 		local playerclass = string.upper(select(2, UnitClass('player')));
 		
@@ -617,6 +619,35 @@ local function Gvv_Style(self, unit)
 		self.Castbar.SafeZone = SafeZone
 	end
 	
+	--Resting Icon for player frame--
+	if unit == 'player' then
+		local Resting = self:CreateTexture(nil, 'OVERLAY')
+		Resting:SetSize(32, 32)
+		Resting:SetPoint('BOTTOMRIGHT', self, 'BOTTOMRIGHT', 0, 0)
+		self.Resting = Resting
+	end
+
+	-- Bloody screen effect --
+	if unit == 'player' and ns.C.screenEffect then
+		local rh = GetScreenHeight()
+		self.bse = CreateFrame('Frame', nil, UIParent)
+		self.bse:SetFrameStrata('BACKGROUND')
+		self.bse:SetFrameLevel(0)
+		local bse = {
+			['TOP'] = {rw, 64},
+			['BOTTOM'] = {rw, 64},
+			['LEFT'] = {64, rh},
+			['RIGHT'] = {64, rh}
+		}
+		for k, v in pairs(bse) do
+			local t = self.bse:CreateTexture(nil, 'BACKGROUND')
+			t:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\bse_' .. k)
+			t:SetSize(v[1],v[2])
+			t:SetPoint(k, 'UIParent')
+		end
+		self.bse:SetAlpha(0)
+	end
+	
 	return self
 end
 
@@ -664,9 +695,9 @@ oUF:Factory(function(self)
 		frame:Hide()
 		frame.Show = function () end
 	end
-	local bbuff = _G['BuffFrame']
+	--[[local bbuff = _G['BuffFrame']
 	local btef = _G['TemporaryEnchantFrame']
 	bbuff:UnregisterAllEvents()
 	bbuff:Hide()
-	btef:Hide()
+	btef:Hide()]]
 end)
