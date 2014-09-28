@@ -7,16 +7,16 @@ local BuffFrame = _G["BuffFrame"]
 local ConsolidatedBuffs = _G["ConsolidatedBuffs"]
 
 local bheader = CreateFrame("Frame", "bheader", UIParent)
-bheader:SetSize(20, 20)
+bheader:SetSize(C.buffIconSize, C.buffIconSize)
 bheader:SetPoint("BOTTOM", "UIParent", "BOTTOM", 95, 125)
 
 local dheader = CreateFrame("Frame", "dheader", UIParent)
-dheader:SetSize(20, 20)
-dheader:SetPoint("BOTTOM", "UIParent", "BOTTOM", 95, 165)
+dheader:SetSize(C.buffIconSize, C.buffIconSize)
+dheader:SetPoint("BOTTOM", "UIParent", "BOTTOM", 95, 129 + 2 * C.buffIconSize)
 
 local theader = CreateFrame("Frame", "theader", UIParent)
-theader:SetSize(20, 20)
-theader:SetPoint("BOTTOM", "UIParent", "BOTTOM", 70, 149)
+theader:SetSize(C.buffIconSize, C.buffIconSize)
+theader:SetPoint("BOTTOM", "UIParent", "BOTTOM", 70, 129 + C.buffIconSize)
 
 local function SetDurationText(duration, arg1, arg2)
 	duration:SetText(format(gsub(arg1, "[ .]", ""), arg2))
@@ -44,7 +44,7 @@ local function UpdateBuffAnchors()
 			end
 
 			button:ClearAllPoints()
-			button:SetSize(20, 20)
+			button:SetSize(C.buffIconSize, C.buffIconSize)
 
 			if index > 1 and (mod(index, 12) == 1) then
 				if index == 13 then
@@ -76,7 +76,7 @@ local function UpdateDebuffAnchors(buttonName, index)
 	local button = _G[buttonName..index]
 
 	button:ClearAllPoints()
-	button:SetSize(20, 20)
+	button:SetSize(C.buffIconSize, C.buffIconSize)
 
 	if index == 1 then
 		button:SetPoint("BOTTOMLEFT", dheader, "BOTTOMLEFT", 0, 0)
@@ -91,7 +91,7 @@ local function UpdateTemporaryEnchantAnchors(self)
 		local button = _G["TempEnchant"..i]
 		if button then
 			button:ClearAllPoints()
-			button:SetSize(20, 20)
+			button:SetSize(C.buffIconSize, C.buffIconSize)
 
 			if i == 1 then
 				button:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 0, 0)
@@ -119,6 +119,7 @@ local function SetAuraButtonStyle(btn, index, atype)
 	if bIcon then
 		--ns.SetIconStyle(button, bIcon)
 		if atype == "CONSOLIDATED" then
+			bIcon:SetSize(C.buffIconSize, C.buffIconSize)
 			bIcon:SetTexCoord(18 / 128, 46 / 128, 18 / 64, 46 / 64)
 		end
 	end

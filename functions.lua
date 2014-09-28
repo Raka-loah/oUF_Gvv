@@ -224,17 +224,19 @@ function ns.UpdateAuraIcon(self, unit, icon, index, offset)
 			if self.elapsed < 0.1 then return end
 			self.elapsed = 0
 			local timeLeft = self.expires - GetTime()
-			if timeLeft > 0 and timeLeft <= 30 then
-				if timeLeft > 10 then
-					self.timer:SetTextColor(0.9, 0.9, 0.9)
-				elseif timeLeft > 5 and timeLeft <= 10 then
-					self.timer:SetTextColor(1, 0.75, 0.1)
-				elseif timeLeft <= 5 then
-					self.timer:SetTextColor(0.9, 0.1, 0.1)
+			if timeLeft then
+				if timeLeft > 0 and timeLeft <= 30 then
+					if timeLeft > 10 then
+						self.timer:SetTextColor(0.9, 0.9, 0.9)
+					elseif timeLeft > 5 and timeLeft <= 10 then
+						self.timer:SetTextColor(1, 0.75, 0.1)
+					elseif timeLeft <= 5 then
+						self.timer:SetTextColor(0.9, 0.1, 0.1)
+					end
+					self.timer:SetText(ns.TimeFormat(timeLeft))
+				else
+					self.timer:SetText(ns.TimeFormat(timeLeft))
 				end
-				self.timer:SetText(ns.TimeFormat(timeLeft))
-			else
-				self.timer:SetText(ns.TimeFormat(timeLeft))
 			end
 		end)
 	else
