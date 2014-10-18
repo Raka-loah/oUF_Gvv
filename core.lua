@@ -132,9 +132,18 @@ local function Gvv_Style(self, unit)
 	self.Power:SetFrameStrata('LOW')
 	self.Power:SetFrameLevel(3)
 	self.Power:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\power_filling')
-	self.Power:SetStatusBarColor(0.95, 0.85, 0)
+	self.Power:SetStatusBarColor(0.8, 0.5, 0)
+	if ns.C.colorPower then
+		self.colors.power = {
+			[0] = {0.3, 0.3, 0.9}, --mana
+			[1] = {0.7, 0.1, 0.1}, --rage
+			[2] = {1.0, 0.4, 0.1}, --focus
+			[3] = {0.8, 0.5, 0.0}, --energy
+			[6] = {0.3, 0.7, 0.8}  --runic
+		}
+		self.Power.colorPower = true
+	end
 	self.Power:SetOrientation('HORIZONTAL')
-	self.Power.colorDisconnected = true
 	if unit == 'player' then		
 		self.cbar = self:CreateTexture(nil, 'ARTWORK', nil, 0)
 		self.cbar:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\power_cover')
@@ -157,18 +166,17 @@ local function Gvv_Style(self, unit)
 		--self.Power.colorPower = true
 	elseif unit == 'target' then
 		self.Power:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
-		self.Power:SetStatusBarColor(0.95, 0.85, 0)
+		--self.Power:SetStatusBarColor(0.95, 0.85, 0)
 		self.Power:SetSize(252, 4)
 		self.Power:SetPoint('TOP',self.Health,'BOTTOM',0,-1)
 	elseif (unit == 'focus' or unit == 'targettarget' or unit == 'focustarget') then
 		self.Power:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
-		self.Power:SetStatusBarColor(0.95, 0.85, 0)
+		--self.Power:SetStatusBarColor(0.95, 0.85, 0)
 		self.Power:SetSize(124, 2)
 		self.Power:SetPoint('TOP',self.Health,'BOTTOM',0,-1)			
 	end
 	self.Power.PostUpdate = ns.UpdatePower
 	self.Power.Smooth = true
-	--self.Power.colorPower = true --MOVE TO CONFIG
 	self.Power.colorDisconnected = true
 	self.Power.frequentUpdates = true
 	

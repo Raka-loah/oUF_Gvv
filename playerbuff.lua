@@ -152,25 +152,27 @@ local function SetAuraButtonStyle(btn, index, atype)
 	button.styled = true
 end
 
-do
-	BuffFrame:SetParent(bheader)
-	BuffFrame:ClearAllPoints()
-	BuffFrame:SetPoint("BOTTOMLEFT", 0, 0)
+if ns.C.useBuffframe then
+	do
+		BuffFrame:SetParent(bheader)
+		BuffFrame:ClearAllPoints()
+		BuffFrame:SetPoint("BOTTOMLEFT", 0, 0)
 
-	TemporaryEnchantFrame:SetParent(theader)
-	TemporaryEnchantFrame:ClearAllPoints()
-	TemporaryEnchantFrame:SetPoint("BOTTOMLEFT", 0, 0)
+		TemporaryEnchantFrame:SetParent(theader)
+		TemporaryEnchantFrame:ClearAllPoints()
+		TemporaryEnchantFrame:SetPoint("BOTTOMLEFT", 0, 0)
 
-	UpdateTemporaryEnchantAnchors(theader)
+		UpdateTemporaryEnchantAnchors(theader)
 
-	hooksecurefunc("BuffFrame_UpdateAllBuffAnchors", UpdateBuffAnchors)
-	hooksecurefunc("DebuffButton_UpdateAnchors", UpdateDebuffAnchors)
-	hooksecurefunc("AuraButton_Update", SetAuraButtonStyle)
+		hooksecurefunc("BuffFrame_UpdateAllBuffAnchors", UpdateBuffAnchors)
+		hooksecurefunc("DebuffButton_UpdateAnchors", UpdateDebuffAnchors)
+		hooksecurefunc("AuraButton_Update", SetAuraButtonStyle)
 
-	for i = 1, NUM_TEMP_ENCHANT_FRAMES do
-		SetAuraButtonStyle("TempEnchant", i, "TEMPENCHANT")
+		for i = 1, NUM_TEMP_ENCHANT_FRAMES do
+			SetAuraButtonStyle("TempEnchant", i, "TEMPENCHANT")
+		end
+
+		SetAuraButtonStyle("ConsolidatedBuffs", nil, "CONSOLIDATED")
+		ConsolidatedBuffsTooltip:SetScale(1)
 	end
-
-	SetAuraButtonStyle("ConsolidatedBuffs", nil, "CONSOLIDATED")
-	ConsolidatedBuffsTooltip:SetScale(1)
 end

@@ -1,4 +1,4 @@
-local _, ns = ...
+local ADDON_NAME, ns = ...
 
 function ns.PostUpdateHealth(Health, unit, cur, max)
 	local self = Health:GetParent()
@@ -52,8 +52,8 @@ function ns.PostUpdateHealth(Health, unit, cur, max)
 			Health:SetStatusBarColor(0.95, 0.15, 0)
 		end
 		
-		if (cur > 1 and cur < max) then
-			Health.Value:SetText(format('%s', BreakUpLargeNumbers(cur)))
+		if cur > 1 and (cur < max or (not ns.C.ahfHPtext)) then
+			Health.Value:SetText(format('%s', ns.FormatValue(cur)))
 		else
 			Health.Value:SetText(nil)
 		end
@@ -80,7 +80,7 @@ function ns.UpdatePower(self, unit, cur, max)
 		return
 	end
 	
-	if (cur < max and cur > 0) then
+	if (cur < max or (not ns.C.ahfMPtext)) and cur > 0 then
 		self.value:SetText(format('%s', ns.FormatValue(cur)))
 	else
 		self.value:SetText(nil)
@@ -310,15 +310,15 @@ oUF.Tags.Events['Gvv:nextlevel'] = 'PLAYER_LEVEL_UP'
 oUF.Tags.Methods['Gvv:classification'] = function(unit)
 	local c = UnitClassification(unit)
 	if(c == 'rare') then
-		return '稀有 '
+		return ns.L['Rare ']
 	elseif(c == 'rareelite') then
-		return '稀有精英 '
+		return ns.L['RareElite ']
 	elseif(c == 'elite') then
-		return '精英 '
+		return ns.L['Elite ']
 	elseif(c == 'worldboss') then
-		return '头目 '
+		return ns.L['Boss ']
 	elseif(c == 'minus') then
-		return '杂兵 '
+		return ns.L['Minus ']
 	end
 end
 oUF.Tags.Events['Gvv:classification'] = 'UNIT_CLASSIFICATION_CHANGED'
@@ -351,9 +351,9 @@ oUF.Tags.Events['Gvv:namecolor'] = 'UNIT_HEALTH UNIT_CONNECTION'
 oUF.Tags.Methods['Gvv:raidrole'] = function(unit)
 	if(UnitInRaid(unit)) then
 		if(GetPartyAssignment('MAINTANK', unit)) then
-			return '·主坦克'
+			return ns.L[' MT']
 		elseif(GetPartyAssignment('MAINASSIST', unit)) then
-			return '·MA'
+			return ns.L[' MA']
 		end
 	end
 end
@@ -361,7 +361,7 @@ oUF.Tags.Events['Gvv:raidrole'] = 'GROUP_ROSTER_UPDATE'
 
 oUF.Tags.Methods['Gvv:a'] = function(u)
 	if(UnitIsGroupAssistant(u)) then
-		return '·A'
+		return ns.L[' A']
 	end
 end
 oUF.Tags.Events['Gvv:a'] = 'GROUP_ROSTER_UPDATE'
@@ -369,25 +369,27 @@ oUF.Tags.Events['Gvv:a'] = 'GROUP_ROSTER_UPDATE'
 oUF.Tags.Methods['Gvv:lfdrole'] = function(u)
 	local role = UnitGroupRolesAssigned(u)
 	if(role == 'TANK') then
-		return '·坦克'
+		return ns.L[' Tank']
 	elseif (role == 'HEALER') then
-		return '·治疗'
+		return ns.L[' Healer']
 	elseif (role == 'DAMAGER') then
-		return '·输出'
+		return ns.L[' Damager']
 	end
 end
 oUF.Tags.Events['Gvv:lfdrole'] = 'GROUP_ROSTER_UPDATE'
 
 oUF.Tags.Methods['Gvv:theone'] = function(u)
-	local n, r = UnitName(u)
-	local rn = GetRealmName()
-	if (rn == '艾莫莉丝') then
-		if n == '奈漠' then
-			return '|cFFFFD200牛逼闪闪的作者|r·'
-		end
-	else
-		if (n == '奈漠' and r == '艾莫莉丝') then
-			return '|cFFFFD200牛逼闪闪的作者|r·'
+	if GetLocale == 'zhCN' then
+		local n, r = UnitName(u)
+		local rn = GetRealmName()
+		if (rn == '艾莫莉丝') then
+			if n == '奈漠' then
+				return '|cFFFFD200牛逼闪闪的作者|r·'
+			end
+		else
+			if (n == '奈漠' and r == '艾莫莉丝') then
+				return '|cFFFFD200牛逼闪闪的作者|r·'
+			end
 		end
 	end
 end
@@ -395,7 +397,7 @@ oUF.Tags.Events['Gvv:theone'] = 'UNIT_NAME_UPDATE'
 
 oUF.Tags.Methods['Gvv:masterlooter'] = function(u)
 	if (IsMasterLooter(u)) then
-		return '·拾取'
+		return ns.L[' Looter']
 	end
 end
 oUF.Tags.Events['Gvv:masterlooter'] = 'PARTY_LOOT_METHOD_CHANGED GROUP_ROSTER_UPDATE'
