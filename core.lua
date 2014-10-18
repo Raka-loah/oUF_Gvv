@@ -78,11 +78,21 @@ local function Gvv_Style(self, unit)
 		self.Health:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
 		self.Health:SetOrientation('HORIZONTAL')
 		self.Health:SetPoint('TOPLEFT', self, 'TOPLEFT', 0, -30)
+		self.Health.colorTapping = true
+		self.Health.colorDisconnected = true
+		self.Health.colorClass = ns.C.colorClass
+		self.Health.colorReaction = true
+		self.Health.colorHealth = true
 	elseif (unit == 'focus' or unit == 'targettarget' or unit == 'focustarget') then
 		self.Health:SetSize(128, 16)
 		self.Health:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
 		self.Health:SetOrientation('HORIZONTAL')
 		self.Health:SetPoint('CENTER',self.tcover)
+		self.Health.colorTapping = true
+		self.Health.colorDisconnected = true
+		self.Health.colorClass = ns.C.colorClass
+		self.Health.colorReaction = true
+		self.Health.colorHealth = true
 	elseif (unit == 'party') then
 		self.Health:SetSize(70, 10)
 		self.Health:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
@@ -90,8 +100,11 @@ local function Gvv_Style(self, unit)
 		self.Health:SetStatusBarColor(20/255, 217/255, 0)
 		self.Health:SetPoint('TOPLEFT', self, 'BOTTOMLEFT', 26, -2)
 		self.Health.colorClass = true
+		self.Health.colorDisconnected = true
 	end
-
+	
+	
+	
 	if (unit == 'player') then
 		self.Health.Value = ns.CreateFontString(self, 18, 'CENTER')
 		self.Health.Value:SetTextColor(1.0, 1.0, 1.0)
@@ -166,12 +179,16 @@ local function Gvv_Style(self, unit)
 		--self.Power.colorPower = true
 	elseif unit == 'target' then
 		self.Power:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
-		--self.Power:SetStatusBarColor(0.95, 0.85, 0)
+		if not ns.C.colorPower then
+			self.Power:SetStatusBarColor(0.95, 0.85, 0)
+		end
 		self.Power:SetSize(252, 4)
 		self.Power:SetPoint('TOP',self.Health,'BOTTOM',0,-1)
 	elseif (unit == 'focus' or unit == 'targettarget' or unit == 'focustarget') then
 		self.Power:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
-		--self.Power:SetStatusBarColor(0.95, 0.85, 0)
+		if not ns.C.colorPower then
+			self.Power:SetStatusBarColor(0.95, 0.85, 0)
+		end
 		self.Power:SetSize(124, 2)
 		self.Power:SetPoint('TOP',self.Health,'BOTTOM',0,-1)			
 	end

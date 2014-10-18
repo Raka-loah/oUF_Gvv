@@ -37,21 +37,6 @@ function ns.PostUpdateHealth(Health, unit, cur, max)
 	end
 	
 	if ( unit == 'target' or unit == 'focus' or unit == 'targettarget' or unit == 'focustarget') then
-		local reaction = UnitReaction('player', unit)
-		if(reaction) then
-			if(reaction == 3) then
-				Health:SetStatusBarColor(1.0, 177/255, 85/255)
-			elseif(reaction == 4) then
-				Health:SetStatusBarColor(1.0, 240/255, 0)
-			elseif(reaction > 4) then
-				Health:SetStatusBarColor(20/255, 217/255, 0)
-			else
-				Health:SetStatusBarColor(0.95, 0.15, 0)
-			end
-		else
-			Health:SetStatusBarColor(0.95, 0.15, 0)
-		end
-		
 		if cur > 1 and (cur < max or (not ns.C.ahfHPtext)) then
 			Health.Value:SetText(format('%s', ns.FormatValue(cur)))
 		else
@@ -140,6 +125,7 @@ function ns.CreateAura(self, unit)
 		frame["growth-y"] = "DOWN"
 		frame["initialAnchor"] = "TOPLEFT"
 		frame["size"] = 20
+		frame.disableCooldown = true 
 		--well, not using this for now
 	--[[elseif unit == 'player' then
 		frame:SetPoint("LEFT", self, "RIGHT", 15, 75)
@@ -162,7 +148,7 @@ function ns.CreateAura(self, unit)
 	frame["spacing-x"] = 4
 	frame["spacing-y"] = 4
 	frame.showStealableBuffs = true
-	frame.disableCooldown = true 
+	
 
 	frame.PreUpdate = ns.AuraPreUpdate
 	frame.PostCreateIcon = ns.CreateAuraIcon
@@ -266,16 +252,20 @@ function ns.AlwaysShow(self)
 end
 
 function ns.TimeFormat(s)
-	if s >= 86400 then
-		return format(gsub(DAY_ONELETTER_ABBR, "[ .]", ""), floor(s / 86400 + 0.5))
-	elseif s >= 3600 then
-		return format(gsub(ONELETTER_ABBR, "[ .]", ""), floor(s / 3600 + 0.5))
-	elseif s >= 60 then
-		return format(gsub(MINUTE_ONELETTER_ABBR, "[ .]", ""), floor(s / 60 + 0.5))
-	elseif s >= 1 then
-		return format(gsub(SECOND_ONELETTER_ABBR, "[ .]", ""), math.fmod(s, 60))
+	if s then
+		if s >= 86400 then
+			return format(gsub(DAY_ONELETTER_ABBR, "[ .]", ""), floor(s / 86400 + 0.5))
+		elseif s >= 3600 then
+			return format(gsub(ONELETTER_ABBR, "[ .]", ""), floor(s / 3600 + 0.5))
+		elseif s >= 60 then
+			return format(gsub(MINUTE_ONELETTER_ABBR, "[ .]", ""), floor(s / 60 + 0.5))
+		elseif s >= 1 then
+			return format(gsub(SECOND_ONELETTER_ABBR, "[ .]", ""), math.fmod(s, 60))
+		end
+		return format("%.1f", s)
+	else
+		return nil
 	end
-	return format("%.1f", s)
 end
 
 function UpdatePortraitColor(self, unit)

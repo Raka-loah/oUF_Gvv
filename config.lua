@@ -29,6 +29,9 @@ ns.C.bframeY		= 125	-- Y offset(defalut:125) 纵向偏移(默认值125)
 ns.C.ahfHPtext		= true	-- HP text
 ns.C.ahfMPtext		= true	-- MP text
 
+--Target frames HP bar colored by player class 目标血条按职业着色
+ns.C.colorClass		= false
+
 --Power bar colored by type 蓝条按类型着色
 --Default is false and will use yellow color for all type just like GW2
 --默认不启用，即所有职业都使用GW2翻滚条的黄颜色

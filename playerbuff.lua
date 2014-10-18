@@ -157,7 +157,12 @@ if ns.C.useBuffframe then
 		BuffFrame:SetParent(bheader)
 		BuffFrame:ClearAllPoints()
 		BuffFrame:SetPoint("BOTTOMLEFT", 0, 0)
-
+		
+		ConsolidatedBuffs:SetParent(bheader)
+		ConsolidatedBuffs:ClearAllPoints()
+		ConsolidatedBuffs:SetSize(C.buffIconSize, C.buffIconSize)
+		ConsolidatedBuffs:SetPoint("BOTTOMLEFT", 0, 0)
+		
 		TemporaryEnchantFrame:SetParent(theader)
 		TemporaryEnchantFrame:ClearAllPoints()
 		TemporaryEnchantFrame:SetPoint("BOTTOMLEFT", 0, 0)
