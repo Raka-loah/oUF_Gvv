@@ -142,6 +142,10 @@ local function Gvv_Style(self, unit)
 		self.cbar:SetPoint('BOTTOM',self,'BOTTOM',0,91)
 		self.Power:SetSize(125, 64)
 		self.Power:SetPoint('CENTER',self.cbar)
+		local bg = self.Power:CreateTexture(nil, 'BACKGROUND')
+		bg:SetAllPoints(self.cbar)
+		bg:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\power_bg')
+		self.Power.bg = bg
 	elseif unit == 'pet' then
 		self.Power:SetSize(80, 6)
 		self.Power:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
@@ -554,7 +558,7 @@ local function Gvv_Style(self, unit)
 			CPoint:SetSize(16, 16)
 			CPoint:SetPoint('RIGHT', self.tcover, 'LEFT', (index - 1) * -17 -3, 0)
 			CPoint:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\combopoint')
-			CPoint:SetVertexColor(1,0.75,0.75)
+			CPoint:SetVertexColor(1,0.8,0.8)
 			
 			CPoints[index] = CPoint
 		end
@@ -562,7 +566,8 @@ local function Gvv_Style(self, unit)
 	end
 	
 	-- Castbar. Maybe Quartz is better?--
-	if unit == 'player' or unit == 'target' then
+	
+	if (unit == 'player' or unit == 'target') and ns.C.showCastbar then
 		local Castbar = CreateFrame('StatusBar', nil, self)
 		
 		if unit == 'player' then
@@ -620,7 +625,7 @@ local function Gvv_Style(self, unit)
 	end
 	
 	--Resting Icon for player frame--
-	if unit == 'player' then
+	if unit == 'player' and ns.C.showPlayer then
 		local Resting = self:CreateTexture(nil, 'OVERLAY')
 		Resting:SetSize(32, 32)
 		Resting:SetPoint('BOTTOMRIGHT', self, 'BOTTOMRIGHT', 0, 0)
@@ -655,8 +660,13 @@ oUF:Factory(function(self)
 	oUF:RegisterStyle('Gvv', Gvv_Style)
 	oUF:SetActiveStyle('Gvv')
 
+	if ns.C.showPlayer then
 	local player = self:Spawn('player', 'oUF_Gvv_Player')
 	player:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 0, 20)
+	
+	local pet = self:Spawn('pet', 'oUF_Gvv_Pet')
+	pet:SetPoint('RIGHT', player, 'LEFT', 0, 25)
+	end
 	
 	if ns.C.showTarget then
 		local target = self:Spawn('target', 'oUF_Gvv_Target')
@@ -665,9 +675,6 @@ oUF:Factory(function(self)
 		local targettarget = self:Spawn('targettarget', 'oUF_Gvv_TargetTarget')
 		targettarget:SetPoint('TOP', 'UIParent', 'TOP', 250, -80)
 	end
-	
-	local pet = self:Spawn('pet', 'oUF_Gvv_Pet')
-	pet:SetPoint('RIGHT', player, 'LEFT', 0, 25)
 	
 	if ns.C.showFocus then
 		local focus = self:Spawn('focus', 'oUF_Gvv_Focus')
@@ -688,16 +695,11 @@ oUF:Factory(function(self)
 		party:SetPoint('TOPLEFT', 'UIParent','TOPLEFT', 0, -115)
 	end
 	
-	-- Hide blizz boss and aura frames --
+	-- Hide blizz boss frames --
 	for i = 1, 4 do
 		local frame = _G["Boss"..i.."TargetFrame"]
 		frame:UnregisterAllEvents()
 		frame:Hide()
 		frame.Show = function () end
 	end
-	--[[local bbuff = _G['BuffFrame']
-	local btef = _G['TemporaryEnchantFrame']
-	bbuff:UnregisterAllEvents()
-	bbuff:Hide()
-	btef:Hide()]]
 end)

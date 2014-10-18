@@ -8,15 +8,15 @@ local ConsolidatedBuffs = _G["ConsolidatedBuffs"]
 
 local bheader = CreateFrame("Frame", "bheader", UIParent)
 bheader:SetSize(C.buffIconSize, C.buffIconSize)
-bheader:SetPoint("BOTTOM", "UIParent", "BOTTOM", 95, 125)
+bheader:SetPoint("BOTTOM", "UIParent", "BOTTOM", C.bframeX, C.bframeY)
 
 local dheader = CreateFrame("Frame", "dheader", UIParent)
 dheader:SetSize(C.buffIconSize, C.buffIconSize)
-dheader:SetPoint("BOTTOM", "UIParent", "BOTTOM", 95, 129 + 2 * C.buffIconSize)
+dheader:SetPoint("BOTTOM", "UIParent", "BOTTOM", C.bframeX, C.bframeY + 4 + 2 * C.buffIconSize)
 
 local theader = CreateFrame("Frame", "theader", UIParent)
 theader:SetSize(C.buffIconSize, C.buffIconSize)
-theader:SetPoint("BOTTOM", "UIParent", "BOTTOM", 70, 129 + C.buffIconSize)
+theader:SetPoint("BOTTOM", "UIParent", "BOTTOM", C.bframeX - 5, C.bframeY + C.buffIconSize)
 
 local function SetDurationText(duration, arg1, arg2)
 	duration:SetText(format(gsub(arg1, "[ .]", ""), arg2))

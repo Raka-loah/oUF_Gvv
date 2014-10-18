@@ -291,8 +291,8 @@ function UpdatePortraitColor(self, unit)
 end
 
 -- TAGS. Mostly copied from official oUF tags.--
-oUF.Tags.Methods['Gvv:nextlevel'] = function(unit)
-	local l = UnitLevel(unit)
+oUF.Tags.Methods['Gvv:nextlevel'] = function()
+	local l = UnitLevel('player')
 	local maxLevel
 	if IsTrialAccount() then
 		maxLevel = select(1, GetRestrictedAccountData())
