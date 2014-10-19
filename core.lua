@@ -435,7 +435,7 @@ local function Gvv_Style(self, unit)
 	self.RaidIcon = RaidIcon
 	
 	-- Alt Powers (definitely pain in the arse) --
-	if unit == 'player' then
+	if unit == 'player' and ns.C.showClassPower then
 		-- APs will be drawn on this frame(in this area) --
 		self.ap = CreateFrame('Frame', 'APframe', self)
 		self.ap:SetSize(10, 30)

@@ -118,14 +118,15 @@ end
 function ns.CreateAura(self, unit)
 	local frame = CreateFrame("Frame", nil, self)
 	if unit == 'target' then
+		local iconsperrow = math.floor(300 / ns.C.tbIconSize) -- max width of icon zone
+		local rows = math.floor(100 / ns.C.tbIconSize)  -- max height of icon zone TODO:put these to config?
 		frame:SetPoint("TOPLEFT", self, "TOPLEFT", 0, -103)
-		frame:SetWidth(20 * 14 + 4 * 13)
-		frame:SetHeight(20 * 3 + 4 * 2)
+		frame:SetWidth(ns.C.tbIconSize * iconsperrow + 4 * (iconsperrow - 1))
+		frame:SetHeight(ns.C.tbIconSize * rows + 4 * (rows - 1))
 		frame["growth-x"] = "RIGHT"
 		frame["growth-y"] = "DOWN"
 		frame["initialAnchor"] = "TOPLEFT"
-		frame["size"] = 20
-		frame.disableCooldown = true 
+		frame["size"] = ns.C.tbIconSize
 		--well, not using this for now
 	--[[elseif unit == 'player' then
 		frame:SetPoint("LEFT", self, "RIGHT", 15, 75)
@@ -137,8 +138,8 @@ function ns.CreateAura(self, unit)
 		frame["size"] = 20]]
 	elseif unit == 'party' then
 		frame:SetPoint("TOPLEFT", self.Portrait, "TOPRIGHT", 5, 0)
-		frame:SetWidth(20 * 5 + 4 * 4)
-		frame:SetHeight(20 * 4 + 4 * 3)
+		frame:SetWidth(15 * 5 + 4 * 4)
+		frame:SetHeight(15 * 4 + 4 * 3)
 		frame["growth-x"] = "RIGHT"
 		frame["growth-y"] = "DOWN"
 		frame["initialAnchor"] = "TOPLEFT"
@@ -148,8 +149,9 @@ function ns.CreateAura(self, unit)
 	frame["spacing-x"] = 4
 	frame["spacing-y"] = 4
 	frame.showStealableBuffs = true
+	frame.onlyShowPlayer = ns.C.onlyShowPlayer
+	frame.disableCooldown = true 
 	
-
 	frame.PreUpdate = ns.AuraPreUpdate
 	frame.PostCreateIcon = ns.CreateAuraIcon
 	frame.PostUpdateIcon = ns.UpdateAuraIcon
@@ -169,7 +171,7 @@ function ns.CreateAuraIcon (self, button)
 	button.stealable:SetTexture('Interface\\Buttons\\UI-Button-Outline')
 	button.stealable:SetDrawLayer("OVERLAY", 1)
 	button.stealable:ClearAllPoints()
-	button.stealable:SetSize(28, 28)
+	button.stealable:SetSize(ns.C.tbIconSize + 3, ns.C.tbIconSize + 3)
 	button.stealable:SetTexCoord(14 / 64, 50 / 64, 14 / 64, 50 / 64)
 	button.stealable:SetPoint("CENTER", 0, 0)
 	button.stealable:SetVertexColor(1.0, 0.82, 0.0)
@@ -194,11 +196,10 @@ function ns.UpdateAuraIcon(self, unit, icon, index, offset)
 	if not self.onlyShowPlayer then
 		if (icon.owner == "player" or icon.owner == "vehicle" or icon.owner == "pet") and icon.isDebuff
 			or (not icon.isDebuff and (stealable or icon.owner == "player" or icon.owner == "vehicle" or icon.owner == "pet")) then
-			--texture:SetDesaturated(false)
 			icon:SetAlpha(1)
 		else
 			--texture:SetDesaturated(true)
-			icon:SetAlpha(0.5)
+			icon:SetAlpha(ns.C.npbOpacity or 0.5)
 		end
 	end
 
@@ -256,7 +257,7 @@ function ns.TimeFormat(s)
 		if s >= 86400 then
 			return format(gsub(DAY_ONELETTER_ABBR, "[ .]", ""), floor(s / 86400 + 0.5))
 		elseif s >= 3600 then
-			return format(gsub(ONELETTER_ABBR, "[ .]", ""), floor(s / 3600 + 0.5))
+			return format(gsub(HOUR_ONELETTER_ABBR, "[ .]", ""), floor(s / 3600 + 0.5))
 		elseif s >= 60 then
 			return format(gsub(MINUTE_ONELETTER_ABBR, "[ .]", ""), floor(s / 60 + 0.5))
 		elseif s >= 1 then

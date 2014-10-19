@@ -63,11 +63,18 @@ fadeout:SetDuration(1.5)
 fadeout:SetChange(-1)
 gvvci:RegisterEvent('PLAYER_REGEN_ENABLED')
 gvvci:RegisterEvent('PLAYER_REGEN_DISABLED')
+gvvci:RegisterEvent('ZONE_CHANGED_NEW_AREA')
 function eventHandler(self, event)
 	if event == 'PLAYER_REGEN_ENABLED' then
 		gvvci.ci.fadeout:Play()
 	elseif event == 'PLAYER_REGEN_DISABLED' then
 		gvvci.ci.fadein:Play()
+	elseif event == 'ZONE_CHANGED_NEW_AREA' then
+		if InCombatLockdown() then
+			gvvci.ci:SetAlpha(1)
+		else
+			gvvci.ci:SetAlpha(0)
+		end
 	end
 end
 gvvci:SetScript('OnEvent', eventHandler);

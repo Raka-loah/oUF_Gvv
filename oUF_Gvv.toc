@@ -1,7 +1,7 @@
 ## Interface: 60000
 ## Title: oUF:Gvv
 ## Author: Raka
-## Version: 0.3
+## Version: 0.3a
 ## X-eMail: i@lotc.cc
 ## Dependencies: oUF
 ## Notes: oUF layout for GvvUI
