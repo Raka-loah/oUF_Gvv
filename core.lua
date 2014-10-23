@@ -51,7 +51,16 @@ local function Gvv_Style(self, unit)
 	self.Health:SetStatusBarColor(0.95, 0.15, 0)
 	self.Health.frequentUpdates = true
 	self.Health.Smooth = true
-	
+	self.colors.reaction = {
+		{ 0.7, 0.0, 0.0 },
+		{ 0.7, 0.0, 0.0 },
+		{ 0.7, 0.4, 0.0 },
+		{ 0.7, 0.7, 0.0 },
+		{ 0.0, 0.7, 0.0 },
+		{ 0.0, 0.7, 0.0 },
+		{ 0.0, 0.7, 0.0 },
+		{ 0.0, 0.7, 0.0 },
+	}
 	self.Health.PostUpdate = ns.PostUpdateHealth
 
 	if (unit == 'player') then
@@ -82,7 +91,7 @@ local function Gvv_Style(self, unit)
 		self.Health.colorDisconnected = true
 		self.Health.colorClass = ns.C.colorClass
 		self.Health.colorReaction = true
-		self.Health.colorHealth = true
+		--self.Health.colorHealth = true
 	elseif (unit == 'focus' or unit == 'targettarget' or unit == 'focustarget') then
 		self.Health:SetSize(128, 16)
 		self.Health:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
@@ -92,7 +101,7 @@ local function Gvv_Style(self, unit)
 		self.Health.colorDisconnected = true
 		self.Health.colorClass = ns.C.colorClass
 		self.Health.colorReaction = true
-		self.Health.colorHealth = true
+		--self.Health.colorHealth = true
 	elseif (unit == 'party') then
 		self.Health:SetSize(70, 10)
 		self.Health:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
@@ -102,9 +111,7 @@ local function Gvv_Style(self, unit)
 		self.Health.colorClass = true
 		self.Health.colorDisconnected = true
 	end
-	
-	
-	
+
 	if (unit == 'player') then
 		self.Health.Value = ns.CreateFontString(self, 18, 'CENTER')
 		self.Health.Value:SetTextColor(1.0, 1.0, 1.0)
@@ -353,7 +360,8 @@ local function Gvv_Style(self, unit)
 			Value:SetFontObject(GameFontHighlight)
 			self:Tag(Value, '[curxp] / [maxxp] [Gvv:currested]')
 			
-			local backgroundframe = CreateFrame('Frame')
+			local backgroundframe = CreateFrame('Frame', nil, UIParent)
+			backgroundframe:SetFrameStrata('BACKGROUND')
 			local bg = backgroundframe:CreateTexture(nil, 'BACKGROUND')
 			bg:SetAllPoints(Experience)
 			bg:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_back')

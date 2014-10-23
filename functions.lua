@@ -45,7 +45,13 @@ function ns.PostUpdateHealth(Health, unit, cur, max)
 	elseif unit == 'pet' then
 		Health.Value:SetText(format('%s', ns.FormatValue(cur)))
 	elseif unit == 'player' or unit == 'vehicle' then
-		Health.Value:SetText(format('%s', BreakUpLargeNumbers(cur)))
+		if GetCVar("statusTextDisplay") == "PERCENT" then
+			Health.Value:SetText(format('%d%%', perc))
+		elseif GetCVar("statusTextDisplay") == "BOTH" then
+			Health.Value:SetText(format('%s/%d%%', ns.FormatValue(cur), perc))
+		else
+			Health.Value:SetText(format('%s', BreakUpLargeNumbers(cur)))
+		end
 	else
 		Health.Value:SetText(nil)
 	end
