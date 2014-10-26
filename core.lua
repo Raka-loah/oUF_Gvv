@@ -25,8 +25,8 @@ local function Gvv_Style(self, unit)
 		self.tcover:SetPoint('TOPLEFT', self, 'TOPLEFT', 0, -30)
 		self.pback = self:CreateTexture(nil, 'BACKGROUND', nil, 0)
 		self.pback:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\portrait_back')
-		self.pback:SetSize(64,64)
-		self.pback:SetPoint('RIGHT', self, 'RIGHT', 0, 0)
+		self.pback:SetSize(128,128)
+		self.pback:SetPoint('RIGHT', self, 'RIGHT', 32, 0)
 	elseif unit == 'pet' then
 		self:SetSize(128,64)
 	elseif unit == 'focus' or unit == 'targettarget' or unit == 'focustarget' then
@@ -38,8 +38,25 @@ local function Gvv_Style(self, unit)
 		self.pback = self:CreateTexture(nil, 'BACKGROUND', nil, 0)
 		self.pback:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\portrait_back')
 		self.pback:SetTexCoord(1,0,0,1)
-		self.pback:SetSize(48,48)
-		self.pback:SetPoint('LEFT', self, 'LEFT', 0, 0)
+		self.pback:SetSize(96,96)
+		self.pback:SetPoint('LEFT', self, 'LEFT', -24, 0)
+	end
+	
+	if unit == 'target' or unit == 'focus' or unit == 'targettarget' or unit == 'focustarget' then
+		hooksecurefunc(self, 'Show', function(self)
+			local class = UnitClassification(self.unit)
+			if class ~= 'normal' and class ~= 'minus' and class ~= 'trivial' then
+				if class == 'worldboss' then
+					self.pback:SetTexture('Interface\\AddOns\\oUF_Gvv\\textures\\portrait_back_boss')
+				elseif class == 'rare' or class == 'rareelite' then
+					self.pback:SetTexture('Interface\\AddOns\\oUF_Gvv\\textures\\portrait_back_rare')
+				elseif class == 'elite' then
+					self.pback:SetTexture('Interface\\AddOns\\oUF_Gvv\\textures\\portrait_back_elite')
+				end
+			else
+				self.pback:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\portrait_back')
+			end
+		end)
 	end
 	
 	-- Health bar --
@@ -706,12 +723,12 @@ oUF:Factory(function(self)
 		target:SetPoint('TOP', 'UIParent', 'TOP', 0, -70)
 		
 		local targettarget = self:Spawn('targettarget', 'oUF_Gvv_TargetTarget')
-		targettarget:SetPoint('TOP', 'UIParent', 'TOP', 250, -80)
+		targettarget:SetPoint('TOP', 'UIParent', 'TOP', 270, -82)
 	end
 	
 	if ns.C.showFocus then
 		local focus = self:Spawn('focus', 'oUF_Gvv_Focus')
-		focus:SetPoint('TOP', 'UIParent', 'TOP', 250, -140)
+		focus:SetPoint('TOP', 'UIParent', 'TOP', 270, -140)
 		
 		local focustarget = self:Spawn('focustarget', 'oUF_Gvv_FocusTarget')
 		focustarget:SetPoint('TOP', focus, 'BOTTOM', 20, -10)

@@ -302,7 +302,7 @@ oUF.Tags.Methods['Gvv:nextlevel'] = function()
 		return l
 	end
 end
-oUF.Tags.Events['Gvv:nextlevel'] = 'PLAYER_LEVEL_UP'
+oUF.Tags.Events['Gvv:nextlevel'] = 'UNIT_LEVEL PLAYER_LEVEL_UP'
 
 oUF.Tags.Methods['Gvv:classification'] = function(unit)
 	local c = UnitClassification(unit)
