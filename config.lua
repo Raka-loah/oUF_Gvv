@@ -13,6 +13,8 @@ ns.C.showPlayer		= true	-- Player and Pet frame 玩家血球与宠物框体
 ns.C.showCastbar	= true	-- Castbar 施法条
 ns.C.showClassPower	= true	-- Class power 职业副资源
 
+ns.C.showClsBdr		= true	-- Classification border for Rares, Elites and Bosses 稀有、精英与Boss头像标识
+
 --Default font(e.g. 'Fonts\\ARAILN.ttf') 默认字体文件路径
 ns.C.normalFont		= 'Fonts\\ARHei.ttf' 
 

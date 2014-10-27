@@ -23,10 +23,10 @@ local function Gvv_Style(self, unit)
 		self.tcover:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_cover')
 		self.tcover:SetSize(256,16)
 		self.tcover:SetPoint('TOPLEFT', self, 'TOPLEFT', 0, -30)
-		self.pback = self:CreateTexture(nil, 'BACKGROUND', nil, 0)
+		self.pback = self:CreateTexture(nil, 'BACKGROUND', nil, -1)
 		self.pback:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\portrait_back')
 		self.pback:SetSize(128,128)
-		self.pback:SetPoint('RIGHT', self, 'RIGHT', 32, 0)
+		self.pback:SetPoint('RIGHT', self, 'RIGHT', 35, 0)
 	elseif unit == 'pet' then
 		self:SetSize(128,64)
 	elseif unit == 'focus' or unit == 'targettarget' or unit == 'focustarget' then
@@ -42,7 +42,7 @@ local function Gvv_Style(self, unit)
 		self.pback:SetPoint('LEFT', self, 'LEFT', -24, 0)
 	end
 	
-	if unit == 'target' or unit == 'focus' or unit == 'targettarget' or unit == 'focustarget' then
+	if unit == 'target' and ns.C.showClsBdr then
 		hooksecurefunc(self, 'Show', function(self)
 			local class = UnitClassification(self.unit)
 			if class ~= 'normal' and class ~= 'minus' and class ~= 'trivial' then
@@ -101,6 +101,7 @@ local function Gvv_Style(self, unit)
 		self.pethc:SetAllPoints(self.Health)
 	elseif (unit == 'target') then
 		self.Health:SetSize(256, 16)
+		self.Health:SetFrameStrata('MEDIUM')
 		self.Health:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
 		self.Health:SetOrientation('HORIZONTAL')
 		self.Health:SetPoint('TOPLEFT', self, 'TOPLEFT', 0, -30)
@@ -202,6 +203,7 @@ local function Gvv_Style(self, unit)
 		self.petpc:SetAllPoints(self.Power)
 		--self.Power.colorPower = true
 	elseif unit == 'target' then
+		self.Power:SetFrameStrata('MEDIUM')
 		self.Power:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
 		if not ns.C.colorPower then
 			self.Power:SetStatusBarColor(0.95, 0.85, 0)
@@ -495,7 +497,7 @@ local function Gvv_Style(self, unit)
 				local Icon = self:CreateTexture(nil, 'BACKGROUND')
 				Icon:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\classicon')
 				Icon:SetSize(20, 20)
-				Icon:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 0)
+				Icon:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 2)
 				ClassIcons[index] = Icon
 			end
 			self.ClassIcons = ClassIcons
@@ -503,7 +505,7 @@ local function Gvv_Style(self, unit)
 			if playerclass == 'WARLOCK' then
 				-- Just WARLOCK things --
 				local DemonicFuryBar = CreateFrame('StatusBar', nil, self)
-				DemonicFuryBar:SetPoint('LEFT', self.ap, 'LEFT', 0, 0)
+				DemonicFuryBar:SetPoint('LEFT', self.ap, 'LEFT', 0, 2)
 				DemonicFuryBar:SetSize(180, 20)
 				DemonicFuryBar:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
 				DemonicFuryBar:SetStatusBarColor(148/255, 130/255, 201/255)
@@ -514,7 +516,7 @@ local function Gvv_Style(self, unit)
 				for i = 1, 4 do
 					local ember = CreateFrame('StatusBar', nil, self)
 					ember:SetSize(40, 20)
-					ember:SetPoint('LEFT', self.ap, 'LEFT', (i - 1) * 45, 0)
+					ember:SetPoint('LEFT', self.ap, 'LEFT', (i - 1) * 45, 2)
 					ember:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
 					ember:SetStatusBarColor(1, 138/255, 0)
 					BurningEmbers[i] = ember
@@ -525,7 +527,7 @@ local function Gvv_Style(self, unit)
 		elseif playerclass == 'DRUID' then --hate this class particularly
 			-- BIG FAT CHICKEN BAR --
 			local EclipseBar = CreateFrame('Frame', nil, self)
-			EclipseBar:SetPoint('LEFT', self.ap, 'LEFT', 0, 0)
+			EclipseBar:SetPoint('LEFT', self.ap, 'LEFT', 0, 2)
 			EclipseBar:SetSize(160, 20)
 
 			local LunarBar = CreateFrame('StatusBar', nil, EclipseBar)
@@ -590,7 +592,7 @@ local function Gvv_Style(self, unit)
 			for index = 1, 6 do
 				local Rune = CreateFrame('StatusBar', nil, self.ap)
 				Rune:SetSize(20, 20)
-				Rune:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 0)
+				Rune:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 2)
 				Rune:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\classicon')
 				Runes[index] = Rune
 			end
