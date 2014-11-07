@@ -77,4 +77,4 @@ function eventHandler(self, event)
 		end
 	end
 end
-gvvci:SetScript('OnEvent', eventHandler);
+gvvci:SetScript('OnEvent', eventHandler)

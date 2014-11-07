@@ -19,8 +19,8 @@ ns.C.showClsBdr		= true	-- Classification border for Rares, Elites and Bosses �
 ns.C.normalFont		= 'Fonts\\ARHei.ttf' 
 
 --Class power frame position 职业能力框位置
-ns.C.cpXoffset		= -310	-- X offset(default:-310) 横向偏移（默认值-310）
-ns.C.cpYoffset		= 19	-- Y offset(defalut:19) 纵向偏移(默认值19)
+--Please use '/GVV' or '/OGV' commands in game to show anchor frame. 请在游戏中使用/GVV或/OGV命令显示锚点框。
+--Just drag the frame and use the slash commands again to save position. 拖动到合适位置之后再次使用/GVV或/OGV命令来保存位置。
 
 --Buff frame 增益图标框体
 ns.C.useBuffframe	= true	-- Enable addon buff frame for player 插件接管玩家buff框体

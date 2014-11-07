@@ -3,7 +3,7 @@ oUF_Gvv by Raka from LotC.cc
 Please don't modify anything, very fragile.
 Require oUF 1.6.x.
 ]]
-local _, ns = ...
+local ADDON_NAME, ns = ...
 
 local function Gvv_Style(self, unit)
 	self:RegisterForClicks('AnyUp')
@@ -102,6 +102,7 @@ local function Gvv_Style(self, unit)
 	elseif (unit == 'target') then
 		self.Health:SetSize(256, 16)
 		self.Health:SetFrameStrata('MEDIUM')
+		self.Health:SetFrameLevel(1)
 		self.Health:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
 		self.Health:SetOrientation('HORIZONTAL')
 		self.Health:SetPoint('TOPLEFT', self, 'TOPLEFT', 0, -30)
@@ -204,6 +205,7 @@ local function Gvv_Style(self, unit)
 		--self.Power.colorPower = true
 	elseif unit == 'target' then
 		self.Power:SetFrameStrata('MEDIUM')
+		self.Power:SetFrameLevel(1)
 		self.Power:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')
 		if not ns.C.colorPower then
 			self.Power:SetStatusBarColor(0.95, 0.85, 0)
@@ -465,8 +467,53 @@ local function Gvv_Style(self, unit)
 	if unit == 'player' and ns.C.showClassPower then
 		-- APs will be drawn on this frame(in this area) --
 		self.ap = CreateFrame('Frame', 'APframe', self)
-		self.ap:SetSize(10, 30)
-		self.ap:SetPoint('RIGHT', self, 'LEFT', ns.C.cpXoffset or -310, ns.C.cpYoffset or 19)
+		self.ap:Hide()
+		self.ap:SetSize(200, 32)
+		local t = self.ap:CreateTexture('ARTWORK')
+		t:SetAllPoints()
+		t:SetTexture(0, 0, 0, 0.5)
+		if CPS['a1'] == nil or CPS['a2'] == nil or CPS['x'] == nil or CPS['y'] == nil then
+			self.ap:SetPoint('RIGHT', self, 'LEFT', -110, 24)
+		else
+			self.ap:SetPoint(CPS['a1'], CPS['f'], CPS['a2'], CPS['x'], CPS['y'])
+		end
+		self.ap:SetMovable(true)
+		self.ap:EnableMouse(true)
+		self.ap:SetScript('OnMouseDown', function(self, button)
+			if button == 'LeftButton' and not self.isMoving then
+				self:StartMoving()
+				self.isMoving = true
+			end
+		end)
+		self.ap:SetScript('OnMouseUp', function(self, button)
+			if button == 'LeftButton' and self.isMoving then
+				self:StopMovingOrSizing()
+				self.isMoving = false
+			end
+		end)
+		self.ap:SetScript('OnHide', function(self)
+			if (self.isMoving) then
+				self:StopMovingOrSizing()
+				self.isMoving = false
+			end
+		end)
+		SLASH_GVV1, SLASH_GVV2 = '/GVV', '/OGV'
+		local function aphandler(msg)
+			if string.lower(msg) == 'reset' then
+				CPS = {}
+				print('oUF_Gvv: ' .. ns.L['Class Power position reset.'])
+			else	
+				if self.ap:IsShown() then
+					self.ap:Hide()
+					CPS['a1'], CPS['f'], CPS['a2'], CPS['x'], CPS['y'] = self.ap:GetPoint(1)
+					print('oUF_Gvv: ' .. ns.L['Class Power position saved.'])
+					--print(self.ap:GetPoint(1))
+				else
+					self.ap:Show()
+				end
+			end
+		end
+		SlashCmdList['GVV'] = aphandler
 		
 		local playerclass = string.upper(select(2, UnitClass('player')));
 		
@@ -474,7 +521,7 @@ local function Gvv_Style(self, unit)
 			-- Living Honor Points --
 			local Totems = {}
 			for index = 1, MAX_TOTEMS do
-				local Totem = CreateFrame('StatusBar', nil, self.ap)
+				local Totem = CreateFrame('StatusBar', nil, self)
 				Totem:EnableMouse(true)
 				Totem:SetSize(40, 20)
 				Totem:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 45, 2)
@@ -555,7 +602,7 @@ local function Gvv_Style(self, unit)
 			self.EclipseBar = EclipseBar
 			
 			-- USELESS MANA BAR --
-			local DruidMana = CreateFrame('StatusBar', nil, self.ap)
+			local DruidMana = CreateFrame('StatusBar', nil, self)
 			DruidMana:SetSize(160, 20)
 			DruidMana:SetPoint('LEFT')
 			DruidMana:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
@@ -569,7 +616,7 @@ local function Gvv_Style(self, unit)
 			-- TEEMO BAR --
 			local Mushrooms = {}
 			for index = 1, MAX_TOTEMS do
-				local Mushroom = CreateFrame('Button', nil, self.ap)
+				local Mushroom = CreateFrame('Button', nil, self)
 				Mushroom:SetSize(20, 20)
 				Mushroom:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 22)
 
@@ -590,7 +637,7 @@ local function Gvv_Style(self, unit)
 		elseif playerclass == 'DEATHKNIGHT' then
 			local Runes = {}
 			for index = 1, 6 do
-				local Rune = CreateFrame('StatusBar', nil, self.ap)
+				local Rune = CreateFrame('StatusBar', nil, self)
 				Rune:SetSize(20, 20)
 				Rune:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 2)
 				Rune:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\classicon')
@@ -753,5 +800,6 @@ oUF:Factory(function(self)
 		frame:UnregisterAllEvents()
 		frame:Hide()
 		frame.Show = function () end
-	end
+	end	
+	
 end)

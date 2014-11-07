@@ -32,6 +32,9 @@ if LOCALE == 'zhCN' then
 	L[' Damager'] = '·输出'
 
 	L[' Looter'] = '·拾取'
+	
+	L['Class Power position saved.'] = '职业资源条位置已保存。'
+	L['Class Power position reset.'] = '职业资源条位置已重置。'
 	return 
 end
 

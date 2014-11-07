@@ -1,10 +1,11 @@
 ## Interface: 60000
 ## Title: oUF:Gvv
 ## Author: Raka
-## Version: 0.3b
+## Version: 0.4
 ## X-eMail: i@lotc.cc
 ## Dependencies: oUF
 ## Notes: oUF layout for GvvUI
+## SavedVariables: CPS
 
 core.lua
 functions.lua
