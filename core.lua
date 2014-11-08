@@ -472,10 +472,12 @@ local function Gvv_Style(self, unit)
 		local t = self.ap:CreateTexture('ARTWORK')
 		t:SetAllPoints()
 		t:SetTexture(0, 0, 0, 0.5)
-		if CPS['a1'] == nil or CPS['a2'] == nil or CPS['x'] == nil or CPS['y'] == nil then
-			self.ap:SetPoint('RIGHT', self, 'LEFT', -110, 24)
-		else
-			self.ap:SetPoint(CPS['a1'], CPS['f'], CPS['a2'], CPS['x'], CPS['y'])
+		if CPS ~= nil then
+			if CPS['a1'] == nil or CPS['a2'] == nil or CPS['x'] == nil or CPS['y'] == nil then
+				self.ap:SetPoint('RIGHT', self, 'LEFT', -110, 24)
+			else
+				self.ap:SetPoint(CPS['a1'], CPS['f'], CPS['a2'], CPS['x'], CPS['y'])
+			end
 		end
 		self.ap:SetMovable(true)
 		self.ap:EnableMouse(true)

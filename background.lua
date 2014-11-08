@@ -78,3 +78,4 @@ function eventHandler(self, event)
 	end
 end
 gvvci:SetScript('OnEvent', eventHandler)
+
