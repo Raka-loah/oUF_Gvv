@@ -478,6 +478,9 @@ local function Gvv_Style(self, unit)
 			else
 				self.ap:SetPoint(CPS['a1'], CPS['f'], CPS['a2'], CPS['x'], CPS['y'])
 			end
+		else
+			CPS = {}
+			self.ap:SetPoint('RIGHT', self, 'LEFT', -110, 24)
 		end
 		self.ap:SetMovable(true)
 		self.ap:EnableMouse(true)
@@ -507,6 +510,9 @@ local function Gvv_Style(self, unit)
 			else	
 				if self.ap:IsShown() then
 					self.ap:Hide()
+					if CPS == nil then
+						CPS = {}
+					end
 					CPS['a1'], CPS['f'], CPS['a2'], CPS['x'], CPS['y'] = self.ap:GetPoint(1)
 					print('oUF_Gvv: ' .. ns.L['Class Power position saved.'])
 					--print(self.ap:GetPoint(1))
