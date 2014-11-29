@@ -24,6 +24,7 @@ if ns.C.drawBorders then
 	end
 	local bframe = CreateFrame('Frame', nil, UIParent)
 	bframe:SetFrameStrata('BACKGROUND')
+	bframe:SetFrameLevel(0)
 	for k, v in pairs(borders) do
 		local t = bframe:CreateTexture(nil, 'BACKGROUND', nil, v[6])
 		t:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\' .. k)

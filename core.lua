@@ -141,7 +141,7 @@ local function Gvv_Style(self, unit)
 		self.Health.Value:SetPoint('RIGHT', self.tcover, 'RIGHT', -5, 0)
 	elseif (unit == 'pet') then
 		self.Health.Value = self:CreateFontString()
-		self.Health.Value:SetFont('Interface\\Addons\\oUF_Gvv\\fonts\\digital.ttf', 16, 'THINOUTLINE')
+		self.Health.Value:SetFont('Interface\\Addons\\oUF_Gvv\\fonts\\menomonia.ttf', 14, 'THINOUTLINE')
 		self.Health.Value:SetTextColor(1.0, 1.0, 1.0)
 		self.Health.Value:SetJustifyH('LEFT')
 		self.Health.Value:SetPoint('LEFT', self.Health, 'RIGHT', 5, 1)
@@ -365,10 +365,10 @@ local function Gvv_Style(self, unit)
 			tborder:SetHorizTile(true)
 			
 			for i= 1, 11 do
-			local t = self:CreateTexture(nil, 'OVERLAY', nil, -1)
-			t:SetSize(3, 13)
-			t:SetPoint('CENTER', Experience, 'LEFT', (rw - 90) * ( i - 1 ) / 10, 0)
-			t:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_dark')
+				local t = self:CreateTexture(nil, 'OVERLAY', nil, -1)
+				t:SetSize(3, 13)
+				t:SetPoint('CENTER', Experience, 'LEFT', (rw - 90) * ( i - 1 ) / 10, 0)
+				t:SetTexture(0,0,0)
 			end
 
 			local Rested = CreateFrame('StatusBar', nil, Experience)
@@ -383,10 +383,10 @@ local function Gvv_Style(self, unit)
 			
 			local backgroundframe = CreateFrame('Frame', nil, UIParent)
 			backgroundframe:SetFrameStrata('BACKGROUND')
+			backgroundframe:SetFrameLevel(1)
 			local bg = backgroundframe:CreateTexture(nil, 'BACKGROUND')
 			bg:SetAllPoints(Experience)
-			bg:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_back')
-			bg:SetHorizTile(true)
+			bg:SetTexture(0.05,0.05,0.05,0.8)
 			
 			self.Experience = Experience
 			self.Experience.Rested = Rested
@@ -397,7 +397,7 @@ local function Gvv_Style(self, unit)
 			local Reputation = CreateFrame('StatusBar', nil, self)
 			Reputation:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 15, 14)
 			Reputation:SetFrameLevel(2)
-			Reputation:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')		
+			Reputation:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')	
 			
 			local maxLevel
 			if IsTrialAccount() then
@@ -712,12 +712,18 @@ local function Gvv_Style(self, unit)
 		Icon:SetPoint('TOPRIGHT', Castbar, 'TOPLEFT')
 		Icon:SetAlpha(0.75)
 		
-		local Text = Castbar:CreateFontString(nil, 'OVERLAY', 'GameFontNormalSmall')
-		Text:SetPoint('LEFT', Icon, 'RIGHT')
+		local Text = Castbar:CreateFontString(nil, 'OVERLAY', 'GameFontNormalOutline')
+		Text:SetPoint('LEFT', Icon, 'RIGHT', 5, 0)
 
 		local Shield = Castbar:CreateTexture(nil, 'OVERLAY')
-		Shield:SetSize(10, 10)
-		Shield:SetPoint('CENTER', Castbar)
+		Shield:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\castbar_shield')
+		if unit == 'player' then
+			Shield:SetSize(32, 32)
+		elseif unit == 'target' then
+			Shield:SetSize(24, 24)
+		end
+		Shield:SetPoint('CENTER', Icon)
+		Shield:SetAlpha(0.75)
 
 		local SafeZone = Castbar:CreateTexture(nil, 'OVERLAY')
 		SafeZone:SetTexture(0.8,0.2,0.2,0.5)
@@ -729,6 +735,7 @@ local function Gvv_Style(self, unit)
 		self.Castbar.Text = Text
 		self.Castbar.Icon = Icon
 		self.Castbar.SafeZone = SafeZone
+		self.Castbar.Shield = Shield
 	end
 	
 	--Resting Icon for player frame--
