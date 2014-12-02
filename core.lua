@@ -612,7 +612,7 @@ local function Gvv_Style(self, unit)
 			-- USELESS MANA BAR --
 			local DruidMana = CreateFrame('StatusBar', nil, self)
 			DruidMana:SetSize(160, 20)
-			DruidMana:SetPoint('LEFT')
+			DruidMana:SetPoint('LEFT', self.ap, 'LEFT', 0, 2)
 			DruidMana:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
 			DruidMana:SetStatusBarColor(0.4,0.4,0.9)
 			local Background = DruidMana:CreateTexture(nil, 'BACKGROUND')
@@ -719,11 +719,13 @@ local function Gvv_Style(self, unit)
 		Shield:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\castbar_shield')
 		if unit == 'player' then
 			Shield:SetSize(32, 32)
+			Shield:SetAlpha(0)
 		elseif unit == 'target' then
 			Shield:SetSize(24, 24)
+			Shield:SetAlpha(0.75)
 		end
 		Shield:SetPoint('CENTER', Icon)
-		Shield:SetAlpha(0.75)
+		
 
 		local SafeZone = Castbar:CreateTexture(nil, 'OVERLAY')
 		SafeZone:SetTexture(0.8,0.2,0.2,0.5)
