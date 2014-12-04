@@ -29,7 +29,7 @@ if ns.C.drawBorders then
 		local t = bframe:CreateTexture(nil, 'BACKGROUND', nil, v[6])
 		t:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\' .. k)
 		t:SetSize(v[1],v[2])
-		t:SetPoint(v[3], 'UIParent', v[3], v[4], v[5])
+		t:SetPoint(v[3], UIParent, v[3], v[4], v[5])
 	end
 	
 	bframe:Show()
@@ -42,7 +42,7 @@ gvvci:SetFrameLevel(3)
 gvvci.ci = gvvci:CreateTexture(nil, 'BACKGROUND', nil, 0)
 gvvci.ci:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\lotc_background_battle')
 gvvci.ci:SetSize(1024, 256)
-gvvci.ci:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 0, 0)
+gvvci.ci:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 0)
 gvvci.ci:SetAlpha(0)
 gvvci.ci.fadein = gvvci.ci:CreateAnimationGroup()
 gvvci.ci.fadeout = gvvci.ci:CreateAnimationGroup()

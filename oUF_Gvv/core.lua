@@ -281,12 +281,12 @@ local function Gvv_Style(self, unit)
 		self.Level = self:CreateFontString()
 		self.Level:SetFont(ns.C.normalFont, 16, 'THINOUTLINE')
 		self.Level:SetJustifyH('CENTER')
-		self.Level:SetPoint('BOTTOM', 'UIParent', 'BOTTOMLEFT', 30, 2)
+		self.Level:SetPoint('BOTTOM', UIParent, 'BOTTOMLEFT', 30, 2)
 		self:Tag(self.Level, '[level]')	
 		self.Level = self:CreateFontString()
 		self.Level:SetFont(ns.C.normalFont, 14, 'THINOUTLINE')
 		self.Level:SetJustifyH('CENTER')
-		self.Level:SetPoint('BOTTOM', 'UIParent', 'BOTTOMRIGHT', -15, 2)
+		self.Level:SetPoint('BOTTOM', UIParent, 'BOTTOMRIGHT', -15, 2)
 		self:Tag(self.Level, '[Gvv:nextlevel]')	
 	elseif unit == 'party' then
 		self.Level = self:CreateFontString()
@@ -341,25 +341,25 @@ local function Gvv_Style(self, unit)
 	if ns.C.showExperience then
 		if unit == 'player' then
 			-- Position and size
-			local Experience = CreateFrame('StatusBar', nil, self)
+			local Experience = CreateFrame('StatusBar', nil, UIParent)
 			
 			Experience:EnableMouse(true)
 			
-			Experience:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 15, 0)
+			Experience:SetPoint('BOTTOM', UIParent, 'BOTTOM', 15, 0)
 			Experience:SetHeight(14)
 			Experience:SetWidth(rw - 90)
-			Experience:SetFrameLevel(1)
+			Experience:SetFrameLevel(2)
 			
 			Experience:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
 			Experience:SetStatusBarColor(211/255, 151/255, 0)
 			
 			-- Always show borders
-			local tborder = self:CreateTexture(nil,'OVERLAY', nil, 0)
+			local tborder = Experience:CreateTexture(nil,'OVERLAY', nil, 0)
 			tborder:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_border')
 			tborder:SetSize(rw - 90,16)
 			tborder:SetPoint('TOP', Experience, 'TOP', 0, 0)
 			tborder:SetHorizTile(true)	
-			tborder = self:CreateTexture(nil,'OVERLAY',nil, 0)
+			tborder = Experience:CreateTexture(nil,'OVERLAY',nil, 0)
 			tborder:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_border')
 			tborder:SetSize(rw - 90,16)
 			tborder:SetPoint('BOTTOM', Experience, 'BOTTOM', 0, 0)
@@ -396,8 +396,8 @@ local function Gvv_Style(self, unit)
 		
 		-- Reputation bar --
 		if unit == 'player' then
-			local Reputation = CreateFrame('StatusBar', nil, self)
-			Reputation:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 15, 14)
+			local Reputation = CreateFrame('StatusBar', nil, UIParent)
+			Reputation:SetPoint('BOTTOM', UIParent, 'BOTTOM', 15, 14)
 			Reputation:SetFrameLevel(2)
 			Reputation:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')	
 			
@@ -410,7 +410,7 @@ local function Gvv_Style(self, unit)
 			if UnitLevel(unit) < maxLevel then
 				Reputation:SetHeight(5)
 			else
-				Reputation:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 15, 0)
+				Reputation:SetPoint('BOTTOM', UIParent, 'BOTTOM', 15, 0)
 				Reputation:SetHeight(14)
 			end
 			Reputation:SetWidth(rw - 90)
@@ -770,7 +770,7 @@ local function Gvv_Style(self, unit)
 			local t = self.bse:CreateTexture(nil, 'BACKGROUND')
 			t:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\bse_' .. k)
 			t:SetSize(v[1],v[2])
-			t:SetPoint(k, 'UIParent')
+			t:SetPoint(k, UIParent)
 		end
 		self.bse:SetAlpha(0)
 	end
@@ -784,7 +784,7 @@ oUF:Factory(function(self)
 
 	if ns.C.showPlayer then
 	local player = self:Spawn('player', 'oUF_Gvv_Player')
-	player:SetPoint('BOTTOM', 'UIParent', 'BOTTOM', 0, 20)
+	player:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 20)
 	
 	local pet = self:Spawn('pet', 'oUF_Gvv_Pet')
 	pet:SetPoint('RIGHT', player, 'LEFT', 0, 25)
@@ -792,15 +792,15 @@ oUF:Factory(function(self)
 	
 	if ns.C.showTarget then
 		local target = self:Spawn('target', 'oUF_Gvv_Target')
-		target:SetPoint('TOP', 'UIParent', 'TOP', 0, -70)
+		target:SetPoint('TOP', UIParent, 'TOP', 0, -70)
 		
 		local targettarget = self:Spawn('targettarget', 'oUF_Gvv_TargetTarget')
-		targettarget:SetPoint('TOP', 'UIParent', 'TOP', 270, -82)
+		targettarget:SetPoint('TOP', UIParent, 'TOP', 270, -82)
 	end
 	
 	if ns.C.showFocus then
 		local focus = self:Spawn('focus', 'oUF_Gvv_Focus')
-		focus:SetPoint('TOP', 'UIParent', 'TOP', 270, -140)
+		focus:SetPoint('TOP', UIParent, 'TOP', 270, -140)
 		
 		local focustarget = self:Spawn('focustarget', 'oUF_Gvv_FocusTarget')
 		focustarget:SetPoint('TOP', focus, 'BOTTOM', 20, -10)
@@ -814,7 +814,7 @@ oUF:Factory(function(self)
 			]],
 			'showParty', true,
 			'yOffset', -30)
-		party:SetPoint('TOPLEFT', 'UIParent','TOPLEFT', 0, -115)
+		party:SetPoint('TOPLEFT', UIParent,'TOPLEFT', 0, -115)
 	end
 	
 	-- Hide blizz boss frames --
