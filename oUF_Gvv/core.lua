@@ -321,7 +321,9 @@ local function Gvv_Style(self, unit)
 	end
 	
 	-- Auras --
-	if (unit == 'target' or unit == 'party') then
+	if (unit == 'target' and ns.C.showTarget) then
+		self.Auras = ns.CreateAura(self, unit)
+	elseif (unit == 'party' and ns.C.showParty) then
 		self.Auras = ns.CreateAura(self, unit)
 	end
 	
@@ -712,7 +714,7 @@ local function Gvv_Style(self, unit)
 		Icon:SetPoint('TOPRIGHT', Castbar, 'TOPLEFT')
 		Icon:SetAlpha(0.75)
 		
-		local Text = Castbar:CreateFontString(nil, 'OVERLAY', 'GameFontNormalOutline')
+		local Text = Castbar:CreateFontString(nil, 'OVERLAY', 'GameFontNormalSmall')
 		Text:SetPoint('LEFT', Icon, 'RIGHT', 5, 0)
 
 		local Shield = Castbar:CreateTexture(nil, 'OVERLAY')
@@ -738,6 +740,10 @@ local function Gvv_Style(self, unit)
 		self.Castbar.Icon = Icon
 		self.Castbar.SafeZone = SafeZone
 		self.Castbar.Shield = Shield
+		
+		if (unit == 'target' and (not ns.C.showTarget)) then
+			self.Castbar:Hide()
+		end
 	end
 	
 	--Resting Icon for player frame--
