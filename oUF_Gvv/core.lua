@@ -282,11 +282,13 @@ local function Gvv_Style(self, unit)
 		self.Level:SetFont(ns.C.normalFont, 16, 'THINOUTLINE')
 		self.Level:SetJustifyH('CENTER')
 		self.Level:SetPoint('BOTTOM', UIParent, 'BOTTOMLEFT', 30, 2)
+		self.Level:SetParent(UIParent)
 		self:Tag(self.Level, '[level]')	
 		self.Level = self:CreateFontString()
 		self.Level:SetFont(ns.C.normalFont, 14, 'THINOUTLINE')
 		self.Level:SetJustifyH('CENTER')
 		self.Level:SetPoint('BOTTOM', UIParent, 'BOTTOMRIGHT', -15, 2)
+		self.Level:SetParent(UIParent)
 		self:Tag(self.Level, '[Gvv:nextlevel]')	
 	elseif unit == 'party' then
 		self.Level = self:CreateFontString()
@@ -354,12 +356,15 @@ local function Gvv_Style(self, unit)
 			Experience:SetStatusBarColor(211/255, 151/255, 0)
 			
 			-- Always show borders
-			local tborder = Experience:CreateTexture(nil,'OVERLAY', nil, 0)
+			local expborder = CreateFrame('Frame', nil, UIParent)
+			expborder:SetAllPoints(Experience)
+			expborder:SetFrameLevel(3)
+			local tborder = expborder:CreateTexture(nil,'OVERLAY', nil, 0)
 			tborder:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_border')
 			tborder:SetSize(rw - 90,16)
 			tborder:SetPoint('TOP', Experience, 'TOP', 0, 0)
 			tborder:SetHorizTile(true)	
-			tborder = Experience:CreateTexture(nil,'OVERLAY',nil, 0)
+			tborder = expborder:CreateTexture(nil,'OVERLAY',nil, 0)
 			tborder:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_border')
 			tborder:SetSize(rw - 90,16)
 			tborder:SetPoint('BOTTOM', Experience, 'BOTTOM', 0, 0)
@@ -367,7 +372,7 @@ local function Gvv_Style(self, unit)
 			tborder:SetHorizTile(true)
 			
 			for i= 1, 11 do
-				local t = self:CreateTexture(nil, 'OVERLAY', nil, -1)
+				local t = expborder:CreateTexture(nil, 'OVERLAY', nil, -1)
 				t:SetSize(3, 13)
 				t:SetPoint('CENTER', Experience, 'LEFT', (rw - 90) * ( i - 1 ) / 10, 0)
 				t:SetTexture(0,0,0)
@@ -381,7 +386,7 @@ local function Gvv_Style(self, unit)
 			local Value = Experience:CreateFontString(nil, 'HIGHLIGHT')
 			Value:SetPoint('CENTER', Experience, 'CENTER' , -15, 0)
 			Value:SetFontObject(GameFontHighlight)
-			self:Tag(Value, '[curxp] / [maxxp] [Gvv:currested]')
+			self:Tag(Value, '[curxp] / [maxxp] ([perxp]%) [Gvv:currested]')
 			
 			local backgroundframe = CreateFrame('Frame', nil, UIParent)
 			backgroundframe:SetFrameStrata('BACKGROUND')
@@ -392,6 +397,7 @@ local function Gvv_Style(self, unit)
 			
 			self.Experience = Experience
 			self.Experience.Rested = Rested
+			self.Experience:SetParent(UIParent)
 		end
 		
 		-- Reputation bar --
@@ -400,6 +406,7 @@ local function Gvv_Style(self, unit)
 			Reputation:SetPoint('BOTTOM', UIParent, 'BOTTOM', 15, 14)
 			Reputation:SetFrameLevel(2)
 			Reputation:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')	
+			Reputation:EnableMouse(true)
 			
 			local maxLevel
 			if IsTrialAccount() then
@@ -412,7 +419,12 @@ local function Gvv_Style(self, unit)
 			else
 				Reputation:SetPoint('BOTTOM', UIParent, 'BOTTOM', 15, 0)
 				Reputation:SetHeight(14)
+				local Value = Reputation:CreateFontString(nil, 'HIGHLIGHT')
+				Value:SetPoint('CENTER', Reputation, 'CENTER' , -15, 0)
+				Value:SetFontObject(GameFontHighlight)
+				self:Tag(Value, '[currep] / [maxrep] ([perrep]%) [reputation]')
 			end
+			
 			Reputation:SetWidth(rw - 90)
 			Reputation.colorStanding = true
 			self.Reputation = Reputation
