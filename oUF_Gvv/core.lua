@@ -689,7 +689,7 @@ local function Gvv_Style(self, unit)
 			CPoint:SetSize(16, 16)
 			CPoint:SetPoint('RIGHT', self.tcover, 'LEFT', (index - 1) * -17 -3, 0)
 			CPoint:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\combopoint')
-			CPoint:SetVertexColor(1,0.8,0.8)
+			--CPoint:SetVertexColor(1,0.8,0.8)
 			
 			CPoints[index] = CPoint
 		end
