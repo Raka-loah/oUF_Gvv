@@ -156,7 +156,8 @@ function ns.CreateAura(self, unit)
 	frame["spacing-y"] = 4
 	frame.showStealableBuffs = true
 	frame.onlyShowPlayer = ns.C.onlyShowPlayer
-	frame.disableCooldown = true 
+	frame.disableCooldown = true
+	frame.gap = true
 	
 	frame.PreUpdate = ns.AuraPreUpdate
 	frame.PostCreateIcon = ns.CreateAuraIcon
@@ -193,6 +194,17 @@ function ns.CreateAuraIcon (self, button)
 	button.count:ClearAllPoints()
 	button.count:SetPoint("TOPRIGHT", button.fg, "TOPRIGHT", 4, 4)
 	button.count:SetFont('Interface\\Addons\\oUF_Gvv\\fonts\\menomonia.ttf', 12, "THINOUTLINE")
+	
+	hooksecurefunc(button.icon, "SetTexture", function(self, texture)
+		local button = self:GetParent()
+		if texture and strlen(texture) > 0 then
+			button.timer:Show()
+			button.count:Show()
+		else
+			button.timer:Hide()
+			button.count:Hide()
+		end
+	end)
 end
 
 function ns.UpdateAuraIcon(self, unit, icon, index, offset)

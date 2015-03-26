@@ -3,22 +3,7 @@
 local _, ns = ...
 local C = ns.C
 
-local BuffFrame = _G["BuffFrame"]
-local ConsolidatedBuffs = _G["ConsolidatedBuffs"]
-
-local bheader = CreateFrame("Frame", "bheader", UIParent)
-bheader:SetSize(C.buffIconSize, C.buffIconSize)
-bheader:SetPoint("BOTTOM", "UIParent", "BOTTOM", C.bframeX, C.bframeY)
-
-local dheader = CreateFrame("Frame", "dheader", UIParent)
-dheader:SetSize(C.buffIconSize, C.buffIconSize)
-dheader:SetPoint("BOTTOM", "UIParent", "BOTTOM", C.bframeX, C.bframeY + 4 + 2 * C.buffIconSize)
-
-local theader = CreateFrame("Frame", "theader", UIParent)
-theader:SetSize(C.buffIconSize, C.buffIconSize)
-theader:SetPoint("BOTTOM", "UIParent", "BOTTOM", C.bframeX - 5, C.bframeY + C.buffIconSize)
-
-local function SetDurationText(duration, arg1, arg2)
+function ns.SetDurationText(duration, arg1, arg2)
 	duration:SetText(format(gsub(arg1, "[ .]", ""), arg2))
 end
 
@@ -85,7 +70,7 @@ local function UpdateDebuffAnchors(buttonName, index)
 	end
 end
 
-local function UpdateTemporaryEnchantAnchors(self)
+function ns.UpdateTemporaryEnchantAnchors(self)
 	local previous
 	for i = 1, NUM_TEMP_ENCHANT_FRAMES do
 		local button = _G["TempEnchant"..i]
@@ -104,7 +89,7 @@ local function UpdateTemporaryEnchantAnchors(self)
 	end
 end
 
-local function SetAuraButtonStyle(btn, index, atype)
+function ns.SetAuraButtonStyle(btn, index, atype)
 	local name = btn..(index or "")
 	local button = _G[name]
 
@@ -117,7 +102,6 @@ local function SetAuraButtonStyle(btn, index, atype)
 	local bDuration = _G[name.."Duration"]
 
 	if bIcon then
-		--ns.SetIconStyle(button, bIcon)
 		if atype == "CONSOLIDATED" then
 			bIcon:SetSize(C.buffIconSize, C.buffIconSize)
 			bIcon:SetTexCoord(18 / 128, 46 / 128, 18 / 64, 46 / 64)
@@ -134,26 +118,36 @@ local function SetAuraButtonStyle(btn, index, atype)
 		bDuration:SetFont(C.normalFont, 12, "THINOUTLINE")
 		bDuration:ClearAllPoints()
 		bDuration:SetPoint("BOTTOM", button, "BOTTOM", 0, 0)
-		hooksecurefunc(bDuration, "SetFormattedText", SetDurationText)
+		hooksecurefunc(bDuration, "SetFormattedText", ns.SetDurationText)
 	end
 	
 	if bBorder then
 		bBorder:Hide()
 	end
-	--[[bBorder = ns.CreateButtonBorder(button, 0, bBorder)
-	bBorder:SetDrawLayer("BACKGROUND", 1)
-
-	if atype == "HELPFUL" then
-		bBorder:SetVertexColor(unpack(M.colors.button.normal))
-	elseif atype == "TEMPENCHANT" then
-		bBorder:SetVertexColor(0.7, 0, 1)
-	end]]
 
 	button.styled = true
 end
 
 if ns.C.useBuffframe then
-	do
+	local bp = CreateFrame('Frame', nil)
+	bp:RegisterEvent('PLAYER_ENTERING_WORLD')
+	local function bpeh(self, event)
+		local BuffFrame = _G["BuffFrame"]
+		local ConsolidatedBuffs = _G["ConsolidatedBuffs"]
+
+		local bheader = CreateFrame("Frame", "bheader", UIParent)
+		bheader:SetSize(C.buffIconSize, C.buffIconSize)
+		bheader:SetPoint("BOTTOM", "UIParent", "BOTTOM", C.bframeX, C.bframeY)
+
+		local dheader = CreateFrame("Frame", "dheader", UIParent)
+		dheader:SetSize(C.buffIconSize, C.buffIconSize)
+		dheader:SetPoint("BOTTOM", "UIParent", "BOTTOM", C.bframeX, C.bframeY + 4 + 2 * C.buffIconSize)
+
+		local theader = CreateFrame("Frame", "theader", UIParent)
+		theader:SetSize(C.buffIconSize, C.buffIconSize)
+		theader:SetPoint("BOTTOM", "UIParent", "BOTTOM", C.bframeX - 5, C.bframeY + C.buffIconSize)
+		
+		
 		BuffFrame:SetParent(bheader)
 		BuffFrame:ClearAllPoints()
 		BuffFrame:SetPoint("BOTTOMLEFT", 0, 0)
@@ -166,18 +160,27 @@ if ns.C.useBuffframe then
 		TemporaryEnchantFrame:SetParent(theader)
 		TemporaryEnchantFrame:ClearAllPoints()
 		TemporaryEnchantFrame:SetPoint("BOTTOMLEFT", 0, 0)
-
-		UpdateTemporaryEnchantAnchors(theader)
-
-		hooksecurefunc("BuffFrame_UpdateAllBuffAnchors", UpdateBuffAnchors)
-		hooksecurefunc("DebuffButton_UpdateAnchors", UpdateDebuffAnchors)
-		hooksecurefunc("AuraButton_Update", SetAuraButtonStyle)
-
-		for i = 1, NUM_TEMP_ENCHANT_FRAMES do
-			SetAuraButtonStyle("TempEnchant", i, "TEMPENCHANT")
-		end
-
-		SetAuraButtonStyle("ConsolidatedBuffs", nil, "CONSOLIDATED")
+		
 		ConsolidatedBuffsTooltip:SetScale(1)
 	end
+	bp:SetScript('OnEvent', bpeh)
+	
+	local bf = CreateFrame('Frame', nil)
+	bf:RegisterEvent('UNIT_AURA')
+	local function bfeh(self, event, unit)
+		if string.lower(unit) == 'player' then
+			ns.UpdateTemporaryEnchantAnchors(theader)
+
+			for i = 1, NUM_TEMP_ENCHANT_FRAMES do
+				ns.SetAuraButtonStyle("TempEnchant", i, "TEMPENCHANT")
+			end
+
+			ns.SetAuraButtonStyle("ConsolidatedBuffs", nil, "CONSOLIDATED")
+		end
+	end
+	bf:SetScript('OnEvent', bfeh)
+	
+	hooksecurefunc("BuffFrame_UpdateAllBuffAnchors", UpdateBuffAnchors)
+	hooksecurefunc("DebuffButton_UpdateAnchors", UpdateDebuffAnchors)
+	hooksecurefunc("AuraButton_Update", ns.SetAuraButtonStyle)
 end

@@ -490,7 +490,11 @@ local function Gvv_Style(self, unit)
 			if CPS['a1'] == nil or CPS['a2'] == nil or CPS['x'] == nil or CPS['y'] == nil then
 				self.ap:SetPoint('RIGHT', self, 'LEFT', -110, 24)
 			else
-				self.ap:SetPoint(CPS['a1'], CPS['f'], CPS['a2'], CPS['x'], CPS['y'])
+				if not CPS['f'] then
+					self.ap:SetPoint(CPS['a1'], UIParent, CPS['a2'], CPS['x'], CPS['y'])
+				else
+					self.ap:SetPoint(CPS['a1'], CPS['f'], CPS['a2'], CPS['x'], CPS['y'])
+				end
 			end
 		else
 			CPS = {}
@@ -527,7 +531,13 @@ local function Gvv_Style(self, unit)
 					if CPS == nil then
 						CPS = {}
 					end
-					CPS['a1'], CPS['f'], CPS['a2'], CPS['x'], CPS['y'] = self.ap:GetPoint(1)
+					local region
+					CPS['a1'], region, CPS['a2'], CPS['x'], CPS['y'] = self.ap:GetPoint(1)
+					if region then
+						CPS['f'] = region:GetName()
+					else
+						CPS['f'] = 'UIParent'
+					end
 					print('oUF_Gvv: ' .. ns.L['Class Power position saved.'])
 					--print(self.ap:GetPoint(1))
 				else
@@ -679,7 +689,7 @@ local function Gvv_Style(self, unit)
 			CPoint:SetSize(16, 16)
 			CPoint:SetPoint('RIGHT', self.tcover, 'LEFT', (index - 1) * -17 -3, 0)
 			CPoint:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\combopoint')
-			CPoint:SetVertexColor(1,0.8,0.8)
+			--CPoint:SetVertexColor(1,0.8,0.8)
 			
 			CPoints[index] = CPoint
 		end

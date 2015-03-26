@@ -3,10 +3,9 @@ oUF_Gvv
 
 A GW2-like oUF layout for World of Warcraft.
 
-Current Version: v0.4c
+Current Version: v0.4e
 
 Changes in this version:
-- Castbar icon will show a red border for a non-interuptible spell.
-- Aura icons and castbar will no longer show for target and party frames if the frames are disabled.
-- Experience bar art updated.
-- Removed redundant files.
+- Bump toc to 60100(v6.1)
+- Added a gap between Buff and Debuffs on Target frame.
+- Combo Point art update.
