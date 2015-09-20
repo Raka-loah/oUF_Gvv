@@ -5,35 +5,46 @@ By Raka from LotC.cc
 ]]
 local _, ns = ...
 
---Resolution detect
-local rw = GetScreenWidth()
-local rh = GetScreenHeight()
-
 --Borders--
-if ns.C.drawBorders then
-	local borders = {
-		['lotc_border_top'] = {rw, 20, 'TOP', 0, 5, 1}, --width, height, anchor, offsetX, offsetY, layer
-		['lotc_border_bottom'] = {rw, 20, 'BOTTOM', 0, -5, 1},
-		['lotc_border_left'] = {20, rh, 'LEFT', -5, 0, 1},
-		['lotc_border_right'] = {20, rh, 'RIGHT', 5, 0, 1},
-		['lotc_background_normal'] = {1024, 128, 'BOTTOM', 0, 0, 0}
-	}
+function gvv_draw_borders(self, event)
+	local rw = GetScreenWidth()
+	local rh = GetScreenHeight()
+	local borders = {}
+	if ns.C.drawBorders then
+		borders = {
+			['lotc_border_top'] = {rw, 20, 'TOP', 0, 5, 1}, --width, height, anchor, offsetX, offsetY, layer
+			['lotc_border_bottom'] = {rw, 20, 'BOTTOM', 0, -5, 1},
+			['lotc_border_left'] = {20, rh, 'LEFT', -5, 0, 1},
+			['lotc_border_right'] = {20, rh, 'RIGHT', 5, 0, 1},
+			['lotc_background_normal'] = {1024, 128, 'BOTTOM', 0, 0, 0}
+		}
+	end
 	if ns.C.showExperience then
 		borders['lotc_border_bottomleft'] = {64, 32, 'BOTTOMLEFT', 0, 0, 2}
 		borders['lotc_border_bottomright'] = {32, 32, 'BOTTOMRIGHT', 0, 0, 2}
 	end
-	local bframe = CreateFrame('Frame', nil, UIParent)
-	bframe:SetFrameStrata('BACKGROUND')
-	bframe:SetFrameLevel(0)
-	for k, v in pairs(borders) do
-		local t = bframe:CreateTexture(nil, 'BACKGROUND', nil, v[6])
-		t:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\' .. k)
-		t:SetSize(v[1],v[2])
-		t:SetPoint(v[3], UIParent, v[3], v[4], v[5])
+	if ns.C.drawBorders or ns.C.showExperience then
+		local bframe = CreateFrame('Frame', 'oUF_Gvv_BorderFrame', UIParent)
+		bframe:SetFrameStrata('BACKGROUND')
+		bframe:SetFrameLevel(0)
+		for k, v in pairs(borders) do
+			local t = bframe:CreateTexture(nil, 'BACKGROUND', nil, v[6])
+			t:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\' .. k)
+			t:SetSize(v[1],v[2])
+			t:SetPoint(v[3], UIParent, v[3], v[4], v[5])
+			print(k .. ' ' .. v[1] .. ' ' .. v[2])
+		end
+
+		bframe:Show()
 	end
-	
-	bframe:Show()
 end
+local dummyframe = CreateFrame('Frame', nil)
+dummyframe:RegisterEvent('VARIABLES_LOADED')
+dummyframe:SetScript('OnEvent', function(self, event)
+	gvv_draw_borders()
+	self:UnregisterAllEvents()
+	self = nil
+end)
 
 --Combat Indicator--
 local gvvci = CreateFrame('Frame', nil, UIParent)
