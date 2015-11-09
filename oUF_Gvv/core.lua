@@ -21,6 +21,7 @@ local function Gvv_Style(self, unit)
 		self:SetSize(320,50)
 		self.tcover = self:CreateTexture(nil, 'ARTWORK', nil, 0)
 		self.tcover:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_cover')
+		self.tcover:SetVertexColor(0.0, 0.0, 0.0)
 		self.tcover:SetSize(256,16)
 		self.tcover:SetPoint('TOPLEFT', self, 'TOPLEFT', 0, -30)
 		self.pback = self:CreateTexture(nil, 'BACKGROUND', nil, -1)
@@ -547,7 +548,7 @@ local function Gvv_Style(self, unit)
 		end
 		SlashCmdList['GVV'] = aphandler
 		
-		local playerclass = string.upper(select(2, UnitClass('player')));
+		local playerclass = string.upper(select(2, UnitClass('player')))
 		
 		if playerclass == 'SHAMAN' then
 			-- Living Honor Points --
@@ -795,6 +796,35 @@ local function Gvv_Style(self, unit)
 			t:SetPoint(k, UIParent)
 		end
 		self.bse:SetAlpha(0)
+	end
+
+	-- Execution Indicator --
+	if ns.C.showLowHealth then
+		local playerspec = GetSpecializationInfo(GetSpecialization())
+		local lhperc = {
+			[65] = 20,
+			[66] = 20,
+			[70] = 20,
+			[71] = 20,
+			[72] = 20,
+			[73] = 20,			
+			[253] = 25,
+			[254] = 35,
+			[255] = 25,
+			[258] = 20,
+			[259] = 35,
+			[267] = 20,
+			[268] = 10,
+			[269] = 10,
+			[270] = 10
+		}
+		if lhperc[playerspec] then
+			ns.C.ei = lhperc[playerspec]
+		else
+			ns.C.ei = 0
+		end
+	else
+		ns.C.ei = 0
 	end
 	
 	return self

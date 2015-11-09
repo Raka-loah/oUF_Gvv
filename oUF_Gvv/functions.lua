@@ -33,7 +33,7 @@ function ns.PostUpdateHealth(Health, unit, cur, max)
 	if UnitIsDeadOrGhost(unit) then
 		Health:SetValue(0)
 		Health.Value:SetText(nil)
-		return
+		--return
 	end
 	
 	if ( unit == 'target' or unit == 'focus' or unit == 'targettarget' or unit == 'focustarget') then
@@ -41,6 +41,13 @@ function ns.PostUpdateHealth(Health, unit, cur, max)
 			Health.Value:SetText(format('%s', ns.FormatValue(cur)))
 		else
 			Health.Value:SetText(nil)
+		end
+		if self.tcover and ns.C.ei > 0 and unit == 'target' then
+			if perc <= ns.C.ei and cur > 1 then
+				self.tcover:SetVertexColor(0.8, 0.0, 0.0)
+			else
+				self.tcover:SetVertexColor(0.0, 0.0, 0.0)
+			end
 		end
 	elseif unit == 'pet' then
 		Health.Value:SetText(format('%s', ns.FormatValue(cur)))

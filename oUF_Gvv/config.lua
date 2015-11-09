@@ -12,6 +12,7 @@ ns.C.screenEffect	= true	-- Low health screen glow effect 低血量屏幕特效
 ns.C.showPlayer		= true	-- Player and Pet frame 玩家血球与宠物框体
 ns.C.showCastbar	= true	-- Castbar 施法条
 ns.C.showClassPower	= true	-- Class power 职业副资源
+ns.C.showLowHealth	= true	-- Enemy low health indicator 斩杀线提示
 
 ns.C.showClsBdr		= true	-- Classification border for Rares, Elites and Bosses 稀有、精英与Boss头像标识
 

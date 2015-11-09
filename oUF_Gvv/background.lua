@@ -32,7 +32,7 @@ function gvv_draw_borders(self, event)
 			t:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\' .. k)
 			t:SetSize(v[1],v[2])
 			t:SetPoint(v[3], UIParent, v[3], v[4], v[5])
-			print(k .. ' ' .. v[1] .. ' ' .. v[2])
+			--print(k .. ' ' .. v[1] .. ' ' .. v[2])
 		end
 
 		bframe:Show()
