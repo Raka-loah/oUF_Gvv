@@ -38,7 +38,13 @@ function ns.PostUpdateHealth(Health, unit, cur, max)
 	
 	if ( unit == 'target' or unit == 'focus' or unit == 'targettarget' or unit == 'focustarget') then
 		if cur > 1 and (cur < max or (not ns.C.ahfHPtext)) then
-			Health.Value:SetText(format('%s', ns.FormatValue(cur)))
+			if GetCVar("statusTextDisplay") == "PERCENT" then
+				Health.Value:SetText(format('%d%%', perc))
+			elseif GetCVar("statusTextDisplay") == "BOTH" then
+				Health.Value:SetText(format('%s/%d%%', ns.FormatValue(cur), perc))
+			else
+				Health.Value:SetText(format('%s', ns.FormatValue(cur)))
+			end
 		else
 			Health.Value:SetText(nil)
 		end

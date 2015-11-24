@@ -800,8 +800,12 @@ local function Gvv_Style(self, unit)
 
 	-- Execution Indicator --
 	if ns.C.showLowHealth then
-		local playerspec = GetSpecializationInfo(GetSpecialization())
+		local playerspec = 0
+		if GetSpecialization() then
+			playerspec = GetSpecializationInfo(GetSpecialization())
+		end
 		local lhperc = {
+			[0] = 0,
 			[65] = 20,
 			[66] = 20,
 			[70] = 20,
@@ -826,7 +830,7 @@ local function Gvv_Style(self, unit)
 	else
 		ns.C.ei = 0
 	end
-	
+
 	return self
 end
 

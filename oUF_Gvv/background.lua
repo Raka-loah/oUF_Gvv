@@ -3,7 +3,7 @@ GvvUI Background
 Create GW2-like borders and backgrounds
 By Raka from LotC.cc
 ]]
-local _, ns = ...
+local ADDON_NAME, ns = ...
 
 --Borders--
 function gvv_draw_borders(self, event)
