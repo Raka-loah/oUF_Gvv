@@ -11,14 +11,14 @@ local function UpdateBuffAnchors()
 	local numBuffs, slack = 0, 0
 	local button, previous, above
 
-	if IsInGroup() and GetCVarBool("consolidateBuffs") then
-		slack = 1
-	end
+--	if IsInGroup() and GetCVarBool("consolidateBuffs") then
+--		slack = 1
+--	end
 
 	for i = 1, BUFF_ACTUAL_DISPLAY do
 		button = _G["BuffButton"..i]
 
-		if not button.consolidated then
+--		if not button.consolidated then
 			numBuffs = numBuffs + 1
 			index = numBuffs + slack
 
@@ -52,7 +52,7 @@ local function UpdateBuffAnchors()
 			end
 
 			previous = button
-		end
+--		end
 	end
 end
 
@@ -101,13 +101,13 @@ function ns.SetAuraButtonStyle(btn, index, atype)
 	local bCount = _G[name.."Count"]
 	local bDuration = _G[name.."Duration"]
 
-	if bIcon then
+--[[	if bIcon then
 		if atype == "CONSOLIDATED" then
 			bIcon:SetSize(C.buffIconSize, C.buffIconSize)
 			bIcon:SetTexCoord(18 / 128, 46 / 128, 18 / 64, 46 / 64)
 		end
 	end
-
+]]
 	if bCount then
 		bCount:SetFont(C.normalFont, 12, "THINOUTLINE")
 		bCount:ClearAllPoints()
@@ -133,7 +133,7 @@ if ns.C.useBuffframe then
 	bp:RegisterEvent('PLAYER_ENTERING_WORLD')
 	local function bpeh(self, event)
 		local BuffFrame = _G["BuffFrame"]
-		local ConsolidatedBuffs = _G["ConsolidatedBuffs"]
+--		local ConsolidatedBuffs = _G["ConsolidatedBuffs"]
 
 		local bheader = CreateFrame("Frame", "bheader", UIParent)
 		bheader:SetSize(C.buffIconSize, C.buffIconSize)
@@ -152,16 +152,16 @@ if ns.C.useBuffframe then
 		BuffFrame:ClearAllPoints()
 		BuffFrame:SetPoint("BOTTOMLEFT", 0, 0)
 		
-		ConsolidatedBuffs:SetParent(bheader)
-		ConsolidatedBuffs:ClearAllPoints()
-		ConsolidatedBuffs:SetSize(C.buffIconSize, C.buffIconSize)
-		ConsolidatedBuffs:SetPoint("BOTTOMLEFT", 0, 0)
+--		ConsolidatedBuffs:SetParent(bheader)
+--		ConsolidatedBuffs:ClearAllPoints()
+--		ConsolidatedBuffs:SetSize(C.buffIconSize, C.buffIconSize)
+--		ConsolidatedBuffs:SetPoint("BOTTOMLEFT", 0, 0)
 		
 		TemporaryEnchantFrame:SetParent(theader)
 		TemporaryEnchantFrame:ClearAllPoints()
 		TemporaryEnchantFrame:SetPoint("BOTTOMLEFT", 0, 0)
 		
-		ConsolidatedBuffsTooltip:SetScale(1)
+--		ConsolidatedBuffsTooltip:SetScale(1)
 	end
 	bp:SetScript('OnEvent', bpeh)
 	

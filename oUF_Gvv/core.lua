@@ -164,7 +164,7 @@ local function Gvv_Style(self, unit)
 		self.Health.lowHP:SetPoint('CENTER')
 		self.Health.lowHP:SetVertexColor(1.0, 1.0, 1.0)
 		self.Health.lowHP:SetAlpha(0)
-		ns.CreateAlphaAnimation(self.Health.lowHP, 1)
+		ns.CreateAlphaAnimation(self.Health.lowHP, 0, 1)
 	end
 	
 	-- Power Bar --
@@ -376,7 +376,7 @@ local function Gvv_Style(self, unit)
 				local t = expborder:CreateTexture(nil, 'OVERLAY', nil, -1)
 				t:SetSize(3, 13)
 				t:SetPoint('CENTER', Experience, 'LEFT', (rw - 90) * ( i - 1 ) / 10, 0)
-				t:SetTexture(0,0,0)
+				t:SetColorTexture(0,0,0,1)
 			end
 
 			local Rested = CreateFrame('StatusBar', nil, Experience)
@@ -394,7 +394,7 @@ local function Gvv_Style(self, unit)
 			backgroundframe:SetFrameLevel(1)
 			local bg = backgroundframe:CreateTexture(nil, 'BACKGROUND')
 			bg:SetAllPoints(Experience)
-			bg:SetTexture(0.05,0.05,0.05,0.8)
+			bg:SetColorTexture(0.05,0.05,0.05,0.8)
 			
 			self.Experience = Experience
 			self.Experience.Rested = Rested
@@ -486,7 +486,7 @@ local function Gvv_Style(self, unit)
 		self.ap:SetSize(200, 32)
 		local t = self.ap:CreateTexture('ARTWORK')
 		t:SetAllPoints()
-		t:SetTexture(0, 0, 0, 0.5)
+		t:SetColorTexture(0, 0, 0, 0.5)
 		if CPS ~= nil then
 			if CPS['a1'] == nil or CPS['a2'] == nil or CPS['x'] == nil or CPS['y'] == nil then
 				self.ap:SetPoint('RIGHT', self, 'LEFT', -110, 24)
@@ -581,7 +581,7 @@ local function Gvv_Style(self, unit)
 				ClassIcons[index] = Icon
 			end
 			self.ClassIcons = ClassIcons
-			
+	
 			if playerclass == 'WARLOCK' then
 				-- Just WARLOCK things --
 				local DemonicFuryBar = CreateFrame('StatusBar', nil, self)
@@ -604,6 +604,16 @@ local function Gvv_Style(self, unit)
 				
 				self.BurningEmbers = BurningEmbers
 			end
+		elseif playerclass == 'ROGUE' then
+			local ClassIcons = {}
+			for index = 1, 6 do
+				local Icon = self:CreateTexture(nil, 'BACKGROUND')
+				Icon:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\combopoint')
+				Icon:SetSize(20, 20)
+				Icon:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25 - 10, 2)
+				ClassIcons[index] = Icon
+			end
+			self.ClassIcons = ClassIcons
 		elseif playerclass == 'DRUID' then --hate this class particularly
 			-- BIG FAT CHICKEN BAR --
 			local EclipseBar = CreateFrame('Frame', nil, self)
@@ -681,22 +691,6 @@ local function Gvv_Style(self, unit)
 		
 	end
 	
-	-- C-C-COMBO BAR! May be changed in WoD?--
-	if unit == 'target' then
-		local CPoints = {}
-		for index = 1, MAX_COMBO_POINTS do
-			local CPoint = self:CreateTexture(nil, 'BACKGROUND')
-
-			CPoint:SetSize(16, 16)
-			CPoint:SetPoint('RIGHT', self.tcover, 'LEFT', (index - 1) * -17 -3, 0)
-			CPoint:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\combopoint')
-			--CPoint:SetVertexColor(1,0.8,0.8)
-			
-			CPoints[index] = CPoint
-		end
-		self.CPoints = CPoints
-	end
-	
 	-- Castbar. Maybe Quartz is better?--
 	
 	if (unit == 'player' or unit == 'target') and ns.C.showCastbar then
@@ -753,7 +747,7 @@ local function Gvv_Style(self, unit)
 		
 
 		local SafeZone = Castbar:CreateTexture(nil, 'OVERLAY')
-		SafeZone:SetTexture(0.8,0.2,0.2,0.5)
+		SafeZone:SetColorTexture(0.8,0.2,0.2,0.5)
 
 		self.Castbar = Castbar
 		self.Castbar.bg = Background
@@ -806,27 +800,11 @@ local function Gvv_Style(self, unit)
 		end
 		local lhperc = {
 			[0] = 0,
-			[65] = 20,
-			[66] = 20,
-			[70] = 20,
 			[71] = 20,
 			[72] = 20,
-			[73] = 20,			
-			[253] = 25,
-			[254] = 35,
-			[255] = 25,
-			[258] = 20,
-			[259] = 35,
-			[267] = 20,
-			[268] = 10,
-			[269] = 10,
-			[270] = 10
+			[258] = 20
 		}
-		if lhperc[playerspec] then
-			ns.C.ei = lhperc[playerspec]
-		else
-			ns.C.ei = 0
-		end
+		ns.C.ei = lhperc[playerspec] or 0
 	else
 		ns.C.ei = 0
 	end

@@ -100,12 +100,13 @@ function ns.CreateFontString(parent, size, justify, outline)
 	return fs
 end
 
-function ns.CreateAlphaAnimation(self, change, duration, loopType)
+function ns.CreateAlphaAnimation(self, from, to, duration, loopType)
 	self.animation = self:CreateAnimationGroup()
 	self.animation:SetLooping(loopType or "BOUNCE")
 	local glowAnimation = self.animation:CreateAnimation("ALPHA")
 	glowAnimation:SetDuration(duration or 1)
-	glowAnimation:SetChange(change)
+	glowAnimation:SetFromAlpha(from)
+	glowAnimation:SetToAlpha(to)
 end
 
 function ns.FormatValue(value)
@@ -166,7 +167,7 @@ function ns.CreateAura(self, unit)
 	frame.disableCooldown = true
 	frame.gap = true
 	
-	frame.PreUpdate = ns.AuraPreUpdate
+--	frame.PreUpdate = ns.AuraPreUpdate
 	frame.PostCreateIcon = ns.CreateAuraIcon
 	frame.PostUpdateIcon = ns.UpdateAuraIcon
 
@@ -257,19 +258,19 @@ function ns.UpdateAuraIcon(self, unit, icon, index, offset)
 	end
 end
 
-function ns.AuraPreUpdate(self, unit)
+--[[function ns.AuraPreUpdate(self, unit)
 	if UnitCanAssist("player", unit) then
 		if GetCVar("showCastableBuffs") == "1" and GetCVar("showDispelDebuffs") == "1" then
 			self.filter = "HELPFUL|HARMFUL|RAID"
 		elseif GetCVar("showDispelDebuffs") == "1" then
-			self.filter = "HARMFUL|RAID"
+			self.filter = "HARMFUL"
 		elseif GetCVar("showCastableBuffs") == "1" then
-			self.filter = "HELPFUL|RAID"
+			self.filter = "HELPFUL"
 		else
 			self.filter = nil
 		end
 	end
-end
+end]]
 
 function ns.AlwaysShow(self)
 	if not self then return end
@@ -341,7 +342,7 @@ oUF.Tags.Events['Gvv:classification'] = 'UNIT_CLASSIFICATION_CHANGED'
 
 oUF.Tags.Methods['Gvv:namecolor'] = function(u)
 	local reaction = UnitReaction('player', u)
-	if (UnitIsTapped(u) and (not UnitIsTappedByPlayer(u))) then
+	if (UnitIsTapDenied(u)) then
 		return '|cFFDCDCDC'
 	else
 		if(reaction) then
