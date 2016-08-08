@@ -571,6 +571,18 @@ local function Gvv_Style(self, unit)
 				Totems[index] = Totem
 			end
 			self.TotemBar = Totems
+			
+			local DruidMana = CreateFrame('StatusBar', nil, self)
+			DruidMana:SetSize(175, 20)
+			DruidMana:SetPoint('LEFT', self.ap, 'LEFT', 0, 25)
+			DruidMana:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
+			DruidMana:SetStatusBarColor(0.4,0.4,0.9)
+			local Background = DruidMana:CreateTexture(nil, 'BACKGROUND')
+			Background:SetAllPoints(DruidMana)
+			Background:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\castbar_back')
+			self.DruidMana = DruidMana
+			self.DruidMana.bg = Background
+			
 		elseif playerclass == 'PRIEST' or playerclass == 'PALADIN' or playerclass == 'MONK' or playerclass == 'WARLOCK' then
 			local ClassIcons = {}
 			for index = 1, 5 do
@@ -606,7 +618,7 @@ local function Gvv_Style(self, unit)
 			end
 		elseif playerclass == 'ROGUE' then
 			local ClassIcons = {}
-			for index = 1, 6 do
+			for index = 1, 8 do
 				local Icon = self:CreateTexture(nil, 'BACKGROUND')
 				Icon:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\combopoint')
 				Icon:SetSize(20, 20)
@@ -616,7 +628,7 @@ local function Gvv_Style(self, unit)
 			self.ClassIcons = ClassIcons
 		elseif playerclass == 'DRUID' then --hate this class particularly
 			-- BIG FAT CHICKEN BAR --
-			local EclipseBar = CreateFrame('Frame', nil, self)
+--[[			local EclipseBar = CreateFrame('Frame', nil, self)
 			EclipseBar:SetPoint('LEFT', self.ap, 'LEFT', 0, 2)
 			EclipseBar:SetSize(160, 20)
 
@@ -642,7 +654,7 @@ local function Gvv_Style(self, unit)
 			
 			EclipseBar.LunarBar = LunarBar
 			EclipseBar.SolarBar = SolarBar
-			self.EclipseBar = EclipseBar
+			self.EclipseBar = EclipseBar]]
 			
 			-- USELESS MANA BAR --
 			local DruidMana = CreateFrame('StatusBar', nil, self)
