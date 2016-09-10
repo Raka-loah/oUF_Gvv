@@ -458,6 +458,13 @@ local function Gvv_Style(self, unit)
 		self.LFDRole = LFDRole
 	end
 	
+	if unit == 'party' then
+		local LFDRole = self:CreateTexture(nil, 'OVERLAY')
+		LFDRole:SetSize(16, 16)
+		LFDRole:SetPoint('TOPRIGHT', self.Portrait, 'TOPRIGHT' , 0, 0)
+		self.LFDRole = LFDRole
+	end
+	
 	if unit == 'target' then
 		local PhaseIcon = self:CreateTexture(nil, 'OVERLAY')
 		PhaseIcon:SetSize(16, 16)
@@ -489,7 +496,7 @@ local function Gvv_Style(self, unit)
 		t:SetColorTexture(0, 0, 0, 0.5)
 		if CPS ~= nil then
 			if CPS['a1'] == nil or CPS['a2'] == nil or CPS['x'] == nil or CPS['y'] == nil then
-				self.ap:SetPoint('RIGHT', self, 'LEFT', -110, 24)
+				self.ap:SetPoint('RIGHT', self, 'LEFT', -110, 200)
 			else
 				if not CPS['f'] then
 					self.ap:SetPoint(CPS['a1'], UIParent, CPS['a2'], CPS['x'], CPS['y'])
@@ -499,7 +506,7 @@ local function Gvv_Style(self, unit)
 			end
 		else
 			CPS = {}
-			self.ap:SetPoint('RIGHT', self, 'LEFT', -110, 24)
+			self.ap:SetPoint('RIGHT', self, 'LEFT', -110, 200)
 		end
 		self.ap:SetMovable(true)
 		self.ap:EnableMouse(true)
