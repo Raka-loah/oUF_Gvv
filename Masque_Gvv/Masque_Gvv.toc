@@ -1,0 +1,10 @@
+## Interface: 70000
+## Title: Masque: |cffff8000Gvv|r
+## Version: 7.0.0
+## Author: Raka-loah
+## Notes: oUF_Gvv button skin for Masque.
+## Notes-zhCN: oUF_Gvv适用于Masque的GW2风格按钮皮肤。
+## Dependencies: Masque
+## X-Website: https://lotc.cc
+
+Core.lua
