@@ -496,7 +496,7 @@ local function Gvv_Style(self, unit)
 		t:SetColorTexture(0, 0, 0, 0.5)
 		if CPS ~= nil then
 			if CPS['a1'] == nil or CPS['a2'] == nil or CPS['x'] == nil or CPS['y'] == nil then
-				self.ap:SetPoint('RIGHT', self, 'LEFT', -110, 200)
+				self.ap:SetPoint('RIGHT', self, 'LEFT', -110, 100)
 			else
 				if not CPS['f'] then
 					self.ap:SetPoint(CPS['a1'], UIParent, CPS['a2'], CPS['x'], CPS['y'])
@@ -506,7 +506,7 @@ local function Gvv_Style(self, unit)
 			end
 		else
 			CPS = {}
-			self.ap:SetPoint('RIGHT', self, 'LEFT', -110, 200)
+			self.ap:SetPoint('RIGHT', self, 'LEFT', -110, 100)
 		end
 		self.ap:SetMovable(true)
 		self.ap:EnableMouse(true)
@@ -584,6 +584,13 @@ local function Gvv_Style(self, unit)
 			DruidMana:SetPoint('LEFT', self.ap, 'LEFT', 0, 25)
 			DruidMana:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
 			DruidMana:SetStatusBarColor(0.4,0.4,0.9)
+			DruidMana:EnableMouse(true)
+			local ManaVal = DruidMana:CreateFontString(nil, 'HIGHLIGHT')
+			ManaVal:SetPoint('CENTER', DruidMana, 'CENTER' , 0, -2)
+			ManaVal:SetFont('Interface\\Addons\\oUF_Gvv\\fonts\\menomonia.ttf', 14, 'THINOUTLINE')
+			ManaVal:SetTextColor(1.0, 1.0, 1.0)
+			ManaVal:SetJustifyH('CENTER')
+			self:Tag(ManaVal, '[curmana]')
 			local Background = DruidMana:CreateTexture(nil, 'BACKGROUND')
 			Background:SetAllPoints(DruidMana)
 			Background:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\castbar_back')
@@ -591,6 +598,26 @@ local function Gvv_Style(self, unit)
 			self.DruidMana.bg = Background
 			
 		elseif playerclass == 'PRIEST' or playerclass == 'PALADIN' or playerclass == 'MONK' or playerclass == 'WARLOCK' then
+			if playerclass == 'PRIEST' then
+				local DruidMana = CreateFrame('StatusBar', nil, self)
+				DruidMana:SetSize(175, 20)
+				DruidMana:SetPoint('LEFT', self.ap, 'LEFT', 0, 0)
+				DruidMana:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
+				DruidMana:SetStatusBarColor(0.4,0.4,0.9)
+				DruidMana:EnableMouse(true)
+				local ManaVal = DruidMana:CreateFontString(nil, 'HIGHLIGHT')
+				ManaVal:SetPoint('CENTER', DruidMana, 'CENTER' , 0, -2)
+				ManaVal:SetFont('Interface\\Addons\\oUF_Gvv\\fonts\\menomonia.ttf', 14, 'THINOUTLINE')
+				ManaVal:SetTextColor(1.0, 1.0, 1.0)
+				ManaVal:SetJustifyH('CENTER')
+				self:Tag(ManaVal, '[curmana]')
+				local Background = DruidMana:CreateTexture(nil, 'BACKGROUND')
+				Background:SetAllPoints(DruidMana)
+				Background:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\castbar_back')
+				self.DruidMana = DruidMana
+				self.DruidMana.bg = Background
+			end
+			
 			local ClassIcons = {}
 			for index = 1, 5 do
 				local Icon = self:CreateTexture(nil, 'BACKGROUND')
@@ -665,10 +692,17 @@ local function Gvv_Style(self, unit)
 			
 			-- USELESS MANA BAR --
 			local DruidMana = CreateFrame('StatusBar', nil, self)
-			DruidMana:SetSize(160, 20)
-			DruidMana:SetPoint('LEFT', self.ap, 'LEFT', 0, 2)
+			DruidMana:SetSize(175, 20)
+			DruidMana:SetPoint('LEFT', self.ap, 'LEFT', 0, 0)
 			DruidMana:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
 			DruidMana:SetStatusBarColor(0.4,0.4,0.9)
+			DruidMana:EnableMouse(true)
+			local ManaVal = DruidMana:CreateFontString(nil, 'HIGHLIGHT')
+			ManaVal:SetPoint('CENTER', DruidMana, 'CENTER' , 0, -2)
+			ManaVal:SetFont('Interface\\Addons\\oUF_Gvv\\fonts\\menomonia.ttf', 14, 'THINOUTLINE')
+			ManaVal:SetTextColor(1.0, 1.0, 1.0)
+			ManaVal:SetJustifyH('CENTER')
+			self:Tag(ManaVal, '[curmana]')
 			local Background = DruidMana:CreateTexture(nil, 'BACKGROUND')
 			Background:SetAllPoints(DruidMana)
 			Background:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\castbar_back')
