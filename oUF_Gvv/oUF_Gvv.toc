@@ -1,7 +1,7 @@
-## Interface: 70000
+## Interface: 70100
 ## Title: oUF:Gvv
 ## Author: Raka
-## Version: 0.5.3
+## Version: 0.5.5
 ## X-eMail: i@lotc.cc
 ## Dependencies: oUF
 ## Notes: oUF layout for GvvUI
@@ -20,3 +20,4 @@ plugins\oUF_TotemBar.lua
 plugins\oUF_Smooth.lua
 plugins\burningembers.lua
 plugins\demonicfury.lua
+plugins\oUF_ArtifactPower.lua

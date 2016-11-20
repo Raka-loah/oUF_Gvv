@@ -10,6 +10,7 @@ function gvv_draw_borders(self, event)
 	local rw = GetScreenWidth()
 	local rh = GetScreenHeight()
 	local borders = {}
+	local eborders = {}
 	if ns.C.drawBorders then
 		borders = {
 			['lotc_border_top'] = {rw, 20, 'TOP', 0, 5, 1}, --width, height, anchor, offsetX, offsetY, layer
@@ -20,8 +21,17 @@ function gvv_draw_borders(self, event)
 		}
 	end
 	if ns.C.showExperience then
-		borders['lotc_border_bottomleft'] = {64, 32, 'BOTTOMLEFT', 0, 0, 2}
-		borders['lotc_border_bottomright'] = {32, 32, 'BOTTOMRIGHT', 0, 0, 2}
+		local eframe = CreateFrame('Frame', 'oUF_Gvv_ExpBdrFrame', UIParent)
+		eframe:SetFrameStrata('MEDIUM')
+		eframe:SetFrameLevel(4)
+		eborders['lotc_border_bottomleft'] = {128, 64, 'BOTTOMLEFT', 0, 0, 2}
+		eborders['lotc_border_bottomright'] = {128, 64, 'BOTTOMRIGHT', 0, 0, 2}
+		for k, v in pairs(eborders) do
+			local t = eframe:CreateTexture(nil, 'BACKGROUND', nil, v[6])
+			t:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\' .. k)
+			t:SetSize(v[1],v[2])
+			t:SetPoint(v[3], UIParent, v[3], v[4], v[5])
+		end
 	end
 	if ns.C.drawBorders or ns.C.showExperience then
 		local bframe = CreateFrame('Frame', 'oUF_Gvv_BorderFrame', UIParent)

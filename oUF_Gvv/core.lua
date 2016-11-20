@@ -279,18 +279,22 @@ local function Gvv_Style(self, unit)
 		self.Level:SetPoint('BOTTOMRIGHT', self.tcover, 'TOPRIGHT', 0, 1)
 		self:Tag(self.Level, '[level]')		
 	elseif unit == 'player' and ns.C.showExperience then
+		local dumframe = CreateFrame('Frame', 'oUF_Gvv_DummyFrame', UIParent)
+		dumframe:SetFrameLevel(4)
 		self.Level = self:CreateFontString()
 		self.Level:SetFont(ns.C.normalFont, 16, 'THINOUTLINE')
 		self.Level:SetJustifyH('CENTER')
-		self.Level:SetPoint('BOTTOM', UIParent, 'BOTTOMLEFT', 30, 2)
-		self.Level:SetParent(UIParent)
+		self.Level:SetPoint('BOTTOM', UIParent, 'BOTTOMLEFT', 45, 2)
+		self.Level:SetTextColor(218/256, 175/256, 57/256, 1) 
+		self.Level:SetParent(dumframe)
 		self:Tag(self.Level, '[level]')	
-		self.Level = self:CreateFontString()
-		self.Level:SetFont(ns.C.normalFont, 14, 'THINOUTLINE')
-		self.Level:SetJustifyH('CENTER')
-		self.Level:SetPoint('BOTTOM', UIParent, 'BOTTOMRIGHT', -15, 2)
-		self.Level:SetParent(UIParent)
-		self:Tag(self.Level, '[Gvv:nextlevel]')	
+		self.LevelR = self:CreateFontString()
+		self.LevelR:SetFont(ns.C.normalFont, 16, 'THINOUTLINE')
+		self.LevelR:SetJustifyH('CENTER')
+		self.LevelR:SetPoint('BOTTOM', UIParent, 'BOTTOMRIGHT', -40, 2)
+		self.LevelR:SetTextColor(218/256, 175/256, 57/256, 1) 
+		self.LevelR:SetParent(dumframe)
+		self:Tag(self.LevelR, '[Gvv:nextlevel]')	
 	elseif unit == 'party' then
 		self.Level = self:CreateFontString()
 		self.Level:SetFont(ns.C.normalFont, 14, 'THINOUTLINE')
@@ -343,14 +347,21 @@ local function Gvv_Style(self, unit)
 	local rw = GetScreenWidth()
 	if ns.C.showExperience then
 		if unit == 'player' then
+			local ExpFrame = CreateFrame('Frame', 'oUF_Gvv_ExpFrame', self)
+			self.ExpFrame = ExpFrame
+			if CPS['ArtiFrameOn'] then 
+				self.ExpFrame:Hide()
+			else 
+				self.ExpFrame:Show()
+			end
 			-- Position and size
-			local Experience = CreateFrame('StatusBar', nil, UIParent)
+			local Experience = CreateFrame('StatusBar', nil, self.ExpFrame)
 			
 			Experience:EnableMouse(true)
 			
-			Experience:SetPoint('BOTTOM', UIParent, 'BOTTOM', 15, 0)
+			Experience:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 0)
 			Experience:SetHeight(14)
-			Experience:SetWidth(rw - 90)
+			Experience:SetWidth(rw - 160)
 			Experience:SetFrameLevel(2)
 			
 			Experience:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
@@ -372,43 +383,45 @@ local function Gvv_Style(self, unit)
 			tborder:SetTexCoord(0,1,1,0)
 			tborder:SetHorizTile(true)
 			
-			for i= 1, 11 do
+--[[		for i= 1, 11 do
 				local t = expborder:CreateTexture(nil, 'OVERLAY', nil, -1)
 				t:SetSize(3, 13)
 				t:SetPoint('CENTER', Experience, 'LEFT', (rw - 90) * ( i - 1 ) / 10, 0)
 				t:SetColorTexture(0,0,0,1)
-			end
+			end]]
 
 			local Rested = CreateFrame('StatusBar', nil, Experience)
 			Rested:SetAllPoints(Experience)
-			Rested:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
+			Rested:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_filling')
 			Rested:SetStatusBarColor(228/255, 192/255, 102/255)
 			
 			local Value = Experience:CreateFontString(nil, 'HIGHLIGHT')
-			Value:SetPoint('CENTER', Experience, 'CENTER' , -15, 0)
+			Value:SetPoint('CENTER', Experience, 'CENTER' , 0, 0)
 			Value:SetFontObject(GameFontHighlight)
-			self:Tag(Value, '[curxp] / [maxxp] ([perxp]%) [Gvv:currested]')
+			self:Tag(Value, '[experience:cur] / [experience:max] ([experience:per]%) [Gvv:currested]')
 			
 			local backgroundframe = CreateFrame('Frame', nil, UIParent)
 			backgroundframe:SetFrameStrata('BACKGROUND')
 			backgroundframe:SetFrameLevel(1)
 			local bg = backgroundframe:CreateTexture(nil, 'BACKGROUND')
 			bg:SetAllPoints(Experience)
-			bg:SetColorTexture(0.05,0.05,0.05,0.8)
-			
+			bg:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_filling')
+			bg:SetVertexColor(0.2, 0.2, 0.2)
+			bg:SetAlpha(0.9)
+
 			self.Experience = Experience
 			self.Experience.Rested = Rested
-			self.Experience:SetParent(UIParent)
+			--self.Experience:SetParent(UIParent)
 		end
 		
 		-- Reputation bar --
 		if unit == 'player' then
-			local Reputation = CreateFrame('StatusBar', nil, UIParent)
-			Reputation:SetPoint('BOTTOM', UIParent, 'BOTTOM', 15, 14)
+			local Reputation = CreateFrame('StatusBar', 'oUF_Gvv_Reputation', self.ExpFrame)
+			Reputation:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 9)
 			Reputation:SetFrameLevel(2)
 			Reputation:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\pet_filling')	
 			Reputation:EnableMouse(true)
-			
+
 			local maxLevel
 			if IsTrialAccount() then
 				maxLevel = select(1, GetRestrictedAccountData())
@@ -418,18 +431,82 @@ local function Gvv_Style(self, unit)
 			if UnitLevel(unit) < maxLevel then
 				Reputation:SetHeight(5)
 			else
-				Reputation:SetPoint('BOTTOM', UIParent, 'BOTTOM', 15, 0)
+				Reputation:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 0)
 				Reputation:SetHeight(14)
+				Reputation:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_filling')	
 				local Value = Reputation:CreateFontString(nil, 'HIGHLIGHT')
-				Value:SetPoint('CENTER', Reputation, 'CENTER' , -15, 0)
+				Value:SetPoint('CENTER', Reputation, 'CENTER' , 0, 0)
 				Value:SetFontObject(GameFontHighlight)
-				self:Tag(Value, '[currep] / [maxrep] ([perrep]%) [reputation]')
+				self:Tag(Value, '[reputation:cur] / [reputation:max] ([reputation:per]%) [reputation:faction]')
 			end
-			
-			Reputation:SetWidth(rw - 90)
+			Reputation:SetWidth(rw - 160)
 			Reputation.colorStanding = true
 			self.Reputation = Reputation
 		end
+
+		-- Artifact Power --
+		local ArtiFrame = CreateFrame('Frame', 'oUF_Gvv_ArtiFrame', self)
+		self.ArtiFrame = ArtiFrame
+		if CPS['ArtiFrameOn'] then 
+			self.ArtiFrame:Show()
+		else 
+			self.ArtiFrame:Hide()
+		end
+		local ArtifactPower = CreateFrame('StatusBar', 'ArtifactPower', self.ArtiFrame)
+		ArtifactPower:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 14)
+		ArtifactPower:SetFrameLevel(2)
+		ArtifactPower:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_filling')
+		ArtifactPower:SetStatusBarColor(241/256, 198/256, 66/256)
+		ArtifactPower:EnableMouse(true)
+
+		ArtifactPower:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 0)
+		ArtifactPower:SetHeight(14)
+		ArtifactPower:SetWidth(rw - 160)
+		local text = ArtifactPower:CreateFontString(nil, 'HIGHLIGHT')
+		text:SetPoint('CENTER')
+		text:SetFontObject(GameFontHighlight)
+		ArtifactPower.text = text
+
+		ArtifactPower.PostUpdate = function(self, event, isShown)
+			if (not isShown) then return end
+			self.text:SetFormattedText('%d / %d (%d%%) [Lv %d]', self.totalPower, self.powerForNextTrait - self.power, 100 * self.totalPower / (self.powerForNextTrait - self.power), self.traitsLearned)
+		end
+
+		self.ArtifactPower = ArtifactPower
+
+		local ToggleButton = CreateFrame('Button', nil, self)
+		ToggleButton:SetSize(77, 10)
+		ToggleButton:SetFrameLevel(5)
+		local ntex = ToggleButton:CreateTexture()
+		ntex:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\togglebutton')
+		--ntex:SetTexCoord(0, 0.625, 0, 0.625)
+		ntex:SetPoint('BOTTOM', ToggleButton, 'BOTTOM', 0, 0)
+		ToggleButton:SetNormalTexture(ntex)
+		local htex = ToggleButton:CreateTexture()
+		htex:SetColorTexture(1.0, 1.0, 1.0, 0.3)
+		htex:SetAllPoints()
+		ToggleButton:SetHighlightTexture(htex)
+		ToggleButton:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT',0 , 19)
+		ToggleButton:EnableMouse('AnyUp')
+		ToggleButton:RegisterForClicks('AnyUp')
+		ToggleButton:SetScript('OnClick', function(self)
+			local realself = self:GetParent()
+			if realself.ArtiFrame:IsShown() then 
+				realself.ArtiFrame:Hide() 
+				CPS['ArtiFrameOn'] = false
+			else 
+				realself.ArtiFrame:Show()
+				CPS['ArtiFrameOn'] = true
+			end
+			if realself.ExpFrame:IsShown() then 
+				realself.ExpFrame:Hide()
+				CPS['ArtiFrameOn'] = true
+			else 
+				realself.ExpFrame:Show() 
+				CPS['ArtiFrameOn'] = false
+			end
+		end)
+		self.ToggleButton = ToggleButton
 	end
 	
 	-- Status Icons --
@@ -906,7 +983,7 @@ oUF:Factory(function(self)
 	
 	-- Hide blizz boss frames --
 	for i = 1, 4 do
-		local frame = _G["Boss"..i.."TargetFrame"]
+		local frame = _G['Boss'..i..'TargetFrame']
 		frame:UnregisterAllEvents()
 		frame:Hide()
 		frame.Show = function () end
