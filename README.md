@@ -3,10 +3,9 @@ oUF_Gvv
 
 A GW2-like oUF layout for World of Warcraft.
 
-Current Version: v0.5.3
+Current Version: v0.5.5
 
 Changes in this version:
-- Added extra mana bar for shadow priests.
-- Extra mana bar will show actural mana value when mouse cursor moves onto it.
-- Version string changes to major.minor.revision.
-- Added Masque skin for Bartender4 (not included).
+- Added Artifact Power as exp bar.
+- Added a button to toggle between Artifact Power and Exp/Rep bar display.
+- Art update for Exp bar.
