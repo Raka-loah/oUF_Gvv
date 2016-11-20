@@ -355,7 +355,7 @@ local function Gvv_Style(self, unit)
 				self.ExpFrame:Show()
 			end
 			-- Position and size
-			local Experience = CreateFrame('StatusBar', nil, self.ExpFrame)
+			local Experience = CreateFrame('StatusBar', 'oUF_Gvv_ExpBar', self.ExpFrame)
 			
 			Experience:EnableMouse(true)
 			
@@ -368,7 +368,7 @@ local function Gvv_Style(self, unit)
 			Experience:SetStatusBarColor(211/255, 151/255, 0)
 			
 			-- Always show borders
-			local expborder = CreateFrame('Frame', nil, UIParent)
+			local expborder = CreateFrame('Frame', 'oUF_Gvv_ExpBdr', UIParent)
 			expborder:SetAllPoints(Experience)
 			expborder:SetFrameLevel(3)
 			local tborder = expborder:CreateTexture(nil,'OVERLAY', nil, 0)
@@ -390,7 +390,7 @@ local function Gvv_Style(self, unit)
 				t:SetColorTexture(0,0,0,1)
 			end]]
 
-			local Rested = CreateFrame('StatusBar', nil, Experience)
+			local Rested = CreateFrame('StatusBar', 'oUF_Gvv_ExpRested', Experience)
 			Rested:SetAllPoints(Experience)
 			Rested:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_filling')
 			Rested:SetStatusBarColor(228/255, 192/255, 102/255)
@@ -445,68 +445,69 @@ local function Gvv_Style(self, unit)
 		end
 
 		-- Artifact Power --
-		local ArtiFrame = CreateFrame('Frame', 'oUF_Gvv_ArtiFrame', self)
-		self.ArtiFrame = ArtiFrame
-		if CPS['ArtiFrameOn'] then 
-			self.ArtiFrame:Show()
-		else 
-			self.ArtiFrame:Hide()
-		end
-		local ArtifactPower = CreateFrame('StatusBar', 'ArtifactPower', self.ArtiFrame)
-		ArtifactPower:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 14)
-		ArtifactPower:SetFrameLevel(2)
-		ArtifactPower:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_filling')
-		ArtifactPower:SetStatusBarColor(241/256, 198/256, 66/256)
-		ArtifactPower:EnableMouse(true)
-
-		ArtifactPower:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 0)
-		ArtifactPower:SetHeight(14)
-		ArtifactPower:SetWidth(rw - 160)
-		local text = ArtifactPower:CreateFontString(nil, 'HIGHLIGHT')
-		text:SetPoint('CENTER')
-		text:SetFontObject(GameFontHighlight)
-		ArtifactPower.text = text
-
-		ArtifactPower.PostUpdate = function(self, event, isShown)
-			if (not isShown) then return end
-			self.text:SetFormattedText('%d / %d (%d%%) [Lv %d]', self.totalPower, self.powerForNextTrait - self.power, 100 * self.totalPower / (self.powerForNextTrait - self.power), self.traitsLearned)
-		end
-
-		self.ArtifactPower = ArtifactPower
-
-		local ToggleButton = CreateFrame('Button', nil, self)
-		ToggleButton:SetSize(77, 10)
-		ToggleButton:SetFrameLevel(5)
-		local ntex = ToggleButton:CreateTexture()
-		ntex:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\togglebutton')
-		--ntex:SetTexCoord(0, 0.625, 0, 0.625)
-		ntex:SetPoint('BOTTOM', ToggleButton, 'BOTTOM', 0, 0)
-		ToggleButton:SetNormalTexture(ntex)
-		local htex = ToggleButton:CreateTexture()
-		htex:SetColorTexture(1.0, 1.0, 1.0, 0.3)
-		htex:SetAllPoints()
-		ToggleButton:SetHighlightTexture(htex)
-		ToggleButton:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT',0 , 19)
-		ToggleButton:EnableMouse('AnyUp')
-		ToggleButton:RegisterForClicks('AnyUp')
-		ToggleButton:SetScript('OnClick', function(self)
-			local realself = self:GetParent()
-			if realself.ArtiFrame:IsShown() then 
-				realself.ArtiFrame:Hide() 
-				CPS['ArtiFrameOn'] = false
+		if unit == 'player' then
+			local ArtiFrame = CreateFrame('Frame', 'oUF_Gvv_ArtiFrame', self)
+			self.ArtiFrame = ArtiFrame
+			if CPS['ArtiFrameOn'] then 
+				self.ArtiFrame:Show()
 			else 
-				realself.ArtiFrame:Show()
-				CPS['ArtiFrameOn'] = true
+				self.ArtiFrame:Hide()
 			end
-			if realself.ExpFrame:IsShown() then 
-				realself.ExpFrame:Hide()
-				CPS['ArtiFrameOn'] = true
-			else 
-				realself.ExpFrame:Show() 
-				CPS['ArtiFrameOn'] = false
+			local ArtifactPower = CreateFrame('StatusBar', 'oUF_Gvv_ArtifactPower', self.ArtiFrame)
+			ArtifactPower:SetFrameLevel(2)
+			ArtifactPower:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_filling')
+			ArtifactPower:SetStatusBarColor(241/256, 198/256, 66/256)
+			ArtifactPower:EnableMouse(true)
+
+			ArtifactPower:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 0)
+			ArtifactPower:SetHeight(14)
+			ArtifactPower:SetWidth(rw - 160)
+			local text = ArtifactPower:CreateFontString(nil, 'HIGHLIGHT')
+			text:SetPoint('CENTER')
+			text:SetFontObject(GameFontHighlight)
+			ArtifactPower.text = text
+
+			ArtifactPower.PostUpdate = function(self, event, isShown)
+				if (not isShown) then return end
+				self.text:SetFormattedText('%d / %d (%d%%) [Lv %d]', self.totalPower, self.powerForNextTrait - self.power, 100 * self.totalPower / (self.powerForNextTrait - self.power), self.traitsLearned)
 			end
-		end)
-		self.ToggleButton = ToggleButton
+
+			self.ArtifactPower = ArtifactPower
+
+			local ToggleButton = CreateFrame('Button', nil, self)
+			ToggleButton:SetSize(77, 10)
+			ToggleButton:SetFrameLevel(5)
+			local ntex = ToggleButton:CreateTexture()
+			ntex:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\togglebutton')
+			--ntex:SetTexCoord(0, 0.625, 0, 0.625)
+			ntex:SetPoint('BOTTOM', ToggleButton, 'BOTTOM', 0, 0)
+			ToggleButton:SetNormalTexture(ntex)
+			local htex = ToggleButton:CreateTexture()
+			htex:SetColorTexture(1.0, 1.0, 1.0, 0.3)
+			htex:SetAllPoints()
+			ToggleButton:SetHighlightTexture(htex)
+			ToggleButton:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT',0 , 19)
+			ToggleButton:EnableMouse('AnyUp')
+			ToggleButton:RegisterForClicks('AnyUp')
+			ToggleButton:SetScript('OnClick', function(self)
+				local realself = self:GetParent()
+				if realself.ArtiFrame:IsShown() then 
+					realself.ArtiFrame:Hide() 
+					CPS['ArtiFrameOn'] = false
+				else 
+					realself.ArtiFrame:Show()
+					CPS['ArtiFrameOn'] = true
+				end
+				if realself.ExpFrame:IsShown() then 
+					realself.ExpFrame:Hide()
+					CPS['ArtiFrameOn'] = true
+				else 
+					realself.ExpFrame:Show() 
+					CPS['ArtiFrameOn'] = false
+				end
+			end)
+			self.ToggleButton = ToggleButton
+		end
 	end
 	
 	-- Status Icons --
