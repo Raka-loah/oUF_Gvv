@@ -469,7 +469,7 @@ local function Gvv_Style(self, unit)
 
 			ArtifactPower.PostUpdate = function(self, event, isShown)
 				if (not isShown) then return end
-				self.text:SetFormattedText('%d / %d (%d%%) [Lv %d]', self.totalPower, self.powerForNextTrait - self.power, 100 * self.totalPower / (self.powerForNextTrait - self.power), self.traitsLearned)
+				self.text:SetFormattedText('%d / %d (%d%%) [Lv %d(+%d)]', self.power, self.powerForNextTrait, 100 * self.power / self.powerForNextTrait, self.traitsLearned, self.numTraitsLearnable)
 			end
 
 			self.ArtifactPower = ArtifactPower
