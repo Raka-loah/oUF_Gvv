@@ -284,7 +284,7 @@ local function Gvv_Style(self, unit)
 		self.Level = self:CreateFontString()
 		self.Level:SetFont(ns.C.normalFont, 16, 'THINOUTLINE')
 		self.Level:SetJustifyH('CENTER')
-		self.Level:SetPoint('BOTTOM', UIParent, 'BOTTOMLEFT', 45, 2)
+		self.Level:SetPoint('BOTTOM', UIParent, 'BOTTOMLEFT', 40, 2)
 		self.Level:SetTextColor(218/256, 175/256, 57/256, 1) 
 		self.Level:SetParent(dumframe)
 		self:Tag(self.Level, '[level]')	
@@ -364,7 +364,7 @@ local function Gvv_Style(self, unit)
 			Experience:SetWidth(rw - 160)
 			Experience:SetFrameLevel(2)
 			
-			Experience:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
+			Experience:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_filling')
 			Experience:SetStatusBarColor(211/255, 151/255, 0)
 			
 			-- Always show borders
