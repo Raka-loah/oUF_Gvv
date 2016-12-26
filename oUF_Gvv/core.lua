@@ -4,6 +4,7 @@ Please don't modify anything, very fragile.
 Require oUF 1.6.x.
 ]]
 local ADDON_NAME, ns = ...
+if not CPS then CPS = {} end
 
 local function Gvv_Style(self, unit)
 	self:RegisterForClicks('AnyUp')
@@ -576,10 +577,10 @@ local function Gvv_Style(self, unit)
 			if CPS['a1'] == nil or CPS['a2'] == nil or CPS['x'] == nil or CPS['y'] == nil then
 				self.ap:SetPoint('RIGHT', self, 'LEFT', -110, 100)
 			else
-				if not CPS['f'] then
-					self.ap:SetPoint(CPS['a1'], UIParent, CPS['a2'], CPS['x'], CPS['y'])
-				else
+				if CPS['f'] then
 					self.ap:SetPoint(CPS['a1'], CPS['f'], CPS['a2'], CPS['x'], CPS['y'])
+				else
+					self.ap:SetPoint(CPS['a1'], UIParent, CPS['a2'], CPS['x'], CPS['y'])
 				end
 			end
 		else
