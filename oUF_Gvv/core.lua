@@ -1,12 +1,13 @@
 --[[
 oUF_Gvv by Raka from LotC.cc
 Please don't modify anything, very fragile.
-Require oUF 1.6.x.
+Require oUF 7.0.x.
 ]]
 local ADDON_NAME, ns = ...
 if not CPS then CPS = {} end
 
 local function Gvv_Style(self, unit)
+	
 	self:RegisterForClicks('AnyUp')
 	self:SetScript('OnEnter', UnitFrame_OnEnter)
 	self:SetScript('OnLeave', UnitFrame_OnLeave)
@@ -64,7 +65,7 @@ local function Gvv_Style(self, unit)
 	-- Health bar --
 	self.Health = CreateFrame('StatusBar', 'healthbar', self)
 	self.Health:SetFrameStrata('LOW')
-	self.Health:SetFrameLevel(2)
+	self.Health:SetFrameLevel(1)
 	
 	self.Health:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_filling')
 	self.Health:SetStatusBarColor(0.95, 0.15, 0)
@@ -103,7 +104,7 @@ local function Gvv_Style(self, unit)
 		self.pethc:SetAllPoints(self.Health)
 	elseif (unit == 'target') then
 		self.Health:SetSize(256, 16)
-		self.Health:SetFrameStrata('MEDIUM')
+		self.Health:SetFrameStrata('LOW')
 		self.Health:SetFrameLevel(1)
 		self.Health:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\health_target_filling')
 		self.Health:SetOrientation('HORIZONTAL')
@@ -186,7 +187,7 @@ local function Gvv_Style(self, unit)
 	end
 	self.Power:SetOrientation('HORIZONTAL')
 	if unit == 'player' then		
-		self.cbar = self:CreateTexture(nil, 'ARTWORK', nil, 0)
+		self.cbar = self.Power:CreateTexture(nil, 'ARTWORK', nil, 0)
 		self.cbar:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\power_cover')
 		self.cbar:SetSize(128,64)
 		self.cbar:SetPoint('BOTTOM',self,'BOTTOM',0,91)
@@ -402,8 +403,8 @@ local function Gvv_Style(self, unit)
 			self:Tag(Value, '[experience:cur] / [experience:max] ([experience:per]%) [Gvv:currested]')
 			
 			local backgroundframe = CreateFrame('Frame', nil, UIParent)
-			backgroundframe:SetFrameStrata('BACKGROUND')
-			backgroundframe:SetFrameLevel(1)
+			backgroundframe:SetFrameStrata('LOW')
+			backgroundframe:SetFrameLevel(0)
 			local bg = backgroundframe:CreateTexture(nil, 'BACKGROUND')
 			bg:SetAllPoints(Experience)
 			bg:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_filling')
@@ -477,6 +478,7 @@ local function Gvv_Style(self, unit)
 
 			local ToggleButton = CreateFrame('Button', nil, self)
 			ToggleButton:SetSize(77, 10)
+			ToggleButton:SetFrameStrata('MEDIUM')
 			ToggleButton:SetFrameLevel(5)
 			local ntex = ToggleButton:CreateTexture()
 			ntex:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\togglebutton')
@@ -523,32 +525,32 @@ local function Gvv_Style(self, unit)
 	else
 		Leader:SetPoint('TOPLEFT', self, 'TOPLEFT', 20, 10)
 	end
-	self.Leader = Leader
+	self.LeaderIndicator = Leader
 	
 	if unit == 'player' then
 	local MasterLooter = self:CreateTexture(nil, 'OVERLAY')
 		MasterLooter:SetSize(16, 16)
 		MasterLooter:SetPoint('TOP', self.Power, 'TOP' , 18, 0)
-		self.MasterLooter = MasterLooter
+		self.MasterLooterIndicator = MasterLooter
 	
 	local LFDRole = self:CreateTexture(nil, 'OVERLAY')
 		LFDRole:SetSize(16, 16)
 		LFDRole:SetPoint('TOP', self.Power, 'TOP' , -18, 0)
-		self.LFDRole = LFDRole
+		self.GroupRoleIndicator = LFDRole
 	end
 	
 	if unit == 'party' then
 		local LFDRole = self:CreateTexture(nil, 'OVERLAY')
 		LFDRole:SetSize(16, 16)
 		LFDRole:SetPoint('TOPRIGHT', self.Portrait, 'TOPRIGHT' , 0, 0)
-		self.LFDRole = LFDRole
+		self.GroupRoleIndicator = LFDRole
 	end
 	
 	if unit == 'target' then
 		local PhaseIcon = self:CreateTexture(nil, 'OVERLAY')
 		PhaseIcon:SetSize(16, 16)
 		PhaseIcon:SetPoint('BOTTOMRIGHT', self.Level, 'TOPRIGHT', 0, 0)
-		self.PhaseIcon = PhaseIcon
+		self.PhaseIndicator = PhaseIcon
 	end
 	
 	local RaidIcon = self:CreateTexture(nil, 'OVERLAY')
@@ -562,7 +564,7 @@ local function Gvv_Style(self, unit)
 	else
 		RaidIcon:SetPoint('TOPLEFT', self, 'TOPLEFT', 20, -2)
 	end
-	self.RaidIcon = RaidIcon
+	self.RaidTargetIndicator = RaidIcon
 	
 	-- Alt Powers (definitely pain in the arse) --
 	if unit == 'player' and ns.C.showClassPower then
@@ -639,7 +641,7 @@ local function Gvv_Style(self, unit)
 		if playerclass == 'SHAMAN' then
 			-- Living Honor Points --
 			local Totems = {}
-			for index = 1, MAX_TOTEMS do
+			for index = 1, 4 do
 				local Totem = CreateFrame('StatusBar', nil, self)
 				Totem:EnableMouse(true)
 				Totem:SetSize(40, 20)
@@ -673,8 +675,8 @@ local function Gvv_Style(self, unit)
 			local Background = DruidMana:CreateTexture(nil, 'BACKGROUND')
 			Background:SetAllPoints(DruidMana)
 			Background:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\castbar_back')
-			self.DruidMana = DruidMana
-			self.DruidMana.bg = Background
+			self.AdditionalPower = DruidMana
+			self.AdditionalPower.bg = Background
 			
 		elseif playerclass == 'PRIEST' or playerclass == 'PALADIN' or playerclass == 'MONK' or playerclass == 'WARLOCK' then
 			if playerclass == 'PRIEST' then
@@ -693,8 +695,8 @@ local function Gvv_Style(self, unit)
 				local Background = DruidMana:CreateTexture(nil, 'BACKGROUND')
 				Background:SetAllPoints(DruidMana)
 				Background:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\castbar_back')
-				self.DruidMana = DruidMana
-				self.DruidMana.bg = Background
+				self.AdditionalPower = DruidMana
+				self.AdditionalPower.bg = Background
 			end
 			
 			local ClassIcons = {}
@@ -705,7 +707,7 @@ local function Gvv_Style(self, unit)
 				Icon:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 2)
 				ClassIcons[index] = Icon
 			end
-			self.ClassIcons = ClassIcons
+			self.ClassPower = ClassIcons
 	
 			if playerclass == 'WARLOCK' then
 				-- Just WARLOCK things --
@@ -731,43 +733,15 @@ local function Gvv_Style(self, unit)
 			end
 		elseif playerclass == 'ROGUE' then
 			local ClassIcons = {}
-			for index = 1, 8 do
+			for index = 1, 10 do
 				local Icon = self:CreateTexture(nil, 'BACKGROUND')
 				Icon:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\combopoint')
 				Icon:SetSize(20, 20)
 				Icon:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25 - 10, 2)
 				ClassIcons[index] = Icon
 			end
-			self.ClassIcons = ClassIcons
+			self.ClassPower = ClassIcons
 		elseif playerclass == 'DRUID' then --hate this class particularly
-			-- BIG FAT CHICKEN BAR --
---[[			local EclipseBar = CreateFrame('Frame', nil, self)
-			EclipseBar:SetPoint('LEFT', self.ap, 'LEFT', 0, 2)
-			EclipseBar:SetSize(160, 20)
-
-			local LunarBar = CreateFrame('StatusBar', nil, EclipseBar)
-			LunarBar:SetPoint('LEFT')
-			LunarBar:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
-			LunarBar:SetStatusBarColor(0.3,0.3,0.6)
-			LunarBar:SetSize(160, 20)
-			LunarBar.moon = LunarBar:CreateTexture(nil, 'BACKGROUND')
-			LunarBar.moon:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\moonmoon')
-			LunarBar.moon:SetSize(20, 20)
-			LunarBar.moon:SetPoint('BOTTOMRIGHT', LunarBar, 'BOTTOMLEFT', 0, -2)
-
-			local SolarBar = CreateFrame('StatusBar', nil, EclipseBar)
-			SolarBar:SetPoint('LEFT', LunarBar:GetStatusBarTexture(), 'RIGHT')
-			SolarBar:SetSize(160, 20)
-			SolarBar:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
-			SolarBar:SetStatusBarColor(0.8,0.6,0.1)
-			SolarBar.sun = SolarBar:CreateTexture(nil, 'BACKGROUND')
-			SolarBar.sun:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\sun')
-			SolarBar.sun:SetSize(20, 20)
-			SolarBar.sun:SetPoint('BOTTOMLEFT', LunarBar, 'BOTTOMRIGHT', 0, -2)
-			
-			EclipseBar.LunarBar = LunarBar
-			EclipseBar.SolarBar = SolarBar
-			self.EclipseBar = EclipseBar]]
 			
 			-- USELESS MANA BAR --
 			local DruidMana = CreateFrame('StatusBar', nil, self)
@@ -785,8 +759,8 @@ local function Gvv_Style(self, unit)
 			local Background = DruidMana:CreateTexture(nil, 'BACKGROUND')
 			Background:SetAllPoints(DruidMana)
 			Background:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\castbar_back')
-			self.DruidMana = DruidMana
-			self.DruidMana.bg = Background
+			self.AdditionalPower = DruidMana
+			self.AdditionalPower.bg = Background
 			
 			-- TEEMO BAR --
 			local Mushrooms = {}
@@ -900,7 +874,7 @@ local function Gvv_Style(self, unit)
 		local Resting = self:CreateTexture(nil, 'OVERLAY')
 		Resting:SetSize(32, 32)
 		Resting:SetPoint('BOTTOMRIGHT', self, 'BOTTOMRIGHT', 0, 0)
-		self.Resting = Resting
+		self.RestingIndicator = Resting
 	end
 
 	-- Bloody screen effect --
@@ -945,6 +919,11 @@ local function Gvv_Style(self, unit)
 end
 
 oUF:Factory(function(self)
+
+	if string.sub(GetAddOnMetadata("oUF", "Version"), 1, 3) ~= "7.0" then
+		print(ns.L['|cFFFF0000[oUF_Gvv]|r This version of oUF_Gvv has only been tested with oUF 7.0.x, if it breaks, check your oUF core version first.']) 
+	end
+
 	oUF:RegisterStyle('Gvv', Gvv_Style)
 	oUF:SetActiveStyle('Gvv')
 

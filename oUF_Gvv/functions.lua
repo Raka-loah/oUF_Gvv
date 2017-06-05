@@ -5,7 +5,15 @@ function ns.PostUpdateHealth(Health, unit, cur, max)
 	local perc = floor(cur / max * 100)
 	
 	if self.Portrait then
-		UpdatePortraitColor(self, unit)
+		if (not UnitIsConnected(unit)) then
+			self.Portrait:SetVertexColor(0.5, 0.5, 0.5, 0.7)
+		elseif (UnitIsDead(unit)) then
+			self.Portrait:SetVertexColor(0.35, 0.35, 0.35, 0.7)
+		elseif (UnitIsGhost(unit)) then
+			self.Portrait:SetVertexColor(0.3, 0.3, 0.9, 0.7)
+		else
+			self.Portrait:SetVertexColor(1, 1, 1, 1)
+		end
 	end
 	
 	-- TODO: use the new alpha animation in wod--
@@ -64,7 +72,7 @@ function ns.PostUpdateHealth(Health, unit, cur, max)
 	end
 end
 
-function ns.UpdatePower(self, unit, cur, max)
+function ns.UpdatePower(self, unit, cur, min, max)
 	if not self.value then return end
 
 	if max == 0 then
@@ -220,8 +228,8 @@ function ns.UpdateAuraIcon(self, unit, icon, index, offset)
 	local texture = icon.icon
 
 	if not self.onlyShowPlayer then
-		if (icon.owner == "player" or icon.owner == "vehicle" or icon.owner == "pet") and icon.isDebuff
-			or (not icon.isDebuff and (stealable or icon.owner == "player" or icon.owner == "vehicle" or icon.owner == "pet")) then
+		if (icon.caster == "player" or icon.caster == "vehicle" or icon.caster == "pet") and icon.isDebuff
+			or (not icon.isDebuff and (stealable or icon.caster == "player" or icon.caster == "vehicle" or icon.caster == "pet")) then
 			icon:SetAlpha(1)
 		else
 			--texture:SetDesaturated(true)
@@ -295,7 +303,7 @@ function ns.TimeFormat(s)
 	end
 end
 
-function UpdatePortraitColor(self, unit)
+function ns.UpdatePortraitColor(self, unit)
 	if (not UnitIsConnected(unit)) then
 		self.Portrait:SetVertexColor(0.5, 0.5, 0.5, 0.7)
 	elseif (UnitIsDead(unit)) then

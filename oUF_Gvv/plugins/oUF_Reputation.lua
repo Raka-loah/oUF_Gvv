@@ -3,14 +3,37 @@ local oUF = ns.oUF or oUF
 assert(oUF, 'oUF Reputation was unable to locate oUF install')
 
 local function GetReputation()
+	local pendingReward
 	local name, standingID, min, max, cur, factionID = GetWatchedFactionInfo()
-	local _, friendMin, friendMax, _, _, _, friendStanding, friendThreshold = GetFriendshipReputation(factionID)
 
-	if(not friendMin) then
-		return cur - min, max - min, name, factionID, standingID, GetText('FACTION_STANDING_LABEL' .. standingID, UnitSex('player'))
+	local friendID, _, _, _, _, _, standingText, _, friendMax = GetFriendshipReputation(factionID)
+	if(friendID) then
+		if(friendMax) then
+			max = friendMax
+			cur = math.fmod(cur, max)
+		else
+			max = cur
+		end
+
+		standingID = 5 -- force friends' color
 	else
-		return friendMin - friendThreshold, math.min(friendMax - friendThreshold, 8400), name, factionID, standingID, friendStanding
+		if(C_Reputation.IsFactionParagon(factionID)) then
+			cur, max, _, pendingReward = C_Reputation.GetFactionParagonInfo(factionID)
+			cur = math.fmod(cur, max)
+
+			standingID = 9 -- force paragon's color
+			standingText = PARAGON
+		else
+			if(standingID ~= 8) then
+				max = max - min
+				cur = cur - min
+			end
+
+			standingText = GetText('FACTION_STANDING_LABEL' .. standingID, UnitSex('player'))
+		end
 	end
+
+	return cur, max, name, factionID, standingID, standingText, pendingReward
 end
 
 for tag, func in next, {
@@ -39,24 +62,31 @@ for tag, func in next, {
 end
 
 oUF.Tags.SharedEvents.UPDATE_FACTION = true
+oUF.colors.reaction[9] = {0, 0.5, 0.9} -- paragon color
 
 local function Update(self, event, unit)
 	local element = self.Reputation
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
-	local cur, max, name, factionID, standingID, standingText = GetReputation()
+	local cur, max, name, factionID, standingID, standingText, pendingReward = GetReputation()
 	if(name) then
 		element:SetMinMaxValues(0, max)
 		element:SetValue(cur)
 
 		if(element.colorStanding) then
-			local color = FACTION_BAR_COLORS[standingID]
-			element:SetStatusBarColor(color.r, color.g, color.b)
+			local colors = self.colors.reaction[standingID]
+			element:SetStatusBarColor(colors[1], colors[2], colors[3])
+		end
+
+		if(element.Reward) then
+			-- no idea what this function actually does, but Blizzard uses it as well
+			C_Reputation.RequestFactionParagonPreloadRewardData(factionID)
+			element.Reward:SetShown(pendingReward)
 		end
 	end
 
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, cur, max, name, factionID, standingID, standingText)
+		return element:PostUpdate(unit, cur, max, name, factionID, standingID, standingText, pendingReward)
 	end
 end
 
@@ -112,11 +142,17 @@ local function Enable(self, unit)
 		element.ForceUpdate = ForceUpdate
 
 		hooksecurefunc('SetWatchedFactionIndex', function(selectedFactionIndex)
-			VisibilityPath(self, 'SetWatchedFactionIndex', 'player', selectedFactionIndex or 0)
+			if(self:IsElementEnabled('Reputation')) then
+				VisibilityPath(self, 'SetWatchedFactionIndex', 'player', selectedFactionIndex or 0)
+			end
 		end)
 
 		if(not element:GetStatusBarTexture()) then
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+		end
+
+		if(element.Reward and element.Reward:IsObjectType('Texture') and not element.Reward:GetTexture()) then
+			element.Reward:SetAtlas('ParagonReputation_Bag')
 		end
 
 		return true
