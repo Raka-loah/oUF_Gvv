@@ -1,7 +1,7 @@
 --[[
 oUF_Gvv by Raka from LotC.cc
 Please don't modify anything, very fragile.
-Require oUF 7.0.x.
+Require oUF 11.1.x.
 ]]
 local ADDON_NAME, ns = ...
 if not CPS then CPS = {} end
@@ -447,70 +447,70 @@ local function Gvv_Style(self, unit)
 		end
 
 		-- Artifact Power --
-		if unit == 'player' then
-			local ArtiFrame = CreateFrame('Frame', 'oUF_Gvv_ArtiFrame', self)
-			self.ArtiFrame = ArtiFrame
-			if CPS['ArtiFrameOn'] then 
-				self.ArtiFrame:Show()
-			else 
-				self.ArtiFrame:Hide()
-			end
-			local ArtifactPower = CreateFrame('StatusBar', 'oUF_Gvv_ArtifactPower', self.ArtiFrame)
-			ArtifactPower:SetFrameLevel(2)
-			ArtifactPower:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_filling')
-			ArtifactPower:SetStatusBarColor(241/256, 198/256, 66/256)
-			ArtifactPower:EnableMouse(true)
+		-- if unit == 'player' then
+		-- 	local ArtiFrame = CreateFrame('Frame', 'oUF_Gvv_ArtiFrame', self)
+		-- 	self.ArtiFrame = ArtiFrame
+		-- 	if CPS['ArtiFrameOn'] then 
+		-- 		self.ArtiFrame:Show()
+		-- 	else 
+		-- 		self.ArtiFrame:Hide()
+		-- 	end
+		-- 	local ArtifactPower = CreateFrame('StatusBar', 'oUF_Gvv_ArtifactPower', self.ArtiFrame)
+		-- 	ArtifactPower:SetFrameLevel(2)
+		-- 	ArtifactPower:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\exp_filling')
+		-- 	ArtifactPower:SetStatusBarColor(241/256, 198/256, 66/256)
+		-- 	ArtifactPower:EnableMouse(true)
 
-			ArtifactPower:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 0)
-			ArtifactPower:SetHeight(14)
-			ArtifactPower:SetWidth(rw - 160)
-			local text = ArtifactPower:CreateFontString(nil, 'HIGHLIGHT')
-			text:SetPoint('CENTER')
-			text:SetFontObject(GameFontHighlight)
-			ArtifactPower.text = text
+		-- 	ArtifactPower:SetPoint('BOTTOM', UIParent, 'BOTTOM', 0, 0)
+		-- 	ArtifactPower:SetHeight(14)
+		-- 	ArtifactPower:SetWidth(rw - 160)
+		-- 	local text = ArtifactPower:CreateFontString(nil, 'HIGHLIGHT')
+		-- 	text:SetPoint('CENTER')
+		-- 	text:SetFontObject(GameFontHighlight)
+		-- 	ArtifactPower.text = text
 
-			ArtifactPower.PostUpdate = function(self, event, isShown)
-				if (not isShown) then return end
-				self.text:SetFormattedText('%d / %d (%d%%) [Lv %d(+%d)]', self.power, self.powerForNextTrait, 100 * self.power / self.powerForNextTrait, self.traitsLearned, self.numTraitsLearnable)
-			end
+		-- 	ArtifactPower.PostUpdate = function(self, event, isShown)
+		-- 		if (not isShown) then return end
+		-- 		self.text:SetFormattedText('%d / %d (%d%%) [Lv %d(+%d)]', self.power, self.powerForNextTrait, 100 * self.power / self.powerForNextTrait, self.traitsLearned, self.numTraitsLearnable)
+		-- 	end
 
-			self.ArtifactPower = ArtifactPower
+		-- 	self.ArtifactPower = ArtifactPower
 
-			local ToggleButton = CreateFrame('Button', nil, self)
-			ToggleButton:SetSize(77, 10)
-			ToggleButton:SetFrameStrata('MEDIUM')
-			ToggleButton:SetFrameLevel(5)
-			local ntex = ToggleButton:CreateTexture()
-			ntex:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\togglebutton')
-			--ntex:SetTexCoord(0, 0.625, 0, 0.625)
-			ntex:SetPoint('BOTTOM', ToggleButton, 'BOTTOM', 0, 0)
-			ToggleButton:SetNormalTexture(ntex)
-			local htex = ToggleButton:CreateTexture()
-			htex:SetColorTexture(1.0, 1.0, 1.0, 0.3)
-			htex:SetAllPoints()
-			ToggleButton:SetHighlightTexture(htex)
-			ToggleButton:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT',0 , 19)
-			ToggleButton:EnableMouse('AnyUp')
-			ToggleButton:RegisterForClicks('AnyUp')
-			ToggleButton:SetScript('OnClick', function(self)
-				local realself = self:GetParent()
-				if realself.ArtiFrame:IsShown() then 
-					realself.ArtiFrame:Hide() 
-					CPS['ArtiFrameOn'] = false
-				else 
-					realself.ArtiFrame:Show()
-					CPS['ArtiFrameOn'] = true
-				end
-				if realself.ExpFrame:IsShown() then 
-					realself.ExpFrame:Hide()
-					CPS['ArtiFrameOn'] = true
-				else 
-					realself.ExpFrame:Show() 
-					CPS['ArtiFrameOn'] = false
-				end
-			end)
-			self.ToggleButton = ToggleButton
-		end
+		-- 	local ToggleButton = CreateFrame('Button', nil, self)
+		-- 	ToggleButton:SetSize(77, 10)
+		-- 	ToggleButton:SetFrameStrata('MEDIUM')
+		-- 	ToggleButton:SetFrameLevel(5)
+		-- 	local ntex = ToggleButton:CreateTexture()
+		-- 	ntex:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\togglebutton')
+		-- 	--ntex:SetTexCoord(0, 0.625, 0, 0.625)
+		-- 	ntex:SetPoint('BOTTOM', ToggleButton, 'BOTTOM', 0, 0)
+		-- 	ToggleButton:SetNormalTexture(ntex)
+		-- 	local htex = ToggleButton:CreateTexture()
+		-- 	htex:SetColorTexture(1.0, 1.0, 1.0, 0.3)
+		-- 	htex:SetAllPoints()
+		-- 	ToggleButton:SetHighlightTexture(htex)
+		-- 	ToggleButton:SetPoint('BOTTOMLEFT', UIParent, 'BOTTOMLEFT',0 , 19)
+		-- 	ToggleButton:EnableMouse('AnyUp')
+		-- 	ToggleButton:RegisterForClicks('AnyUp')
+		-- 	ToggleButton:SetScript('OnClick', function(self)
+		-- 		local realself = self:GetParent()
+		-- 		if realself.ArtiFrame:IsShown() then 
+		-- 			realself.ArtiFrame:Hide() 
+		-- 			CPS['ArtiFrameOn'] = false
+		-- 		else 
+		-- 			realself.ArtiFrame:Show()
+		-- 			CPS['ArtiFrameOn'] = true
+		-- 		end
+		-- 		if realself.ExpFrame:IsShown() then 
+		-- 			realself.ExpFrame:Hide()
+		-- 			CPS['ArtiFrameOn'] = true
+		-- 		else 
+		-- 			realself.ExpFrame:Show() 
+		-- 			CPS['ArtiFrameOn'] = false
+		-- 		end
+		-- 	end)
+		-- 	self.ToggleButton = ToggleButton
+		-- end
 	end
 	
 	-- Status Icons --
@@ -678,7 +678,7 @@ local function Gvv_Style(self, unit)
 			self.AdditionalPower = DruidMana
 			self.AdditionalPower.bg = Background
 			
-		elseif playerclass == 'PRIEST' or playerclass == 'PALADIN' or playerclass == 'MONK' or playerclass == 'WARLOCK' then
+		elseif playerclass == 'PRIEST' or playerclass == 'PALADIN' or playerclass == 'MONK' or playerclass == 'WARLOCK' or playerclass == 'EVOKER' then
 			if playerclass == 'PRIEST' then
 				local DruidMana = CreateFrame('StatusBar', nil, self)
 				DruidMana:SetSize(175, 20)
@@ -699,38 +699,49 @@ local function Gvv_Style(self, unit)
 				self.AdditionalPower.bg = Background
 			end
 			
-			local ClassIcons = {}
-			for index = 1, 5 do
-				local Icon = self:CreateTexture(nil, 'BACKGROUND')
-				Icon:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\classicon')
-				Icon:SetSize(20, 20)
-				Icon:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 2)
-				ClassIcons[index] = Icon
+			-- local ClassIcons = {}
+			local ClassPower = {}
+			for index = 1, 10 do
+				local Bar = CreateFrame('StatusBar', nil, self)
+		
+				Bar:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\classicon')
+				Bar:SetSize(20, 20)
+				Bar:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 2)
+		
+				ClassPower[index] = Bar
 			end
-			self.ClassPower = ClassIcons
+			-- for index = 1, 5 do
+			-- 	local Icon = self:CreateTexture(nil, 'BACKGROUND')
+			-- 	Icon:SetTexture('Interface\\Addons\\oUF_Gvv\\textures\\classicon')
+			-- 	Icon:SetSize(20, 20)
+			-- 	Icon:SetPoint('LEFT', self.ap, 'LEFT', (index - 1) * 25, 2)
+			-- 	ClassIcons[index] = Icon
+			-- end
+			-- self.ClassPower = ClassIcons
+			self.ClassPower = ClassPower
 	
-			if playerclass == 'WARLOCK' then
-				-- Just WARLOCK things --
-				local DemonicFuryBar = CreateFrame('StatusBar', nil, self)
-				DemonicFuryBar:SetPoint('LEFT', self.ap, 'LEFT', 0, 2)
-				DemonicFuryBar:SetSize(180, 20)
-				DemonicFuryBar:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
-				DemonicFuryBar:SetStatusBarColor(148/255, 130/255, 201/255)
+			-- if playerclass == 'WARLOCK' then
+			-- 	-- Just WARLOCK things --
+			-- 	local DemonicFuryBar = CreateFrame('StatusBar', nil, self)
+			-- 	DemonicFuryBar:SetPoint('LEFT', self.ap, 'LEFT', 0, 2)
+			-- 	DemonicFuryBar:SetSize(180, 20)
+			-- 	DemonicFuryBar:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
+			-- 	DemonicFuryBar:SetStatusBarColor(148/255, 130/255, 201/255)
 				
-				self.DemonicFury = DemonicFuryBar
+			-- 	self.DemonicFury = DemonicFuryBar
 				
-				local BurningEmbers = {}
-				for i = 1, 4 do
-					local ember = CreateFrame('StatusBar', nil, self)
-					ember:SetSize(40, 20)
-					ember:SetPoint('LEFT', self.ap, 'LEFT', (i - 1) * 45, 2)
-					ember:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
-					ember:SetStatusBarColor(1, 138/255, 0)
-					BurningEmbers[i] = ember
-				end
+			-- 	local BurningEmbers = {}
+			-- 	for i = 1, 4 do
+			-- 		local ember = CreateFrame('StatusBar', nil, self)
+			-- 		ember:SetSize(40, 20)
+			-- 		ember:SetPoint('LEFT', self.ap, 'LEFT', (i - 1) * 45, 2)
+			-- 		ember:SetStatusBarTexture('Interface\\Addons\\oUF_Gvv\\textures\\otherbar_filling')
+			-- 		ember:SetStatusBarColor(1, 138/255, 0)
+			-- 		BurningEmbers[i] = ember
+			-- 	end
 				
-				self.BurningEmbers = BurningEmbers
-			end
+			-- 	self.BurningEmbers = BurningEmbers
+			-- end
 		elseif playerclass == 'ROGUE' then
 			local ClassIcons = {}
 			for index = 1, 10 do
@@ -824,6 +835,7 @@ local function Gvv_Style(self, unit)
 		end
 		
 		Spark:SetBlendMode('ADD')
+		Spark:SetPoint('CENTER', Castbar:GetStatusBarTexture(), 'RIGHT', 0, 0)
 
 		local Time = Castbar:CreateFontString(nil, 'OVERLAY', 'GameFontNormalSmall')
 		Time:SetPoint('RIGHT', Castbar)
@@ -920,8 +932,8 @@ end
 
 oUF:Factory(function(self)
 
-	if string.sub(GetAddOnMetadata("oUF", "Version"), 1, 3) ~= "7.0" then
-		print(ns.L['|cFFFF0000[oUF_Gvv]|r This version of oUF_Gvv has only been tested with oUF 7.0.x, if it breaks, check your oUF core version first.']) 
+	if string.sub(GetAddOnMetadata("oUF", "Version"), 1, 4) ~= "11.1" then
+		print(ns.L['|cFFFF0000[oUF_Gvv]|r This version of oUF_Gvv has only been tested with oUF 11.1.x, if it breaks, check your oUF core version first.']) 
 	end
 
 	oUF:RegisterStyle('Gvv', Gvv_Style)

@@ -35,7 +35,7 @@ if LOCALE == 'zhCN' then
 	
 	L['Class Power position saved.'] = '职业资源条位置已保存。'
 	L['Class Power position reset.'] = '职业资源条位置已重置。'
-	L['|cFFFF0000[oUF_Gvv]|r This version of oUF_Gvv has only been tested with oUF 7.0.x, if it breaks, check your oUF core version first.'] = '|cFFFF0000[oUF_Gvv]|r 此版本的oUF_Gvv仅在oUF 7.0.x版本测试通过，如果它挂掉了，先检查一下你的oUF核心版本。'
+	L['|cFFFF0000[oUF_Gvv]|r This version of oUF_Gvv has only been tested with oUF 11.1.x, if it breaks, check your oUF core version first.'] = '|cFFFF0000[oUF_Gvv]|r 此版本的oUF_Gvv仅在oUF 11.1.x版本测试通过，如果它挂掉了，先检查一下你的oUF核心版本。'
 	return 
 end
 
