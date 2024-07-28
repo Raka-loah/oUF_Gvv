@@ -23,6 +23,11 @@ ns.C.normalFont		= 'Fonts\\ARHei.ttf'
 --Please use '/GVV' or '/OGV' commands in game to show anchor frame. 请在游戏中使用/GVV或/OGV命令显示锚点框。
 --Just drag the frame and use the slash commands again to save position. 拖动到合适位置之后再次使用/GVV或/OGV命令来保存位置。
 
+--Buff frame 增益图标框体
+ns.C.useBuffframe	= true	-- Enable addon buff frame for player 插件接管玩家buff框体
+ns.C.buffIconSize	= 25	-- Buff icon size(default:25) 增益图标尺寸（默认25）
+ns.C.bframeX		= 95	-- Buff frame X offset(default:95) 横向偏移（默认值95）
+ns.C.bframeY		= 125	-- Y offset(defalut:125) 纵向偏移(默认值125)
 --Target buff frames 目标增益图标框体
 ns.C.tbIconSize		= 20	-- Buff icon size for Taget frames(default:20) 目标框体增益图标尺寸（默认20）
 ns.C.onlyShowPlayer	= false	-- Only show buff/debuff casted by player. 在目标框体只显示玩家施放的buff/debuff

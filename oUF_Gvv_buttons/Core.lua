@@ -1,7 +1,12 @@
+--[[
+	Magic. Do not touch. Thank you.
+]]
+
+-- Font fix
 local LAB = LibStub("LibActionButton-1.0", true)
 if LAB then
 	-- Bartender4
-	LAB.RegisterCallback("Masque_Gvv", "OnButtonCreated", function(_, self)
+	LAB.RegisterCallback("oUF_Gvv_buttons", "OnButtonCreated", function(_, self)
 		local scale = self:GetParent():GetScale()
 		local hotkey = _G[self:GetName() .. "HotKey"]
 
@@ -10,26 +15,26 @@ if LAB then
 			self.hkbg:SetAllPoints(self)
 			self.hkbg:SetFrameLevel(6)
 			local t = self.hkbg:CreateTexture(nil, "ARTWORK")
-			t:SetTexture("Interface\\Addons\\Masque_Gvv\\Textures\\hotkey_bg")
+			t:SetTexture("Interface\\Addons\\oUF_Gvv_buttons\\Textures\\hotkey_bg")
 			t:SetPoint("CENTER", hotkey, "CENTER", 0, 0)
 			t:SetSize(16, 16)
 			hooksecurefunc(hotkey, "Hide", function(self)
-						local button = self:GetParent()
+						local button = self:GetParent():GetParent()
 						button.hkbg:Hide()
 						end)
 			hooksecurefunc(hotkey, "Show", function(self)
-						local button = self:GetParent()
+						local button = self:GetParent():GetParent()
 						button.hkbg:Show()
 						end)
 
 		end
 	end)
 
-	LAB.RegisterCallback("Masque_Gvv", "OnButtonUpdate", function(_, self)
+	LAB.RegisterCallback("oUF_Gvv_buttons", "OnButtonUpdate", function(_, self)
 		local scale = self:GetParent():GetScale()
 		local hotkey = _G[self:GetName() .. "HotKey"]
 
-		local gwfont = "Interface\\Addons\\Masque_Gvv\\Fonts\\menomonia.ttf"
+		local gwfont = "Interface\\Addons\\oUF_Gvv_buttons\\Fonts\\menomonia.ttf"
 		if hotkey then
 			hotkey:ClearAllPoints()
 			hotkey:SetPoint("BOTTOM", self, "BOTTOM", 0, 0)

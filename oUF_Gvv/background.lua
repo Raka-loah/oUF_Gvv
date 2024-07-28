@@ -49,7 +49,7 @@ function gvv_draw_borders(self, event)
 	end
 end
 local dummyframe = CreateFrame('Frame', nil)
-dummyframe:RegisterEvent('VARIABLES_LOADED')
+dummyframe:RegisterEvent('PLAYER_ENTERING_WORLD')
 dummyframe:SetScript('OnEvent', function(self, event)
 	gvv_draw_borders()
 	self:UnregisterAllEvents()

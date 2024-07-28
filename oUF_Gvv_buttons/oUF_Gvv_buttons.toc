@@ -1,0 +1,10 @@
+## Interface: 110002
+## Title: oUF_Gvv: Button skin
+## Version: 11.0
+## Author: Raka-loah
+## Notes: oUF_Gvv button skin for Bartender4.
+## Notes-zhCN: oUF_Gvv的GW2风格Bartender4按钮皮肤。
+## Dependencies: Bartender4
+## X-Website: https://lotc.cc
+
+Core.lua

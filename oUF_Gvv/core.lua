@@ -1,7 +1,7 @@
 --[[
 oUF_Gvv by Raka from LotC.cc
 Please don't modify anything, very fragile.
-Require oUF 11.1.x.
+Require oUF 7.0.x.
 ]]
 local ADDON_NAME, ns = ...
 if not CPS then CPS = {} end
@@ -932,8 +932,8 @@ end
 
 oUF:Factory(function(self)
 
-	if string.sub(GetAddOnMetadata("oUF", "Version"), 1, 4) ~= "11.1" then
-		print(ns.L['|cFFFF0000[oUF_Gvv]|r This version of oUF_Gvv has only been tested with oUF 11.1.x, if it breaks, check your oUF core version first.']) 
+	if string.sub(GetAddOnMetadata("oUF", "Version"), 1, 4) ~= "12.0" then
+		print(ns.L['|cFFFF0000[oUF_Gvv]|r This version of oUF_Gvv has only been tested with oUF 12.0.x, if it breaks, check your oUF core version first.']) 
 	end
 
 	oUF:RegisterStyle('Gvv', Gvv_Style)

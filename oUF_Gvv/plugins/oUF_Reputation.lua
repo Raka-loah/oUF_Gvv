@@ -70,14 +70,26 @@ assert(oUF, 'oUF Reputation was unable to locate oUF install')
 
 local function GetReputation()
 	local pendingReward
-	local name, standingID, min, max, cur, factionID = GetWatchedFactionInfo()
-
-	local friendshipReputationData = C_GossipInfo.GetFriendshipReputation(factionID) -- Always has a table returned as 10.0.2
+	local watchedFactionData = C_Reputation.GetWatchedFactionData()
+	
+	local name
+	local standingID, factionID = 0, 0
+	local min, max, cur = 0, 1, 1
+	
+	if watchedFactionData then
+		name = watchedFactionData.name
+		standingID = watchedFactionData.reaction
+		min = watchedFactionData.currentReactionThreshold
+		max = watchedFactionData.nextReactionThreshold
+		cur = watchedFactionData.currentStanding
+		factionID = watchedFactionData.factionID
+	end
+			
+	local friendshipReputationData = C_GossipInfo.GetFriendshipReputation(factionID)
 	local standingText
-
-	local majorFactionReputationData = C_MajorFactions.GetMajorFactionData(factionID) -- Returns nil if not DF major faction as 10.0.2
+	local majorFactionReputationData = C_MajorFactions.GetMajorFactionData(factionID)
     
-	if(friendshipReputationData.friendshipFactionID ~= 0) then
+	if(friendshipReputationData and friendshipReputationData.friendshipFactionID ~= 0) then
 		standingText = friendshipReputationData.reaction
 		if(friendshipReputationData.nextThreshold == 0) then
 			min, max, cur = 0, 1, 1 -- force a full bar when maxed out
@@ -288,7 +300,7 @@ local function Visibility(self, event, unit, selectedFactionIndex)
 		if(selectedFactionIndex > 0) then
 			shouldEnable = true
 		end
-	elseif(not not (GetWatchedFactionInfo())) then
+	elseif(not not (C_Reputation.GetWatchedFactionData())) then
 		shouldEnable = true
 	end
 
@@ -323,9 +335,9 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		hooksecurefunc('SetWatchedFactionIndex', function(selectedFactionIndex)
+		hooksecurefunc(C_Reputation, 'SetWatchedFactionByIndex', function(selectedFactionIndex)
 			if(self:IsElementEnabled('Reputation')) then
-				VisibilityPath(self, 'SetWatchedFactionIndex', 'player', selectedFactionIndex or 0)
+				VisibilityPath(self, 'SetWatchedFactionByIndex', 'player', selectedFactionIndex or 0)
 			end
 		end)
 
